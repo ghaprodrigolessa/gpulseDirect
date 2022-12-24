@@ -44,19 +44,8 @@ function TodosPacientes() {
   // history (react-router-dom).
   let history = useHistory()
 
-  // carregando regitro de atendimentos.
-  var htmlatendimentos = process.env.REACT_APP_API_ATENDIMENTOS;
-  const loadAtendimentos = () => {
-    // captura registros de atendimentos.
-    axios.get(htmlatendimentos).then((response) => {
-      var x = [0, 1]
-      x = response.data;
-      settodosatendimentos(x);
-    });
-  }
-
   useEffect(() => {
-    MountArrayPacientesEmAtendimento();
+    // MountArrayPacientesEmAtendimento();
   }, []);
 
   // lista de atendimentos (demais unidades de internação como enfermarias, ctis, etc.).
@@ -327,9 +316,9 @@ function TodosPacientes() {
                     width: '20%',
                   }}
                 >
-                  {moment().diff(moment(arrayPacientesEmAtendimento.filter((value) => value.codigo_paciente == item.cd_paciente).map((item) => item.data_nascimento_paciente), 'YYYY/MM/DD'), 'years') > 1 ?
-                    moment().diff(moment(arrayPacientesEmAtendimento.filter((value) => value.codigo_paciente == item.cd_paciente).map((item) => item.data_nascimento_paciente), 'YYYY/MM/DD'), 'years') + ' ANOS.' :
-                    moment().diff(moment(arrayPacientesEmAtendimento.filter((value) => value.codigo_paciente == item.cd_paciente).map((item) => item.data_nascimento_paciente), 'YYYY/MM/DD'), 'years') + ' ANO.'
+                  {moment().diff(moment(todospacientes.filter((value) => value.codigo_paciente == item.cd_paciente).map((item) => item.data_nascimento_paciente), 'YYYY/MM/DD'), 'years') > 1 ?
+                    moment().diff(moment(todospacientes.filter((value) => value.codigo_paciente == item.cd_paciente).map((item) => item.data_nascimento_paciente), 'YYYY/MM/DD'), 'years') + ' ANOS.' :
+                    moment().diff(moment(todospacientes.filter((value) => value.codigo_paciente == item.cd_paciente).map((item) => item.data_nascimento_paciente), 'YYYY/MM/DD'), 'years') + ' ANO.'
                   }
                 </button>
                 <button
@@ -471,7 +460,7 @@ function TodosPacientes() {
     setidatendimento(item.cd_atendimento)
     setdatainternacao(item.dt_hr_atendimento);
     setconvenio(item.nm_convenio);
-    setdadospaciente(arrayPacientesEmAtendimento.filter(value => value.codigo_paciente == item.cd_paciente));
+    setdadospaciente(todospacientes.filter(value => value.codigo_paciente == item.cd_paciente));
     history.push('/prontuario');
   };
 
@@ -562,23 +551,6 @@ function TodosPacientes() {
 
       }
     }, 500);
-  }
-
-  // função para extração dos pacientes em atendimento a partir da lista de atendimentos.
-  const [arrayPacientesEmAtendimento, setarrayPacientesEmAtendimento] = useState([0, 1]);
-  const MountArrayPacientesEmAtendimento = () => {
-    arrayatendimentos.map(item => GetArrayPacientesEmAtendimento(item));
-    setTimeout(() => {
-      setarrayPacientesEmAtendimento(varPacientesEmAtendimento);
-      settodospacientes(varPacientesEmAtendimento);
-    }, 3000);
-  }
-
-  var varPacientesEmAtendimento = [];
-  const GetArrayPacientesEmAtendimento = (valor) => {
-    axios.get(htmlpacientes + valor.cd_paciente).then((response) => {
-      varPacientesEmAtendimento.push(response.data);
-    });
   }
 
   var htmlhistoricodeatendimentos = process.env.REACT_APP_API_HISTORICODEATENDIMENTOS;

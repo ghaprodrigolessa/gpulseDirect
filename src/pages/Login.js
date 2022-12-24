@@ -32,7 +32,8 @@ function Login() {
     setcategoriausuario,
     setespecialidadeusuario, especialidadeusuario,
     setconselhousuario, conselhousuario,
-    settodosatendimentos,
+    settodosatendimentos, todosatendimentos,
+    settodospacientes,
 
     // cid 10.
     listcid, setlistcid,
@@ -60,8 +61,26 @@ function Login() {
       var x = [0, 1]
       x = response.data;
       settodosatendimentos(x);
+      MountArrayPacientesEmAtendimento(x);
     });
   }
+
+  // função para extração dos pacientes em atendimento a partir da lista de atendimentos.
+  var htmlpacientes = process.env.REACT_APP_API_FILTRAPACIENTES;
+  const MountArrayPacientesEmAtendimento = (x) => {
+    x.map(item => GetArrayPacientesEmAtendimento(item));
+    setTimeout(() => {
+      settodospacientes(varPacientesEmAtendimento);
+    }, 3000);
+  }
+
+  var varPacientesEmAtendimento = [];
+  const GetArrayPacientesEmAtendimento = (valor) => {
+    axios.get(htmlpacientes + valor.cd_paciente).then((response) => {
+      varPacientesEmAtendimento.push(response.data);
+    });
+  }
+
 
   useEffect(() => {
     // updatePersonaLogout();
