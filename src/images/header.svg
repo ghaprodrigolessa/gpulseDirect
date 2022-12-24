@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created using Krita: http://krita.org -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="80.17244pt"
+   height="109.70262pt"
+   viewBox="0 0 80.17244 109.70262"
+   version="1.1"
+   id="svg20"
+   sodipodi:docname="header.svg"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
+  <metadata
+     id="metadata24">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1366"
+     inkscape:window-height="704"
+     id="namedview22"
+     showgrid="false"
+     inkscape:zoom="1.475"
+     inkscape:cx="53.775007"
+     inkscape:cy="74.556851"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg20" />
+  <defs
+     id="defs2" />
+  <ellipse
+     id="shape0"
+     transform="rotate(23.864546)"
+     rx="38.42165"
+     ry="9.0979576"
+     cx="58.686672"
+     cy="33.57346"
+     style="fill:#bfdbf7;fill-rule:evenodd;stroke:#000000;stroke-width:9.53390884;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:0" />
+  <ellipse
+     id="shape1"
+     rx="23.167397"
+     ry="23.262737"
+     cx="40.08622"
+     cy="54.446281"
+     style="fill:#bfdbf7;fill-rule:evenodd;stroke-width:0.79449236" />
+  <circle
+     id="shape2"
+     r="19.353834"
+     cx="40.08622"
+     cy="54.446285"
+     style="fill:#1f7a8c;fill-rule:evenodd;stroke:#000000;stroke-width:0.79449236;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:0" />
+  <ellipse
+     id="shape01"
+     rx="5.1028214"
+     ry="5.1238208"
+     cx="40.08622"
+     cy="42.392815"
+     style="fill:#bfdbf7;fill-rule:evenodd;stroke-width:0.79449236" />
+  <path
+     id="path8"
+     stroke-miterlimit="2"
+     d="m 13.940132,38.825003 c 6.313783,0.468901 10.836399,-0.209508 15.18124,-2.773692"
+     inkscape:connector-curvature="0"
+     style="fill:none;stroke:#bfdbf7;stroke-width:2.86017251;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:2" />
+  <path
+     id="shape02"
+     stroke-miterlimit="2"
+     d="M 68.759083,63.045789 C 64.417753,58.6832 62.079409,54.899653 61.287379,50.022991"
+     inkscape:connector-curvature="0"
+     style="fill:none;stroke:#bfdbf7;stroke-width:2.86017251;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:2" />
+  <path
+     id="shape3"
+     stroke-miterlimit="2"
+     d="M 12.806042,42.814969 C 27.228701,57.64266 45.575992,66.125137 68.106286,67.845133"
+     inkscape:connector-curvature="0"
+     style="fill:none;stroke:#bfdbf7;stroke-width:7.62712717;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:2" />
+  <circle
+     id="circle12"
+     r="5.4929929"
+     cx="54.722965"
+     cy="24.477579"
+     style="fill:#bfdbf7;fill-rule:evenodd" />
+  <circle
+     id="shape03"
+     r="3.8334923"
+     cx="60.325691"
+     cy="12.422561"
+     style="fill:#bfdbf7;fill-rule:evenodd" />
+  <circle
+     id="shape011"
+     r="3.0600958"
+     cx="64.641167"
+     cy="3.0600958"
+     style="fill:#bfdbf7;fill-rule:evenodd" />
+  <circle
+     id="shape021"
+     transform="scale(-1)"
+     r="5.4929929"
+     cx="-25.29492"
+     cy="-85.225044"
+     style="fill:#bfdbf7;fill-rule:evenodd" />
+  <circle
+     id="circle17"
+     transform="scale(-1)"
+     r="3.8334923"
+     cx="-19.692192"
+     cy="-97.28006"
+     style="fill:#bfdbf7;fill-rule:evenodd" />
+  <circle
+     id="shape012"
+     transform="scale(-1)"
+     r="3.0600958"
+     cx="-15.376716"
+     cy="-106.64252"
+     style="fill:#bfdbf7;fill-rule:evenodd" />
+</svg>
