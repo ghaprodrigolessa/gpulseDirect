@@ -1221,6 +1221,26 @@ function Prontuario() {
                       }}
                     ></img>
                   </Link>
+                  <div
+                    className='blue-button'
+                    onClick={() => setstateprontuario(31)}
+                    style={{
+                      display: stateprontuario == 31 ? 'none' : 'flex',
+                      bottom: 20, left: 20,
+                      backgroundColor: 'white',
+                      zIndex: 30
+                    }}>
+                    <img
+                      alt=""
+                      src={lupa}
+                      style={{
+                        display: 'flex',
+                        margin: 10,
+                        height: 30,
+                        width: 30,
+                      }}
+                    ></img>
+                  </div>
                   <Link
                     to="/"
                     className="grey-button"
@@ -1275,6 +1295,26 @@ function Prontuario() {
               justifyContent: 'center',
             }}
           >
+            <div
+              className='blue-button'
+              onClick={() => setstateprontuario(31)}
+              style={{
+                display: stateprontuario == 31 ? 'none' : 'flex',
+                bottom: 20, left: 20,
+                backgroundColor: 'white',
+                zIndex: 30,
+              }}>
+              <img
+                alt=""
+                src={lupa}
+                style={{
+                  display: 'flex',
+                  margin: 10,
+                  height: 30,
+                  width: 30,
+                }}
+              ></img>
+            </div>
             <Link
               to={"/todospacientes"}
               className="grey-button"
