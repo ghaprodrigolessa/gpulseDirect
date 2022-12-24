@@ -1,2 +1,2 @@
-# gPulse "Antigo" = gPulse Paulo de Tarso.
-Front para o Hospital Paulo de Tarso.
+# neoPulse - Hospital Paulo de Tarso.
+versão gPulse simplificada para Gestão do Plano Terapêutico.
