@@ -127,7 +127,6 @@ function AlertasPlanoTerapeutico() {
   ) {
     return (
       <div
-        // onMouseOut={() => sethide(0)}
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -135,7 +134,6 @@ function AlertasPlanoTerapeutico() {
           padding: 10,
           alignContent: 'center',
           position: 'absolute', top: 10, right: 10, zIndex: 20,
-          // width: '12vw', minWidth: '12vw',
         }}
       >
         <div
@@ -335,15 +333,19 @@ function AlertasPlanoTerapeutico() {
             <div style={{
               margin: 5,
             }}>
-              {'OBJETIVOS SECUNDÁRIOS FINALIZÁVEIS: ' + objetivos.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.tipoobjetivo == 2 && item.statusobjetivo == 1).length}
+              {'OBJETIVOS SECUNDÁRIOS FINALIZÁVEIS:'}
             </div>
-            <div className='scroll'
+            <div
               style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
                 margin: 5,
-                overflowY: 'scroll',
-                height: '40vh',
-                width: '30vw',
-                paddingRight: 10,
+                minHeight: '20vh',
+                width: window.innerWidth < 426 ? '75vw' : '30vw',
+                borderRadius: 5,
+                backgroundColor: '#f2f2f2',
+                padding: 10,
                 alignSelf: 'center',
               }}>
               {objetivos.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.tipoobjetivo == 2 && item.statusobjetivo == 1).map(item => checametas(item))}

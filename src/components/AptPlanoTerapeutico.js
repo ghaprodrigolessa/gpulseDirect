@@ -44,7 +44,7 @@ function AptPlanoTerapeutico() {
     listevolucoes,
     planoterapeutico, setplanoterapeutico,
     linhadecuidado, setlinhadecuidado,
-    setlinhadecuidadoatual,
+    setlinhadecuidadoatual, linhadecuidadoatual,
     opcoeslinhasdecuidado,
     setshowescala,
     listescalas, setlistescalas,
@@ -75,11 +75,11 @@ function AptPlanoTerapeutico() {
   var htmllinhasdecuidado = process.env.REACT_APP_API_CLONE_LINHASDECUIDADO;
   var htmlinsertlinhadecuidado = process.env.REACT_APP_API_CLONE_INSERTLINHADECUIDADO;
   var htmlupdatelinhadecuidado = process.env.REACT_APP_API_CLONE_UPDATELINHADECUIDADO;
-  
+
   var htmlplanosterapeuticos = process.env.REACT_APP_API_CLONE_PLANOSTERAPEUTICOS;
   var htmlinsertplanoterapeutico = process.env.REACT_APP_API_CLONE_INSERTPLANOTERAPEUTICO;
   var htmlupdateplanoterapeutico = process.env.REACT_APP_API_CLONE_UPDATEPLANOTERAPEUTICO;
-  
+
   var htmlopcoesobjetivos = process.env.REACT_APP_API_CLONE_OPCOES_OBJETIVOS;
   var htmlobjetivos = process.env.REACT_APP_API_CLONE_OBJETIVOS;
   var htmlinsertobjetivo = process.env.REACT_APP_API_CLONE_INSERTOBJETIVO;
@@ -109,7 +109,7 @@ function AptPlanoTerapeutico() {
 
 
   var htmlpropostasterapeuticas = process.env.REACT_APP_API_CLONE_PROPOSTASTERAPEUTICAS;
-  
+
   var htmlghapescalas = process.env.REACT_APP_API_CLONE_ESCALAS;
   var htmlghapopcoesescalas = process.env.REACT_APP_API_CLONE_OPCOES_ESCALAS;
 
@@ -147,7 +147,7 @@ function AptPlanoTerapeutico() {
       setbusy(0);
     });
   }
-  
+
   // carregando opções de objetivos, metas e intervenções (propostas terapêuticas).
   const [arrayopcoesobjetivos, setarrayopcoesobjetivos] = useState([]);
   const loadOpcoesObjetivos = () => {
@@ -167,7 +167,7 @@ function AptPlanoTerapeutico() {
       setarrayopcoesmetas(x.rows);
     });
   }
-  
+
   // tela ocupado.
   const [busy, setbusy] = useState(0);
   function Busy() {
@@ -363,8 +363,6 @@ function AptPlanoTerapeutico() {
           linhadecuidados: id_linhadecuidado,
           status: status
         }
-        console.log(JSON.stringify(obj));
-        // alert(status);
         axios.post(htmlupdateplanoterapeutico + id, obj).then(() => {
           loadPlanosTerapeuticos();
         });
@@ -553,22 +551,43 @@ function AptPlanoTerapeutico() {
       idpct: idpaciente,
       idatendimento: idatendimento,
       idplanoterapeutico: idplanoterapeutico,
-      idobjetivo: item.idobjetivo,
+      idobjetivo: parseInt(item.idobjetivo),
       meta: item.meta,
-      datainicio: moment().startOf('day'),
-      dataestimada: moment().startOf('day').add(15, 'days'),
+      datainicio: item.datainicio,
+      dataestimada: item.dataestimada,
       datatermino: null,
       idprofissional: 0,
-      status: 0, // 0 = a validar. 1 = ativa. 2 = concluída. 3 = não alcançada. 4 = cancelada.
+      status: 4, // 0 = a validar. 1 = ativa. 2 = concluída. 3 = não alcançada. 4 = cancelada.
       nota: 10,
       idespecialidade: parseInt(item.idespecialidade),
-      justificativa: null,
-      datachecagem: moment().startOf('day').add(parseInt(item.checagem), 'days'),
+      justificativa: document.getElementById("inputJustificativaRestart" + item.id).value.toUpperCase(),
+      datachecagem: moment(item.datachecagem).startOf('day').add(parseInt(item.checagem), 'days'),
       checagem: item.checagem,
       idmeta: item.idmeta,
     }
-    axios.post(htmlinsertmeta, obj).then(() => {
-      loadMetas();
+    axios.post(htmlupdatemeta + item.id, obj).then(() => {
+      var obj = {
+        idpct: idpaciente,
+        idatendimento: idatendimento,
+        idplanoterapeutico: idplanoterapeutico,
+        idobjetivo: item.idobjetivo,
+        meta: item.meta,
+        datainicio: moment().startOf('day'),
+        dataestimada: moment().startOf('day').add(15, 'days'),
+        datatermino: null,
+        idprofissional: 0,
+        status: 0, // 0 = a validar. 1 = ativa. 2 = concluída. 3 = não alcançada. 4 = cancelada.
+        nota: 10,
+        idespecialidade: parseInt(item.idespecialidade),
+        justificativa: null,
+        datachecagem: moment().startOf('day').add(parseInt(item.checagem), 'days'),
+        checagem: item.checagem,
+        idmeta: item.idmeta,
+      }
+      axios.post(htmlinsertmeta, obj).then(() => {
+        loadMetas();
+        document.getElementById("divJustificativaRestart" + item.id).style.display = 'none';
+      });
     });
   }
 
@@ -616,8 +635,6 @@ function AptPlanoTerapeutico() {
       checagem: checagem,
       idmeta: item.idmeta,
     }
-    // alert(JSON.stringify(obj));
-    // alert(idprofissional);
     axios.post(htmlupdatemeta + item.id, obj).then(() => {
       loadMetas();
     });
@@ -740,7 +757,7 @@ function AptPlanoTerapeutico() {
                       key={item.id}
                       id="item da lista"
                       className="blue-button"
-                      // onClick={() => updateIntervencao(selected_intervencao, selected_intervencao.frequencia, selected_intervencao.local, 0)}
+                    // onClick={() => updateIntervencao(selected_intervencao, selected_intervencao.frequencia, selected_intervencao.local, 0)}
                     >
                       <div style={{ padding: 5 }}>{item.nome}</div>
                     </div>
@@ -754,7 +771,7 @@ function AptPlanoTerapeutico() {
       </div>
     )
   }
-  
+
   // componentes (telas) para inserir ou atualizar objetivos, metas e propostas terapêuticas.
   // objetivos.
   const [viewobjetivo, setviewobjetivo] = useState(0); // 1 = objetivo primário; 2 = objetivo secundário.
@@ -966,7 +983,7 @@ function AptPlanoTerapeutico() {
       </div>
     )
   }
-  
+
   // ESCALA EDITÁVEL IVCF (ESCALA DE MORAES).
   const [data, setdata] = useState(moment().format('DD/MM/YYYY'))
   const [valor, setvalor] = useState();
@@ -1493,7 +1510,6 @@ function AptPlanoTerapeutico() {
     filtraScrollProfissionais(item.idobjetivo);
     setTimeout(() => {
       setselectedcategoria(item.idespecialidade);
-      // console.log('OBJETIVO: ' + JSON.stringify(objetivos.filter(valor => valor.idobjetivo == item.idobjetivo && valor.statusobjetivo == 1)));
       setTimeout(() => {
         var botoes = document.getElementById("scrollobjetivos").getElementsByClassName("red-button-objetivos animationobjetivos");
         for (var i = 0; i < botoes.length; i++) {
@@ -1506,14 +1522,15 @@ function AptPlanoTerapeutico() {
         }
         document.getElementById("categoriaprofissional" + item.idespecialidade).className = "red-button";
       }, 700);
-      // setselected_meta(item.id);
     }, 1000);
   }
 
   function AlertasPlanoTerapeutico() {
 
     const checametas = (item) => {
-      if (metas.filter(valor => valor.idplanoterapeutico == idplanoterapeutico && valor.idobjetivo == item.idobjetivo && valor.status < 2).length == 0) {
+      if (
+        metas.filter(valor => valor.idplanoterapeutico == idplanoterapeutico && valor.idobjetivo == item.idobjetivo).length > 0 &&
+        metas.filter(valor => valor.idplanoterapeutico == idplanoterapeutico && valor.idobjetivo == item.idobjetivo && valor.status < 2).length == 0) {
         return (
           <div id="botão objetivo finalizável"
             className='green-button'
@@ -1834,7 +1851,7 @@ function AptPlanoTerapeutico() {
                 margin: 5,
               }}>
                 {'OBJETIVOS SECUNDÁRIOS FINALIZÁVEIS: '
-                 // + objetivos.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.tipoobjetivo == 2 && item.statusobjetivo == 1).length
+                  // + objetivos.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.tipoobjetivo == 2 && item.statusobjetivo == 1).length
                 }
               </div>
               <div
@@ -1843,6 +1860,7 @@ function AptPlanoTerapeutico() {
                   flexDirection: 'column',
                   justifyContent: 'center',
                   margin: 5,
+                  minHeight: '20vh',
                   width: window.innerWidth < 426 ? '75vw' : '30vw',
                   borderRadius: 5,
                   backgroundColor: '#f2f2f2',
@@ -1901,7 +1919,6 @@ function AptPlanoTerapeutico() {
       var x = [0, 1];
       x = response.data;
       setarraylinhasdecuidado(x.rows);
-      console.log(JSON.stringify(x));
     });
   }
 
@@ -2060,7 +2077,7 @@ function AptPlanoTerapeutico() {
                 <button
                   title="CRIAR PLANO TERAPÊUTICO"
                   className="green-button"
-                  style={{ display: planoterapeutico.filter(item => item.datatermino == null).length > 0 ? 'none' : 'flex' }}
+                  style={{ display: planoterapeutico.filter(item => item.datatermino == null).length > 0 || linhadecuidadoatual == 'DEFINIR LINHA DE CUIDADO' ? 'none' : 'flex' }}
                   onClick={() => { insertPlanoTerapeutico(); setselectedobjetivo(0); setselectedobjetivo(0) }}
                 >
                   <img
@@ -2105,7 +2122,15 @@ function AptPlanoTerapeutico() {
                   }
                   }
                   title="CONCLUIR PLANO TERAPÊUTICO"
-                  style={{ display: statusplanoterapeutico == 1 ? 'flex' : 'none' }}
+                  style={{
+                    display:
+                      statusplanoterapeutico != 1
+                        ||
+                        objetivos.filter(item => item.tipoobjetivo == 1 && item.idplanoterapeutico == idplanoterapeutico).length == 0
+                        ||
+                        objetivos.filter(item => item.tipoobjetivo == 1 && item.idplanoterapeutico == idplanoterapeutico && item.statusobjetivo < 2).length > 0
+                        ? 'none' : 'flex'
+                  }}
                   className={window.innerWidth < 426 ? 'green-button' : "animated-green-button"}>
                   ✔
                 </button>
@@ -2555,7 +2580,7 @@ function AptPlanoTerapeutico() {
           height: 300,
           backgroundColor: "#f2f2f2", borderColor: "#f2f2f2",
           minHeight: 50,
-          paddingRight: 5, 
+          paddingRight: 5,
           paddingLeft: window.innerWidth < 426 ? 5 : 10,
         }}
       >
@@ -2664,7 +2689,13 @@ function AptPlanoTerapeutico() {
                   </button>
                   <button
                     title="FINALIZAR OBJETIVO PRIMÁRIO."
-                    style={{ display: boss_planoterapeutico_usuario == 1 && item.statusobjetivo == 1 ? 'flex' : 'none' }}
+                    style={{
+                      display:
+                        boss_planoterapeutico_usuario == 1 &&
+                          item.statusobjetivo == 1 &&
+                          objetivos.filter(item => item.tipoobjetivo == 2 && item.idplanoterapeutico == idplanoterapeutico).length > 0 &&
+                          objetivos.filter(item => item.tipoobjetivo == 2 && item.idplanoterapeutico == idplanoterapeutico && item.statusobjetivo < 2).length == 0 ? 'flex' : 'none'
+                    }}
                     className={window.innerWidth < 426 ? 'green-button' : "animated-green-button"}
                     onClick={(e) => {
                       setselectedobjetivo(0);
@@ -3190,7 +3221,11 @@ function AptPlanoTerapeutico() {
         <button
           className="green-button"
           onClick={() => setviewobjetivo(2)}
-          style={{ display: statusplanoterapeutico == 1 ? 'flex' : 'none', maxWidth: 50, alignSelf: 'flex-end' }}
+          style={{
+            display: statusplanoterapeutico == 1 &&
+              objetivos.filter(item => item.tipoobjetivo == 1 && item.idplanoterapeutico == idplanoterapeutico && item.statusobjetivo == 1).length > 0 ? 'flex' : 'none',
+            maxWidth: 50, alignSelf: 'flex-end'
+          }}
         >
           <img
             alt=""
@@ -3286,8 +3321,8 @@ function AptPlanoTerapeutico() {
         <div id="métodos e metas"
           style={{
             display: 'flex',
-            flexDirection: 'column', 
-            justifyContent: window.innerWidth < 426 ? 'flex-start' : 'center', 
+            flexDirection: 'column',
+            justifyContent: window.innerWidth < 426 ? 'flex-start' : 'center',
             alignSelf: 'center',
             height: '53vh', width: '65vw',
             padding: 0, margin: 0,
@@ -3308,7 +3343,7 @@ function AptPlanoTerapeutico() {
               onClick={() => setviewmeta(1)}
               style={{
                 // PENDÊNCIA PERMITIR INSERIR META POR CATEGORIA PROFISSIONAL LOGADA.
-                display: statusplanoterapeutico == 1 && selectedobjetivosecundario.statusobjetivo == 1 && (selectedcategoria == tipousuario || boss_planoterapeutico_usuario == 1) ? 'flex' : 'none',
+                display: objetivos.filter(item => item.tipoobjetivo == 1 && item.idplanoterapeutico == idplanoterapeutico).length > 0 && statusplanoterapeutico == 1 && selectedobjetivosecundario.statusobjetivo == 1 && (selectedcategoria == tipousuario || boss_planoterapeutico_usuario == 1) ? 'flex' : 'none',
                 maxWidth: 50, alignSelf: 'flex-end', marginRight: 10,
               }}
             >
@@ -3830,10 +3865,18 @@ function AptPlanoTerapeutico() {
               </button>
               <button id="btn meta retomada"
                 title="RETOMAR META."
-                style={{ display: (selectedcategoria == tipousuario || boss_planoterapeutico_usuario == 1) && (item.status == 3 || item.status == 4) && statusplanoterapeutico == 1 && objetivos.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.idobjetivo == item.idobjetivo && valor.statusobjetivo == 1).length > 0 && metas.filter(valor => valor.idmeta == item.idmeta && (valor.status == 0 || valor.status == 1)).length == 0 ? 'flex' : 'none' }}
+                style={{
+                  // display: (selectedcategoria == tipousuario || boss_planoterapeutico_usuario == 1) && (item.status == 3 || item.status == 4) && statusplanoterapeutico == 1 && objetivos.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.idobjetivo == item.idobjetivo && valor.statusobjetivo == 1).length > 0 && metas.filter(valor => valor.idmeta == item.idmeta && (valor.status == 0 || valor.status == 1)).length == 0 ? 'flex' : 'none'
+                  display: item.status > 0 &&
+                    (selectedcategoria == tipousuario || boss_planoterapeutico_usuario == 1) &&
+                    statusplanoterapeutico == 1 &&
+                    objetivos.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.idobjetivo == item.idobjetivo && valor.statusobjetivo == 1).length > 0 ? 'flex' : 'none'
+                }}
                 className={window.innerWidth < 426 ? 'yellow-button' : "animated-yellow-button"}
                 onClick={(e) => {
-                  restartMeta(item);
+                  setselected_meta(item);
+                  document.getElementById("divJustificativaRestart" + item.id).style.display = 'flex'
+                  // restartMeta(item);
                   e.stopPropagation()
                 }} // atualiza a meta como cancelada.
               >
@@ -3918,7 +3961,7 @@ function AptPlanoTerapeutico() {
               className={window.innerWidth < 426 ? 'green-button' : "animated-green-button"}
               onClick={(e) => {
                 // alert(document.getElementById("inputJustificativaSuspender" + item.id).value);
-                updateMeta(item, moment(item.dataestimada).startOf('day').diff(moment(item.datainicio).startOf('day'), 'days'), item.nota, 3, item.idprofissional, document.getElementById("inputJustificativaSuspender" + item.id).value, item.checagem);
+                updateMeta(item, moment(item.dataestimada).startOf('day').diff(moment(item.datainicio).startOf('day'), 'days'), item.nota, 3, item.idprofissional, document.getElementById("inputJustificativaSuspender" + item.id).value.toUpperCase(), item.checagem);
                 document.getElementById("divJustificativaSuspender" + item.id).style.display = 'none';
                 e.stopPropagation()
               }} // atualiza a meta como cancelada, com a justificativa.
@@ -3954,6 +3997,70 @@ function AptPlanoTerapeutico() {
 
           </div>
         </div>
+
+        <div id={"divJustificativaRestart" + item.id} style={{ display: 'none', marginTop: 10 }}>
+          <textarea
+            id={"inputJustificativaRestart" + item.id}
+            className="textarea"
+            defaultValue={item.justificativa}
+            autoComplete="off"
+            placeholder="JUSTIFICAR AQUI POR QUE A META FOI REINICIADA."
+            onFocus={(e) => (e.target.placeholder = '')}
+            onBlur={(e) => (e.target.placeholder = 'JUSTIFICAR AQUI POR QUE A META FOI REINICIADA.')}
+            title="JUSTIFICAR AQUI POR QUE A META FOI REINICIADA."
+            style={{
+              display: 'flex',
+              width: '100%',
+              height: 120,
+              margin: 2.5,
+              flexDirection: 'column',
+              boxShadow: '0px 1px 5px 1px rgba(0, 0, 0, 0.1)',
+            }}
+            type="text"
+            maxLength={200}>
+          </textarea>
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: 5 }}>
+            <button
+              title="SALVAR JUSTIFICATIVA."
+              className={window.innerWidth < 426 ? 'green-button' : "animated-green-button"}
+              onClick={(e) => {
+                setselected_meta(item);
+                restartMeta(item);
+                e.stopPropagation();
+              }}
+            >
+              <img
+                alt=""
+                src={salvar}
+                style={{
+                  margin: 10,
+                  height: 30,
+                  width: 30,
+                }}
+              ></img>
+            </button>
+            <button
+              title="CANCELAR JUSTIFICATIVA."
+              className={window.innerWidth < 426 ? 'red-button' : "animated-red-button"}
+              onClick={(e) => {
+                document.getElementById("divJustificativaRestart" + item.id).style.display = 'none';
+                e.stopPropagation()
+              }}
+            >
+              <img
+                alt=""
+                src={suspender}
+                style={{
+                  margin: 10,
+                  height: 30,
+                  width: 30,
+                }}
+              ></img>
+            </button>
+
+          </div>
+        </div>
+
         <div className="hide" id={"metodos + intervencao" + item.id}
           style={{ justifyContent: 'center', alignSelf: 'center', width: '100%', padding: 5 }}>
 
@@ -4541,7 +4648,7 @@ function AptPlanoTerapeutico() {
       loadOpcoesObjetivos();
     })
   }
-  
+
   const deleteOpcaoObjetivo = (item) => {
     axios.get(htmldeleteopcaoobjetivo + item.id).then(() => {
       toast(1, '#52be80', 'OBJETIVO EXCLUÍDO COM SUCESSO.', 3000);
@@ -4946,9 +5053,9 @@ function AptPlanoTerapeutico() {
           </div>
           <div id="metas"
             style={{
-              display: 'flex', flexDirection: 'column', 
+              display: 'flex', flexDirection: 'column',
               alignItems: 'center',
-              justifyContent: window.innerWidth < 426 ? 'flex-start' : 'center', 
+              justifyContent: window.innerWidth < 426 ? 'flex-start' : 'center',
               height: window.innerWidth < 426 ? '' : '80vh',
               width: window.innerWidth < 426 ? 'calc(100vw - 30px)' : '65vw',
               marginLeft: 5,
