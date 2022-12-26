@@ -1510,6 +1510,7 @@ function AptPlanoTerapeutico() {
     filtraScrollProfissionais(item.idobjetivo);
     setTimeout(() => {
       setselectedcategoria(item.idespecialidade);
+      document.getElementById('nova_meta').style.display = 'flex';
       setTimeout(() => {
         var botoes = document.getElementById("scrollobjetivos").getElementsByClassName("red-button-objetivos animationobjetivos");
         for (var i = 0; i < botoes.length; i++) {
@@ -2542,8 +2543,8 @@ function AptPlanoTerapeutico() {
                 }
                 axios.post(htmlupdateobjetivo + selectedobjetivosecundario.id, obj).then(() => {
                   setviewjustificaobjetivosecundario(0);
-                  /*
                   loadObjetivos();
+                  /*
                   if (statusobjetivo == 3) {
                     // modificando as metas associadas ao objetivo cancelado.
                     metas.filter(valor => valor.idobjetivo == selectedobjetivosecundario.idobjetivo).map(valor => updateMeta(valor, valor.prazo, 0, 4, valor.idprofissional, 'OBJETIVO CANCELADO OU NÃO ATINGIDO.', valor.checagem));
@@ -2757,6 +2758,7 @@ function AptPlanoTerapeutico() {
               paddingBottom: 15,
             }}
             onClick={() => {
+              document.getElementById('nova_meta').style.display = 'none';
               setselectedobjetivo(item.idobjetivo);
               setselectedobjetivosecundario(item);
               // FILTRA PROFISSÕES.
@@ -2791,13 +2793,24 @@ function AptPlanoTerapeutico() {
                 style={{ display: item.statusobjetivo == 1 ? 'flex' : 'none' }}
                 className={window.innerWidth < 426 ? 'yellow-button' : "animatedobj-yellow-button"}
                 onClick={(e) => {
-                  setselectedobjetivosecundario(item);
-                  setTimeout(() => {
-                    setstatusobjetivo(4);
-                    setselectedobjetivo(0);
-                    setviewjustificaobjetivosecundario(1);
-                  }, 500);
-                  e.stopPropagation();
+                  axios.get(htmlmetas + idatendimento).then((response) => {
+                    var x = [0, 1];
+                    x = response.data.rows;
+                    var check1 = x.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.idobjetivo == item.idobjetivo).length;
+                    var check2 = x.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.idobjetivo == item.idobjetivo && valor.status < 2).length;
+                    if (check1 == 0) {
+                      toast(1, '#ec7063', 'NÃO É POSSÍVEL FINALIZAR UM OBJETIVO SEM METAS.', 3000);
+                    } else if (check2 > 0) {
+                      toast(1, '#ec7063', 'NÃO É POSSÍVEL FINALIZAR UM OBJETIVO COM METAS ATIVAS.', 3000);
+                    } else {
+                      setselectedobjetivosecundario(item);
+                      setTimeout(() => {
+                        setselectedobjetivo(0);
+                        setstatusobjetivo(4);
+                        setviewjustificaobjetivosecundario(1);
+                      }, 500);
+                    }
+                  });
                 }}
               >
                 <img
@@ -2949,6 +2962,9 @@ function AptPlanoTerapeutico() {
               paddingBottom: 15,
             }}
             onClick={() => {
+              setTimeout(() => {
+                document.getElementById('nova_meta').style.display = 'none';
+              }, 1000);
               setselectedobjetivo(item.idobjetivo);
               setselectedobjetivosecundario(item);
               filtraScrollProfissionais(item.idobjetivo);
@@ -2982,13 +2998,24 @@ function AptPlanoTerapeutico() {
                 style={{ display: item.statusobjetivo == 1 ? 'flex' : 'none' }}
                 className={window.innerWidth < 426 ? 'yellow-button' : "animatedobj-yellow-button"}
                 onClick={(e) => {
-                  setselectedobjetivosecundario(item);
-                  setTimeout(() => {
-                    setstatusobjetivo(4);
-                    setselectedobjetivo(0);
-                    setviewjustificaobjetivosecundario(1);
-                  }, 500);
-                  e.stopPropagation();
+                  axios.get(htmlmetas + idatendimento).then((response) => {
+                    var x = [0, 1];
+                    x = response.data.rows;
+                    var check1 = x.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.idobjetivo == item.idobjetivo).length;
+                    var check2 = x.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.idobjetivo == item.idobjetivo && valor.status < 2).length;
+                    if (check1 == 0) {
+                      toast(1, '#ec7063', 'NÃO É POSSÍVEL FINALIZAR UM OBJETIVO SEM METAS.', 3000);
+                    } else if (check2 > 0) {
+                      toast(1, '#ec7063', 'NÃO É POSSÍVEL FINALIZAR UM OBJETIVO COM METAS ATIVAS.', 3000);
+                    } else {
+                      setselectedobjetivosecundario(item);
+                      setTimeout(() => {
+                        setselectedobjetivo(0);
+                        setstatusobjetivo(4);
+                        setviewjustificaobjetivosecundario(1);
+                      }, 500);
+                    }
+                  });
                 }}
               >
                 <img
@@ -3131,6 +3158,9 @@ function AptPlanoTerapeutico() {
               paddingBottom: 15,
             }}
             onClick={() => {
+              setTimeout(() => {
+                document.getElementById('nova_meta').style.display = 'none';
+              }, 1000);
               setselectedobjetivo(item.idobjetivo);
               setselectedobjetivosecundario(item);
               filtraScrollProfissionais(item.idobjetivo);
@@ -3159,7 +3189,9 @@ function AptPlanoTerapeutico() {
               paddingBottom: 15,
             }}
             onClick={() => {
-              setselectedobjetivo(item.idobjetivo);
+              setTimeout(() => {
+                document.getElementById('nova_meta').style.display = 'none';
+              }, 1000); setselectedobjetivo(item.idobjetivo);
               setselectedobjetivosecundario(item);
               filtraScrollProfissionais(item.idobjetivo);
               var botoes = document.getElementById("scrollobjetivos").getElementsByClassName("red-button-objetivos animationobjetivos");
@@ -3187,6 +3219,9 @@ function AptPlanoTerapeutico() {
               paddingBottom: 15,
             }}
             onClick={() => {
+              setTimeout(() => {
+                document.getElementById('nova_meta').style.display = 'none';
+              }, 1000);
               setselectedobjetivo(item.idobjetivo);
               setselectedobjetivosecundario(item);
               filtraScrollProfissionais(item.idobjetivo);
@@ -3340,6 +3375,7 @@ function AptPlanoTerapeutico() {
             {arraymetas.filter(valor => valor.idobjetivo == selectedobjetivo && valor.idplanoterapeutico == idplanoterapeutico && valor.idespecialidade == selectedcategoria).map(item => getMetas(item))}
             <button
               className="green-button"
+              id="nova_meta"
               onClick={() => setviewmeta(1)}
               style={{
                 // PENDÊNCIA PERMITIR INSERIR META POR CATEGORIA PROFISSIONAL LOGADA.
