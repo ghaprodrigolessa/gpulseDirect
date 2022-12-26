@@ -4,31 +4,19 @@ import axios from 'axios';
 import moment from 'moment';
 import 'moment/locale/pt-br';
 import Context from '../Context';
-import { Doughnut, Line } from 'react-chartjs-2'
+import { Doughnut } from 'react-chartjs-2'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 import deletar from '../images/deletar.svg';
 import suspender from '../images/suspender.svg';
-import editar from '../images/editar.svg';
-import salvar from '../images/salvar.svg';
-import settingsimg from '../images/settings.svg'
 import flag from '../images/flag.svg';
-import bell from '../images/bell.svg';
 import plano_ativo from '../images/plano_ativo.svg';
 import plano_cancelado from '../images/plano_cancelado.svg';
 import plano_fracassado from '../images/plano_fracassado.svg';
 import plano_validar from '../images/plano_validar.svg';
-import plano_checagem from '../images/plano_checar.svg';
 import plano_fail from '../images/plano_fail.svg';
 import refresh from '../images/refresh.svg';
 import restart from '../images/restart.svg';
-import trash from '../images/trash.svg';
-
-import novo from '../images/novo.svg';
-import foto from '../images/3x4.jpg'
-import copiar from '../images/copiar.svg';
 import Toast from './Toast';
-import LogoInverted from './LogoInverted';
-import EscalasAssistenciais from '../pages/EscalasAssistenciais';
 
 // import setaesquerda from '../images/arrowleft.svg';
 // import setadireita from '../images/arrowright.svg';
@@ -36,65 +24,17 @@ import EscalasAssistenciais from '../pages/EscalasAssistenciais';
 function ResumoAptPlanoTerapeutico() {
   // recuperando estados globais (Context.API).
   const {
-    nomeusuario,
     tipousuario,
-    boss_planoterapeutico_usuario,
-    idpaciente,
-    idatendimento, ivcf, setivcf,
-    listevolucoes,
+    idatendimento,
     planoterapeutico, setplanoterapeutico,
     linhadecuidado, setlinhadecuidado,
+    setdatainicioplanoterapeutico,
   } = useContext(Context)
 
-  var html = 'https://pulsarapp-server.herokuapp.com';
-
-  var htmlopcoeslinhasdecuidado = process.env.REACT_APP_API_CLONE_OPCOES_LINHAS_DE_CUIDADO;
   var htmllinhasdecuidado = process.env.REACT_APP_API_CLONE_LINHASDECUIDADO;
-  var htmlinsertlinhadecuidado = process.env.REACT_APP_API_CLONE_INSERTLINHADECUIDADO;
-  var htmlupdatelinhadecuidado = process.env.REACT_APP_API_CLONE_UPDATELINHADECUIDADO;
-  var htmldeletelinhadecuidado = process.env.REACT_APP_API_CLONE_DELETELINHADECUIDADO;
-
   var htmlplanosterapeuticos = process.env.REACT_APP_API_CLONE_PLANOSTERAPEUTICOS;
-  var htmlinsertplanoterapeutico = process.env.REACT_APP_API_CLONE_INSERTPLANOTERAPEUTICO;
-  var htmlupdateplanoterapeutico = process.env.REACT_APP_API_CLONE_UPDATEPLANOTERAPEUTICO;
-  var htmldeleteplanoterapeutico = process.env.REACT_APP_API_CLONE_DELETEPLANOTERAPEUTICO;
-
-  var htmlopcoesobjetivos = process.env.REACT_APP_API_CLONE_OPCOES_OBJETIVOS;
   var htmlobjetivos = process.env.REACT_APP_API_CLONE_OBJETIVOS;
-  var htmlinsertobjetivo = process.env.REACT_APP_API_CLONE_INSERTOBJETIVO;
-  var htmlupdateobjetivo = process.env.REACT_APP_API_CLONE_UPDATEOBJETIVO;
-  var htmldeleteobjetivo = process.env.REACT_APP_API_CLONE_DELETEOBJETIVO;
-
-  var htmlopcoesmetas = process.env.REACT_APP_API_CLONE_OPCOES_METAS;
   var htmlmetas = process.env.REACT_APP_API_CLONE_METAS;
-  var htmlinsertmeta = process.env.REACT_APP_API_CLONE_INSERTMETA;
-  var htmlupdatemeta = process.env.REACT_APP_API_CLONE_UPDATEMETA;
-  var htmldeletemeta = process.env.REACT_APP_API_CLONE_DELETEMETA;
-
-
-  // endpoints para a gestão do plano terapêutico (edição de opções).
-  var htmlinsertopcaolinhadecuidado = process.env.REACT_APP_API_CLONE_INSERTOPCAOLINHADECUIDADO;
-  var htmldeleteopcaolinhadecuidado = process.env.REACT_APP_API_CLONE_DELETEOPCAOLINHADECUIDADO;
-
-  var htmlinsertopcaoobjetivo = process.env.REACT_APP_API_CLONE_INSERTOPCAOOBJETIVO;
-  var htmldeleteopcaoobjetivo = process.env.REACT_APP_API_CLONE_DELETEOPCAOOBJETIVO;
-
-  var htmlinsertopcaometa = process.env.REACT_APP_API_CLONE_INSERTOPCAOMETA;
-  var htmldeleteopcaometa = process.env.REACT_APP_API_CLONE_DELETEOPCAOMETA;
-
-  var htmllistopcaometodo = process.env.REACT_APP_API_CLONE_LISTOPCAOMETODO;
-  var htmlinsertopcaometodo = process.env.REACT_APP_API_CLONE_INSERTOPCAOMETODO;
-  var htmldeleteopcaometodo = process.env.REACT_APP_API_CLONE_DELETEOPCAOMETODO;
-
-
-  var htmlopcoespropostasterapeuticas = process.env.REACT_APP_API_CLONE_OPCOES_PROPOSTASTERAPEUTICAS;
-  var htmlpropostasterapeuticas = process.env.REACT_APP_API_CLONE_PROPOSTASTERAPEUTICAS;
-  var htmlinsertpropostaterapeutica = process.env.REACT_APP_API_CLONE_INSERTPROPOSTATERAPEUTICA;
-  var htmlupdatepropostaterapeutica = process.env.REACT_APP_API_CLONE_UPDATEPROPOSTATERAPEUTICA;
-  var htmldeletepropostaterapeutica = process.env.REACT_APP_API_CLONE_DELETEPROPOSTATERAPEUTICA;
-
-  var htmlghapescalas = process.env.REACT_APP_API_CLONE_ESCALAS;
-  var htmlghapopcoesescalas = process.env.REACT_APP_API_CLONE_OPCOES_ESCALAS;
 
   const loadLinhasDeCuidado = () => {
     // alert('DISPAROU CARREGAMENTO LINHA DE CUIDADO')
@@ -115,10 +55,7 @@ function ResumoAptPlanoTerapeutico() {
   }
 
   // carregando planos terapêuticos, objetivos, metas e propostas terapêuticas (intervenções) para o atendimento.
-  const [lastplanoterapeutico, setlastplanoterapeutico] = useState([]);
   const [idplanoterapeutico, setidplanoterapeutico] = useState(0);
-  const [datainicioplanoterapeutico, setdatainicioplanoterapeutico] = useState('');
-  const [dataterminoplanoterapeutico, setdataterminoplanoterapeutico] = useState('');
   const [statusplanoterapeutico, setstatusplanoterapeutico] = useState(0);
   const loadPlanosTerapeuticos = () => {
     axios.get(htmlplanosterapeuticos + idatendimento).then((response) => {
@@ -128,7 +65,6 @@ function ResumoAptPlanoTerapeutico() {
       y = x.rows;
       setplanoterapeutico(x.rows.sort((a, b) => moment(a.datainicio) > moment(b.datainicio) ? 1 : -1));
       // carregando último plano terapêutico (ativo).
-      setlastplanoterapeutico(y.filter(item => item.datatermino == null).slice(-1)); // recuperando último registro de plano terapêutico.
       setidplanoterapeutico(y.filter(item => item.datatermino == null).slice(-1).map(item => item.id).pop()); // recuperando a id do último plano terapêutico.
       // alert('LAST ID: ' + idplanoterapeutico);
       setdatainicioplanoterapeutico(y.filter(item => item.datatermino == null).slice(-1).map(item => moment(item.datainicio).format('DD/MM/YY'))); // recuperando a data de início do último plano terapêutico.
@@ -136,22 +72,18 @@ function ResumoAptPlanoTerapeutico() {
     });
   }
   const [objetivos, setobjetivos] = useState([]);
-  const [arrayobjetivos, setarrayobjetivos] = useState([]);
   const loadObjetivos = () => {
     axios.get(htmlobjetivos + idatendimento).then((response) => {
       var x = [0, 1];
       x = response.data;
       setobjetivos(x.rows);
-      setarrayobjetivos(x.rows);
     });
   }
-  const [metas, setmetas] = useState([]);
   const [arraymetas, setarraymetas] = useState([]);
   const loadMetas = () => {
     axios.get(htmlmetas + idatendimento).then((response) => {
       var x = [0, 1];
       x = response.data;
-      setmetas(x.rows);
       setarraymetas(x.rows);
     });
   }
@@ -165,9 +97,6 @@ function ResumoAptPlanoTerapeutico() {
     )
   }
 
-  const [tiposescalas, settiposescalas] = useState([]);
-  const [escalas, setescalas] = useState([]);
-  const [selectedobjetivo, setselectedobjetivo] = useState(0);
   useEffect(() => {
     // linhas de cuidado.
     loadLinhasDeCuidado();
@@ -176,20 +105,10 @@ function ResumoAptPlanoTerapeutico() {
     // objetivos e metas.
     loadObjetivos();
     loadMetas();
+    // eslint-disable-next-line
   }, []);
 
   // PLANOS TERAPÊUTICOS.
-  // selecionando um plano terapêutico da lista de planos terapêuticos.
-  const selectPlanoTerapeutico = (item) => {
-    setidplanoterapeutico(item.id);
-    // alert(idplanoterapeutico);
-    // setlinhadecuidado(item.linhadecuidados);
-    setdatainicioplanoterapeutico(moment(item.datainicio).format('DD/MM/YY'));
-    setdataterminoplanoterapeutico(moment(item.datatermino).format('DD/MM/YY'));
-    setstatusplanoterapeutico(item.status);
-    loadObjetivos();
-    loadMetas();
-  }
 
   // lista de planos terapêuticos relativos ao paciente em atendimento (histórico).
   function ListaDePlanosTerapeuticos() {
@@ -241,7 +160,6 @@ function ResumoAptPlanoTerapeutico() {
   // 8 = médico, 4 = enfermeiro, 5 = fisioterapeuta, 6 = fono, 11 = to, 10 = psicólogo, 1 = assistente social,
 
   // exibição de objetivos primários e secundários.
-  const [selectedobjetivoprimario, setselectedobjetivoprimario] = useState([]);
   function ObjetivosPrimarios() {
     return (
       <div className="scroll" id="OBJETIVOS PRIMÁRIOS"
@@ -288,7 +206,6 @@ function ResumoAptPlanoTerapeutico() {
   }
 
   // objetivos secundários.
-  const [selectedobjetivosecundario, setselectedobjetivosecundario] = useState([]);
   const ScrollObjetivos = useCallback(() => {
     return (
       <div id="scrollobjetivos" className="scroll"
@@ -434,15 +351,13 @@ function ResumoAptPlanoTerapeutico() {
     { id: 9, nome: 'NUTRIÇÃO CLÍNICA', cor: 'grey' },
   ]
 
-  const [arraycategoriaprofissional, setarraycategoriaprofissional] = useState(listcategoriaprofissional);
-
-  const [selectedcategoria, setselectedcategoria] = useState(0);
-
-  const [listescalas, setlistescalas] = useState([]);
-  const [listopcoesmetodos, setlistopcoesmetodos] = useState([]);
-  const [listopcoesmetodospt, setlistopcoesmetodospt] = useState([]);
-  const [opcoesescalas, setopcoesescalas] = useState([]);
-  const [viewsuspendermeta, setviewsuspendermeta] = useState(0);
+  const [arraycategoriaprofissional] = useState(listcategoriaprofissional);
+  const [selectedcategoria] = useState(0);
+  const [listescalas] = useState([]);
+  const [listopcoesmetodos] = useState([]);
+  const [listopcoesmetodospt] = useState([]);
+  const [opcoesescalas] = useState([]);
+  const [viewsuspendermeta] = useState(0);
   const MetodosAndMetas = useCallback(() => {
     return (
       <div
@@ -472,14 +387,13 @@ function ResumoAptPlanoTerapeutico() {
         </div>
       </div>
     )
-  }, [objetivos, selectedobjetivo, selectedobjetivosecundario, selectedcategoria, arraymetas, listopcoesmetodos, listopcoesmetodospt, listescalas, opcoesescalas, viewsuspendermeta]);
+    // eslint-disable-next-line
+  }, [objetivos, selectedcategoria, arraymetas, listopcoesmetodos, listopcoesmetodospt, listescalas, opcoesescalas, viewsuspendermeta]);
 
   const arrayprofissionais = [];
 
   var timeout = null;
   // gráfico que exibe o tempo decorrido entre o início da meta e seu prazo.
-  const [selected_meta, setselected_meta] = useState([]);
-  const [selected_intervencao, setselected_intervencao] = useState([]);
   var dataChartMetas = [];
   const getMetas = (item) => {
     var prazo = moment(item.dataestimada).startOf('day').diff(moment(item.datainicio).startOf('day'), 'days');
@@ -538,11 +452,6 @@ function ResumoAptPlanoTerapeutico() {
             </div>
             <div id="identificador da especialidade" // 1 = médico, 2 = enfermeiro, 3 = fisioterapeuta, 4 = fonoaudiólogo, 5 = terapeuta ocupacional, 6 = psicólogo, 7 = assistente social.
               className="blue-button"
-              title="CLIQUE PARA DELEGAR UM COLABORADOR PARA A META."
-              onClick={() => {
-                setselected_meta(item);
-                // setviewprofissionalselector(1);
-              }}
               style={{
                 position: 'relative',
                 padding: 10,
@@ -803,6 +712,7 @@ function ResumoAptPlanoTerapeutico() {
                   item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -1 ? 'VENCIDA' :
                     item.status == 3 ? 'CANCELADA' : item.status == 4 ? 'META NÃO CUMPRIDA.' : ''}>
               <img
+                alt=""
                 className={item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 1 ? "pulsarplanoterapeutico" : ''}
                 src={
                   item.status == 0 ? plano_validar :
@@ -990,22 +900,6 @@ function ResumoAptPlanoTerapeutico() {
         </div>
       </div>
     )
-  }
-
-  // exibição de escalas para mensuração de desempenho, por categoria profissional.
-  var effectColors = {
-    highlight: 'rgba(255, 255, 255, 0.75)',
-    shadow: 'rgba(0, 0, 0, 0.5)',
-    glow: 'rgb(255, 255, 0)'
-  };
-
-  // carregando as opções de escalas.
-  const loadOpcoesEscalas = () => {
-    axios.get(htmlghapopcoesescalas).then((response) => {
-      var x = [];
-      x = response.data;
-      setopcoesescalas(x.rows);
-    })
   }
 
   // função para construção dos toasts.

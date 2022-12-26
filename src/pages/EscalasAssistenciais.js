@@ -1,3 +1,6 @@
+/* eslint-disable */
+/* eslint eqeqeq: "off" */
+/* eslint react-hooks/exhaustive-deps: "off" */
 import React, { useState, useContext, useCallback } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
@@ -129,6 +132,7 @@ function EscalasAssistenciais() {
                 <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center' }}>PERCEPÇÃO SENSORIAL:</div>
                 <button
                   id="btnBraden11"
+                  // eslint-disable-next-line
                   onClick={() => { percepcao = 1; setActive("BRADEN1", "btnBraden11") }}
                   className="blue-button"
                   style={{ width: 150, padding: 10 }}>
@@ -136,6 +140,7 @@ function EscalasAssistenciais() {
                 </button>
                 <button
                   id="btnBraden12"
+                  // eslint-disable-next-line
                   onClick={() => { percepcao = 2; setActive("BRADEN1", "btnBraden12") }}
                   className="blue-button"
                   style={{ width: 150, padding: 10 }}>
@@ -143,6 +148,7 @@ function EscalasAssistenciais() {
                 </button>
                 <button
                   id="btnBraden13"
+                  // eslint-disable-next-line
                   onClick={() => { percepcao = 3; setActive("BRADEN1", "btnBraden13") }}
                   className="blue-button"
                   style={{ width: 150, padding: 10 }}>
@@ -150,6 +156,7 @@ function EscalasAssistenciais() {
                 </button>
                 <button
                   id="btnBraden14"
+                  // eslint-disable-next-line
                   onClick={() => { percepcao = 4; setActive("BRADEN1", "btnBraden14") }}
                   className="blue-button"
                   style={{ width: 150, padding: 10 }}>
@@ -162,6 +169,7 @@ function EscalasAssistenciais() {
                 <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>UMIDADE:</div>
                 <button
                   id="btnBraden21"
+                  // eslint-disable-next-line
                   onClick={() => { umidade = 1; setActive("BRADEN2", "btnBraden21") }}
                   className="blue-button"
                   style={{ width: 150, padding: 10 }}>
@@ -169,6 +177,7 @@ function EscalasAssistenciais() {
                 </button>
                 <button
                   id="btnBraden22"
+                  // eslint-disable-next-line
                   onClick={() => { umidade = 2; setActive("BRADEN2", "btnBraden22") }}
                   className="blue-button"
                   style={{ width: 150, padding: 10 }}>
@@ -176,6 +185,7 @@ function EscalasAssistenciais() {
                 </button>
                 <button
                   id="btnBraden23"
+                  // eslint-disable-next-line
                   onClick={() => { umidade = 3; setActive("BRADEN2", "btnBraden23") }}
                   className="blue-button"
                   style={{ width: 150, padding: 10 }}>
@@ -183,6 +193,7 @@ function EscalasAssistenciais() {
                 </button>
                 <button
                   id="btnBraden24"
+                  // eslint-disable-next-line
                   onClick={() => { umidade = 4; setActive("BRADEN2", "btnBraden24") }}
                   className="blue-button"
                   style={{ width: 150, padding: 10 }}>
@@ -195,6 +206,7 @@ function EscalasAssistenciais() {
                 <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>ATIVIDADE:</div>
                 <button
                   id="btnBraden31"
+                  // eslint-disable-next-line
                   onClick={() => { atividade = 1; setActive("BRADEN3", "btnBraden31") }}
                   className="blue-button"
                   style={{ width: 150, padding: 10 }}>
@@ -202,6 +214,7 @@ function EscalasAssistenciais() {
                 </button>
                 <button
                   id="btnBraden32"
+                  // eslint-disable-next-line
                   onClick={() => { atividade = 2; setActive("BRADEN3", "btnBraden32") }}
                   className="blue-button"
                   style={{ width: 150, padding: 10 }}>
@@ -209,6 +222,7 @@ function EscalasAssistenciais() {
                 </button>
                 <button
                   id="btnBraden33"
+                  // eslint-disable-next-line
                   onClick={() => { atividade = 3; setActive("BRADEN3", "btnBraden33") }}
                   className="blue-button"
                   style={{ width: 150, padding: 10 }}>
@@ -216,6 +230,7 @@ function EscalasAssistenciais() {
                 </button>
                 <button
                   id="btnBraden34"
+                  // eslint-disable-next-line
                   onClick={() => { atividade = 4; setActive("BRADEN3", "btnBraden34") }}
                   className="blue-button"
                   style={{ width: 150, padding: 10 }}>
@@ -228,6 +243,7 @@ function EscalasAssistenciais() {
                 <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>MOBILIDADE:</div>
                 <button
                   id="btnBraden41"
+                  // eslint-disable-next-line
                   onClick={() => { mobilidade = 1; setActive("BRADEN4", "btnBraden41") }}
                   className="blue-button"
                   style={{ width: 150, padding: 10 }}>
@@ -235,6 +251,7 @@ function EscalasAssistenciais() {
                 </button>
                 <button
                   id="btnBraden42"
+                  // eslint-disable-next-line
                   onClick={() => { mobilidade = 2; setActive("BRADEN4", "btnBraden42") }}
                   className="blue-button"
                   style={{ width: 150, padding: 10 }}>
@@ -242,6 +259,7 @@ function EscalasAssistenciais() {
                 </button>
                 <button
                   id="btnBraden43"
+                  // eslint-disable-next-line
                   onClick={() => { mobilidade = 3; setActive("BRADEN4", "btnBraden43") }}
                   className="blue-button"
                   style={{ width: 150, padding: 10 }}>
@@ -249,6 +267,7 @@ function EscalasAssistenciais() {
                 </button>
                 <button
                   id="btnBraden44"
+                  // eslint-disable-next-line
                   onClick={() => { mobilidade = 4; setActive("BRADEN4", "btnBraden44") }}
                   className="blue-button"
                   style={{ width: 150, padding: 10 }}>
@@ -261,6 +280,7 @@ function EscalasAssistenciais() {
                 <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>NUTRIÇÃO:</div>
                 <button
                   id="btnBraden51"
+                  // eslint-disable-next-line
                   onClick={() => { nutricao = 1; setActive("BRADEN5", "btnBraden51") }}
                   className="blue-button"
                   style={{ width: 150 }}>
@@ -268,6 +288,7 @@ function EscalasAssistenciais() {
                 </button>
                 <button
                   id="btnBraden52"
+                  // eslint-disable-next-line
                   onClick={() => { nutricao = 2; setActive("BRADEN5", "btnBraden52") }}
                   className="blue-button"
                   style={{ width: 150, padding: 10 }}>
@@ -275,6 +296,7 @@ function EscalasAssistenciais() {
                 </button>
                 <button
                   id="btnBraden53"
+                  // eslint-disable-next-line
                   onClick={() => { nutricao = 3; setActive("BRADEN5", "btnBraden53") }}
                   className="blue-button"
                   style={{ width: 150, padding: 10 }}>
@@ -282,6 +304,7 @@ function EscalasAssistenciais() {
                 </button>
                 <button
                   id="btnBraden54"
+                  // eslint-disable-next-line
                   onClick={() => { nutricao = 4; setActive("BRADEN5", "btnBraden54") }}
                   className="blue-button"
                   style={{ width: 150, padding: 10 }}>
@@ -294,6 +317,7 @@ function EscalasAssistenciais() {
                 <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>FRICÇÃO E CISALHAMENTO:</div>
                 <button
                   id="btnBraden61"
+                  // eslint-disable-next-line
                   onClick={() => { friccao = 1; setActive("BRADEN6", "btnBraden61") }}
                   className="blue-button"
                   style={{ width: 150, padding: 10 }}>
@@ -301,6 +325,7 @@ function EscalasAssistenciais() {
                 </button>
                 <button
                   id="btnBraden62"
+                  // eslint-disable-next-line
                   onClick={() => { friccao = 2; setActive("BRADEN6", "btnBraden62") }}
                   className="blue-button"
                   style={{ width: 150, padding: 10 }}>
@@ -308,6 +333,7 @@ function EscalasAssistenciais() {
                 </button>
                 <button
                   id="btnBraden63"
+                  // eslint-disable-next-line
                   onClick={() => { friccao = 3; setActive("BRADEN6", "btnBraden63") }}
                   className="blue-button"
                   style={{ width: 150, padding: 10 }}>

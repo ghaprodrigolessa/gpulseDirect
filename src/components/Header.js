@@ -1,6 +1,5 @@
 /* eslint eqeqeq: "off" */
 import React, { useContext } from 'react'
-import logo from '../images/newlogo.svg';
 import Logo from '../components/Logo'
 import logoff from '../images/power.svg'
 import back from '../images/back.svg'

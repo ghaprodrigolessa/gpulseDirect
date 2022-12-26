@@ -2,62 +2,62 @@
 import React, { useState, useContext } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
-import { Doughnut } from 'react-chartjs-2';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
-import call from '../images/call.svg';
 import moment from 'moment';
 import Header from '../components/Header';
 import Context from '../Context';
 import { useHistory } from "react-router-dom";
 
 function TodosPacientes() {
-  var html = 'https://pulsarapp-server.herokuapp.com';
-  var htmlleitos = process.env.REACT_APP_API_LEITOS;
-  var htmlatendimentos = process.env.REACT_APP_API_ATENDIMENTOS;
-  var htmlpacientes = process.env.REACT_APP_API_FILTRAPACIENTES;
   var htmlfiltrapacientenome = process.env.REACT_APP_API_FILTRAPACIENTESNOME;
   // recuperando estados globais (Context.API).
   const {
-    idusuario,
-    nomeusuario,
-    tipousuario,
-    especialidadeusuario,
-    idhospital,
-    nomehospital,
     setidunidade,
-    idunidade,
     setnomeunidade,
-    nomeunidade,
     setdatainternacao,
     setconvenio,
-    tipounidade,
     setidpaciente,
-    idpaciente,
-    idatendimento,
     setidatendimento,
     setdadospaciente,
-    dadospaciente,
-    todosleitos,
-    settodospacientes, todospacientes,
-    settodosatendimentos, todosatendimentos,
+    todospacientes,
+    todosatendimentos,
+    setopcoeslinhasdecuidado,
+    opcoeslinhasdecuidado,
   } = useContext(Context)
   // history (react-router-dom).
   let history = useHistory()
 
+  var htmlallplanosterapeuticos = process.env.REACT_APP_API_CLONE_ALLPLANOSTERAPEUTICOS;
+  const [allplanosterapeuticos, setallplanosterapeuticos] = useState([]);
+  const loadAllPlanosTerapeuticos = () => {
+    axios.get(htmlallplanosterapeuticos).then((response) => {
+      setallplanosterapeuticos(response.data.rows);
+    })
+  }
+
+  var htmlopcoeslinhasdecuidado = process.env.REACT_APP_API_CLONE_OPCOES_LINHAS_DE_CUIDADO
+  const loadOpcoesLinhasDeCuidado = () => {
+    axios.get(htmlopcoeslinhasdecuidado).then((response) => {
+      var x = [0, 1];
+      x = response.data;
+      setopcoeslinhasdecuidado(x.rows);
+      console.log(JSON.stringify(x.rows));
+      loadAllPlanosTerapeuticos();
+    });
+  }
+
   useEffect(() => {
-    // MountArrayPacientesEmAtendimento();
+    loadOpcoesLinhasDeCuidado();
+    // eslint-disable-next-line
   }, []);
 
   // lista de atendimentos (demais unidades de internação como enfermarias, ctis, etc.).
-  const [atendimentos, setatendimentos] = useState(todosatendimentos);
   const [arrayatendimentos, setarrayatendimentos] = useState(todosatendimentos);
 
   // cabeçalho da lista de pacientes (unidades de internação).
-  const [arrayatendimentosclassified, setarrayatendimentosclassified] = useState([]);
+  const [arrayatendimentosclassified, setarrayatendimentosclassified] = useState(todosatendimentos);
   const [classificaunidade, setclassificaunidade] = useState(1);
   const [classificabox, setclassificabox] = useState(0);
   const [classificanome, setclassificanome] = useState(0);
-  const [classificamif, setclassificamif] = useState(0);
   const [classificaidade, setclassificaidade] = useState(0);
   const [classificatempointernacao, setclassificatempointernacao] = useState(0);
   const [classificaassistente, setclassificaassistente] = useState(0);
@@ -74,7 +74,6 @@ function TodosPacientes() {
               // setclassificaunidade(1);
               setclassificabox(0);
               setclassificanome(0);
-              setclassificamif(0);
               setclassificaidade(0);
               setclassificatempointernacao(0);
               setclassificaassistente(0);
@@ -101,7 +100,6 @@ function TodosPacientes() {
               setclassificaunidade(0);
               // setclassificabox(0);
               setclassificanome(0);
-              setclassificamif(0);
               setclassificaidade(0);
               setclassificatempointernacao(0);
               setclassificaassistente(0);
@@ -127,7 +125,6 @@ function TodosPacientes() {
               setclassificaunidade(0);
               setclassificabox(0);
               // setclassificanome(0);
-              setclassificamif(0);
               setclassificaidade(0);
               setclassificatempointernacao(0);
               setclassificaassistente(0);
@@ -164,7 +161,6 @@ function TodosPacientes() {
               setclassificaunidade(0);
               setclassificabox(0);
               setclassificanome(0);
-              setclassificamif(0);
               setclassificaidade(0);
               // setclassificatempointernacao(0);
               setclassificaassistente(0);
@@ -190,7 +186,6 @@ function TodosPacientes() {
               setclassificaunidade(0);
               setclassificabox(0);
               setclassificanome(0);
-              setclassificamif(0);
               setclassificaidade(0);
               setclassificatempointernacao(0);
               setclassificaassistente(0);
@@ -225,7 +220,7 @@ function TodosPacientes() {
           className="scroll"
           style={{ height: '100%', alignContent: 'center' }}
         >
-          {arrayatendimentos.map((item) => (
+          {arrayatendimentosclassified.map((item) => (
             <div style={{
               display: 'flex', flexDirection: 'column', justifyContent: 'center',
               width: window.innerWidth > 425 ? '' : '90vw'
@@ -268,10 +263,6 @@ function TodosPacientes() {
                 <button
                   onClick={() => selectPaciente(item)}
                   className="blue-button"
-                  title={
-                    'STATUS: ' +
-                      item.linhadecuidado == 1 ? "PACIENTE CRÔNICO. CLIQUE PARA EVOLUIR." : item.linhadecuidado == 2 ? "PACIENTE EM CUIDADOS PALIATIVOS. CLIQUE PARA EVOLUIR." : item.status == 3 ? "PACIENTE EM REABILITAÇÃO. CLIQUE PARA EVOLUIR." : item.status == 4 ? "CONFORTO. CLIQUE PARA EVOLUIR." : "STATUS NÃO DEFINIDO. CLIQUE PARA EVOLUIR."
-                  }
                   style={{
                     width: '100%',
                     padding: 5, paddingLeft: 10,
@@ -282,33 +273,29 @@ function TodosPacientes() {
                   <div style={{
                     display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', textAlign: 'left',
                     width: window.innerWidth < 426 ? '80vw' : '100%',
+                    height: 50
                   }}>
-                    {item.nm_paciente}
-                  </div>
-                  <div style={{ display: 'flex', flexDirection: 'row' }}>
-                    <button
-                      className="red-button"
-                      style={{ display: window.innerWidth < 400 ? 'none' : 'flex', minWidth: 30, width: 30, minHeight: 30, height: 30 }}
-                      title="EVOLUÇÃO DO DIA.">
-                      E
-                    </button>
-                    <button
-                      className="red-button"
-                      style={{ display: window.innerWidth < 400 ? 'none' : 'flex', minWidth: 30, width: 30, minHeight: 30, height: 30 }}
-                      title="PRESCRIÇÃO DO DIA.">
-                      P
-                    </button>
-                    <button
-                      className="blue-button"
-                      style={{ display: window.innerWidth < 400 ? 'none' : 'flex', minWidth: 30, width: 30, minHeight: 30, height: 30 }}
-                      title="CLIQUE PARA MAIS CONTROLES."
-                      onClick={(e) => { document.getElementById("extras" + item.id).className = "expandpaciente"; e.stopPropagation() }}
-                    >
-                      +
-                    </button>
+                    <div style={{
+                      alignContent: 'center', alignSelf: 'center', marginRight: 10,
+                    }}>
+                      {item.nm_paciente}
+                    </div>
+                    <div id="tag linha de cuidado."
+                      className='blue-button'
+                      style={{
+                        display: allplanosterapeuticos.filter(valor => valor.idpct == item.cd_paciente).map(valor => opcoeslinhasdecuidado.filter(item => item.id == valor.linhadecuidados)).length > 0 ? 'flex' : 'none',
+                        minHeight: 45, height: 45, alignSelf: 'flex-end', paddingLeft: 10, paddingRight: 10,
+                        backgroundColor:
+                          allplanosterapeuticos.filter(valor => valor.idpct == item.cd_paciente).map(valor => valor.linhadecuidados) == 1 ? '#52be80' :
+                            allplanosterapeuticos.filter(valor => valor.idpct == item.cd_paciente).map(valor => valor.linhadecuidados) == 2 ? '#f5b041' :
+                              '#52dade'
+                      }}>
+                      {
+                        allplanosterapeuticos.filter(valor => valor.idpct == item.cd_paciente).map(valor => opcoeslinhasdecuidado.filter(item => item.id == valor.linhadecuidados).map(item => item.linhadecuidado))
+                      }
+                    </div>
                   </div>
                 </button>
-
                 <button
                   className="rowitem"
                   style={{
@@ -342,8 +329,9 @@ function TodosPacientes() {
                   </div>
                 </button>
               </div>
-            </div>
-          ))}
+            </div >
+          ))
+          }
           <div id="atendimentos encerrados"
             style={{
               display: atendimentosencerrados.length > 0 ? 'flex' : 'none',
@@ -408,7 +396,6 @@ function TodosPacientes() {
                   >
                     {moment(item.dt_hr_atendimento).format('DD/MM/YY')}
                   </button>
-
                   <button
                     className="grey-button"
                     style={{ minWidth: 100, margin: 2.5, color: '#ffffff', backgroundColor: 'grey' }}
@@ -417,13 +404,11 @@ function TodosPacientes() {
                   >
                     {moment(item.dt_hr_alta).format('DD/MM/YY')}
                   </button>
-
                 </div>
-
               </div>
             ))}
           </div>
-        </div>
+        </div >
       );
     } else {
       return (
@@ -486,14 +471,6 @@ function TodosPacientes() {
         onFocus={(e) => (e.target.placeholder = '')}
         onBlur={(e) => (e.target.placeholder = 'BUSCAR...')}
         onChange={() => filterPaciente()}
-        /*
-        onKeyUp={() => {
-          clearTimeout(timeout);
-          timeout = setTimeout(() => {
-            loadPacientePorNome(document.getElementById("inputFilterPaciente").value);
-          }, 3000);
-        }}
-        */
         style={{
           width: '60vw',
           padding: 20,
@@ -509,9 +486,9 @@ function TodosPacientes() {
     )
   }
 
+  // eslint-disable-next-line
   const [filterpaciente, setfilterpaciente] = useState('');
   var searchpaciente = '';
-  var searchatendimento = '';
   var timeout = null;
 
   const filterPaciente = () => {
@@ -521,6 +498,7 @@ function TodosPacientes() {
     timeout = setTimeout(() => {
       if (searchpaciente == '') {
         setarrayatendimentos(todosatendimentos);
+        setarrayatendimentosclassified(todosatendimentos);
         document.getElementById("inputFilterPaciente").value = '';
         document.getElementById("inputFilterPaciente").focus();
       } else {
@@ -537,25 +515,30 @@ function TodosPacientes() {
         // filtrando pelo nome do paciente.
         if (pegapelonome != '' && pegaidpelobox == '' && pegaidpeloassistente == '') {
           setarrayatendimentos(todosatendimentos.filter(item => item.nm_paciente.includes(searchpaciente)));
+          setarrayatendimentosclassified(todosatendimentos.filter(item => item.nm_paciente.includes(searchpaciente)));
           loadPacientePorNome(searchpaciente);
           // filtrando pelo box/leito do paciente.
         } else if (pegapelonome == '' && pegaidpelobox != '' && pegaidpeloassistente == '') {
           setarrayatendimentos(todosatendimentos.filter(item => item.Leito.descricao.includes(searchpaciente)));
+          setarrayatendimentosclassified(todosatendimentos.filter(item => item.Leito.descricao.includes(searchpaciente)));
           // filtrando pelo prestador.
         } else if (pegapelonome == '' && pegaidpelobox == '' && pegaidpeloassistente != '') {
           setarrayatendimentos(todosatendimentos.filter(item => item.nm_prestador.includes(searchpaciente)));
-        } else { setarrayatendimentos([]) }
-
-        document.getElementById("inputFilterPaciente").value = searchpaciente;
-        document.getElementById("inputFilterPaciente").focus();
-
+          setarrayatendimentosclassified(todosatendimentos.filter(item => item.nm_prestador.includes(searchpaciente)));
+        } else {
+          setarrayatendimentos([]);
+          setarrayatendimentosclassified([]);
+          document.getElementById("inputFilterPaciente").value = searchpaciente;
+          document.getElementById("inputFilterPaciente").focus();
+        }
+        // document.getElementById("inputFilterPaciente").value = searchpaciente;
+        // document.getElementById("inputFilterPaciente").focus();
       }
     }, 500);
   }
 
   var htmlhistoricodeatendimentos = process.env.REACT_APP_API_HISTORICODEATENDIMENTOS;
   // filtrando atendimentos de pacientes fora do atendimento atual.
-  const [codigopaciente, setcodigopaciente] = useState([]);
   const [listapacientespornome, setlistapacientespornome] = useState([]);
   const [atendimentosencerrados, setatendimentosencerrados] = useState([]);
   const loadPacientePorNome = (nome) => {
@@ -574,7 +557,9 @@ function TodosPacientes() {
     axios.get(htmlhistoricodeatendimentos + codigo).then((response) => {
       var x = [0, 1]
       x = response.data;
-      setatendimentosencerrados(x.filter(item => item.dt_hr_alta != null));
+      setatendimentosencerrados(x.filter(item => item.dt_hr_alta == null)); // PENDÊNCIA! trocar aqui para !=
+      document.getElementById("inputFilterPaciente").value = searchpaciente;
+      document.getElementById("inputFilterPaciente").focus();
     });
   }
 

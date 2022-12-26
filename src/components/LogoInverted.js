@@ -1,3 +1,4 @@
+/* eslint eqeqeq: "off" */
 import React, { useState, useEffect, useContext } from 'react';
 import Context from '../Context';
 

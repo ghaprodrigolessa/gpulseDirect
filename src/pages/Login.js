@@ -3,7 +3,6 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import { useEffect, useContext } from 'react'
 import Logo from '../components/Logo'
-import LogoInverted from '../components/LogoInverted'
 import ghap from '../images/ghapmarca.png'
 import Toast from '../components/Toast'
 import { useHistory } from 'react-router-dom'
@@ -11,7 +10,6 @@ import Context from '../Context'
 
 
 function Login() {
-  var html = 'https://pulsarapp-server.herokuapp.com';
   var htmlogin = process.env.REACT_APP_API_LOGIN;
 
   // recuperando estados globais (Context.API).
@@ -19,25 +17,19 @@ function Login() {
     idhospital, setidhospital,
     nomehospital, setnomehospital,
     setstateprontuario,
-    setpersonas, personas,
-    setiduser, iduser,
-    setidusuario, idusuario,
+    setpersonas,
+    setiduser,
+    setidusuario,
     setnomeusuario,
     nomeusuario,
-    tipousuario,
     settipousuario, // 8 = médico, etc...
-    categoriausuario,
-    boss_settings_usuario, setboss_settings_usuario,
+    setboss_settings_usuario,
     boss_planoterapeutico_usuario, setboss_planoterapeutico_usuario,
     setcategoriausuario,
-    setespecialidadeusuario, especialidadeusuario,
-    setconselhousuario, conselhousuario,
-    settodosatendimentos, todosatendimentos,
+    setespecialidadeusuario,
+    setconselhousuario,
+    settodosatendimentos,
     settodospacientes,
-
-    // cid 10.
-    listcid, setlistcid,
-    arraylistcid, setarraylistcid,
   } = useContext(Context)
   // history (react-router-dom).
   let history = useHistory()
@@ -93,12 +85,9 @@ function Login() {
     setidhospital(0);
     setnomehospital('');
     setlistahospitais([]);
-
-    // cid 10.
-    // getCid();
-
     document.getElementById('inputUsuario').value = ''
     document.getElementById('inputSenha').value = ''
+    // eslint-disable-next-line
   }, [])
 
   const loadUsers = () => {
@@ -134,13 +123,10 @@ function Login() {
 
   var htmllistpersonas = process.env.REACT_APP_API_CLONE_LISTPERSONAS;
   var htmlinsertpersona = process.env.REACT_APP_API_CLONE_INSERTPERSONA;
-  var htmlupdatepersona = process.env.REACT_APP_API_CLONE_UPDATEPERSONA;
-
+  
   // const [token, settoken] = useState("");
   var token = '';
-  var tokinho = "";
 
-  const [logged, setlogged] = useState(0);
   const getUserData = (token) => {
     usuario = document.getElementById('inputUsuario').value
     axios
@@ -184,7 +170,6 @@ function Login() {
           setespecialidadeusuario(j.filter(item => item.idusuario == x.id).map(item => item.especialidadeusuario));
           setboss_settings_usuario(parseInt(j.filter(item => item.idusuario == x.id).map(item => item.boss_settings).pop()));
           setboss_planoterapeutico_usuario(parseInt(j.filter(item => item.idusuario == x.id).map(item => item.boss_planoterapeutico).pop()));
-          setlogged(j.filter(item => item.idusuario == x.id).map(item => item.logged));
           setconselhousuario(j.filter(item => item.idusuario == x.id).map(item => item.registro));
           // alert(j.filter(item => item.idusuario == x.id).map(item => item.boss_planoterapeutico));
           if (j.filter(item => item.idusuario == x.id).length < 1) { // usuário MV não é cadastrado no Pulse.
@@ -221,38 +206,6 @@ function Login() {
       })
   }
 
-  // atualizando cadastro de usuário MV no Pulse (single sign-on).
-  const updatePersonaLogin = (item) => {
-    var obj = {
-      idusuario: item.map(valor => valor.idusuario).pop(),
-      nomeusuario: item.map(valor => valor.nomeusuario).pop(),
-      tipousuario: parseInt(item.map(valor => valor.tipousuario).pop()),
-      categoriausuario: item.map(valor => valor.categoriausuario).pop(),
-      especialidadeusuario: item.map(valor => valor.especialidadeusuario).pop(),
-      boss_planoterapeutico: parseInt(item.map(valor => valor.boss_planoterapeutico).pop()),
-      boss_settings: parseInt(item.map(valor => valor.boss_settings).pop()),
-      logged: 1,
-    }
-    // alert(JSON.stringify(obj));
-    axios.post(htmlupdatepersona + item.map(valor => valor.id).pop(), obj);
-  }
-
-  const updatePersonaLogout = () => {
-    var obj = {
-      idusuario: idusuario,
-      nomeusuario: nomeusuario,
-      tipousuario: tipousuario,
-      categoriausuario: categoriausuario,
-      especialidadeusuario: especialidadeusuario,
-      boss_planoterapeutico: boss_planoterapeutico_usuario,
-      boss_settings: boss_settings_usuario,
-      logged: 0,
-    }
-    var personaid = personas.filter(item => item.idusuario == idusuario).map(item => item.id).pop();
-    // alert(JSON.stringify(obj));
-    axios.post(htmlupdatepersona + personaid, obj);
-  }
-
   const setSenha = () => {
     clearTimeout(timeout);
     timeout = setTimeout(() => {
@@ -268,14 +221,8 @@ function Login() {
         .post(htmlogin + "/sessions", obj)
         .then((response) => {
           token = response.data.token;
-          tokinho = response.data.token;
-          // alert(tokinho);
-          const encodedPayload = tokinho.split(".")[1];
+          const encodedPayload = token.split(".")[1];
           const decodedPayload = JSON.parse(atob(encodedPayload));
-          // alert(JSON.stringify(decodedPayload));
-
-          // modo automático (estilo...);
-          // toast(1, "#52be80", 'LOGIN REALIZADO.', 1000);
           getUserData(token);
         })
       /*

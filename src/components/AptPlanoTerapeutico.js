@@ -1,4 +1,6 @@
 /* eslint eqeqeq: "off" */
+/* eslint array-callback-return: "off" */
+/* eslint no-redeclare: "off" */
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import moment from 'moment';
@@ -8,7 +10,6 @@ import { Doughnut, Line } from 'react-chartjs-2'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 import deletar from '../images/deletar.svg';
 import suspender from '../images/suspender.svg';
-import editar from '../images/editar.svg';
 import salvar from '../images/salvar.svg';
 import settingsimg from '../images/settings.svg'
 import flag from '../images/flag.svg';
@@ -17,7 +18,6 @@ import plano_ativo from '../images/plano_ativo.svg';
 import plano_cancelado from '../images/plano_cancelado.svg';
 import plano_fracassado from '../images/plano_fracassado.svg';
 import plano_validar from '../images/plano_validar.svg';
-import plano_checagem from '../images/plano_checar.svg';
 import plano_fail from '../images/plano_fail.svg';
 import refresh from '../images/refresh.svg';
 import restart from '../images/restart.svg';
@@ -28,11 +28,8 @@ import emojineutral from '../images/emojineutral.svg';
 import emojisad from '../images/emojisad.svg';
 
 import novo from '../images/novo.svg';
-import foto from '../images/3x4.jpg'
-import copiar from '../images/copiar.svg';
 import Toast from '../components/Toast';
 import LogoInverted from '../components/LogoInverted';
-import EscalasAssistenciais from '../pages/EscalasAssistenciais';
 
 // import setaesquerda from '../images/arrowleft.svg';
 // import setadireita from '../images/arrowright.svg';
@@ -40,18 +37,16 @@ import EscalasAssistenciais from '../pages/EscalasAssistenciais';
 function AptPlanoTerapeutico() {
   // recuperando estados globais (Context.API).
   const {
-    nomeusuario,
     tipousuario,
     boss_planoterapeutico_usuario,
     idpaciente,
-    idatendimento, ivcf, setivcf,
+    idatendimento, ivcf,
     listevolucoes,
     planoterapeutico, setplanoterapeutico,
     linhadecuidado, setlinhadecuidado,
-    linhadecuidadoatual, setlinhadecuidadoatual,
-    opcoeslinhasdecuidado, setopcoeslinhasdecuidado,
-    setstateprontuario,
-    showescala, setshowescala,
+    setlinhadecuidadoatual,
+    opcoeslinhasdecuidado,
+    setshowescala,
     listescalas, setlistescalas,
 
     datainicioplanoterapeutico, setdatainicioplanoterapeutico,
@@ -80,13 +75,11 @@ function AptPlanoTerapeutico() {
   var htmllinhasdecuidado = process.env.REACT_APP_API_CLONE_LINHASDECUIDADO;
   var htmlinsertlinhadecuidado = process.env.REACT_APP_API_CLONE_INSERTLINHADECUIDADO;
   var htmlupdatelinhadecuidado = process.env.REACT_APP_API_CLONE_UPDATELINHADECUIDADO;
-  var htmldeletelinhadecuidado = process.env.REACT_APP_API_CLONE_DELETELINHADECUIDADO;
-
+  
   var htmlplanosterapeuticos = process.env.REACT_APP_API_CLONE_PLANOSTERAPEUTICOS;
   var htmlinsertplanoterapeutico = process.env.REACT_APP_API_CLONE_INSERTPLANOTERAPEUTICO;
   var htmlupdateplanoterapeutico = process.env.REACT_APP_API_CLONE_UPDATEPLANOTERAPEUTICO;
-  var htmldeleteplanoterapeutico = process.env.REACT_APP_API_CLONE_DELETEPLANOTERAPEUTICO;
-
+  
   var htmlopcoesobjetivos = process.env.REACT_APP_API_CLONE_OPCOES_OBJETIVOS;
   var htmlobjetivos = process.env.REACT_APP_API_CLONE_OBJETIVOS;
   var htmlinsertobjetivo = process.env.REACT_APP_API_CLONE_INSERTOBJETIVO;
@@ -115,12 +108,8 @@ function AptPlanoTerapeutico() {
   var htmldeleteopcaometodo = process.env.REACT_APP_API_CLONE_DELETEOPCAOMETODO;
 
 
-  var htmlopcoespropostasterapeuticas = process.env.REACT_APP_API_CLONE_OPCOES_PROPOSTASTERAPEUTICAS;
   var htmlpropostasterapeuticas = process.env.REACT_APP_API_CLONE_PROPOSTASTERAPEUTICAS;
-  var htmlinsertpropostaterapeutica = process.env.REACT_APP_API_CLONE_INSERTPROPOSTATERAPEUTICA;
-  var htmlupdatepropostaterapeutica = process.env.REACT_APP_API_CLONE_UPDATEPROPOSTATERAPEUTICA;
-  var htmldeletepropostaterapeutica = process.env.REACT_APP_API_CLONE_DELETEPROPOSTATERAPEUTICA;
-
+  
   var htmlghapescalas = process.env.REACT_APP_API_CLONE_ESCALAS;
   var htmlghapopcoesescalas = process.env.REACT_APP_API_CLONE_OPCOES_ESCALAS;
 
@@ -141,13 +130,11 @@ function AptPlanoTerapeutico() {
     });
   }
 
-  const [arrayobjetivos, setarrayobjetivos] = useState([]);
   const loadObjetivos = () => {
     axios.get(htmlobjetivos + idatendimento).then((response) => {
       var x = [0, 1];
       x = response.data;
       setobjetivos(x.rows);
-      setarrayobjetivos(x.rows);
     });
   }
   const [arraymetas, setarraymetas] = useState([]);
@@ -160,16 +147,7 @@ function AptPlanoTerapeutico() {
       setbusy(0);
     });
   }
-  const [intervencoes, setintervencoes] = useState([]);
-  const loadIntervencoes = () => {
-    axios.get(htmlpropostasterapeuticas + idatendimento).then((response) => {
-      var x = [0, 1];
-      x = response.data;
-      setintervencoes(x.rows);
-      // alert(response.data.rows.map(item => item.idmeta));
-    });
-  }
-
+  
   // carregando opções de objetivos, metas e intervenções (propostas terapêuticas).
   const [arrayopcoesobjetivos, setarrayopcoesobjetivos] = useState([]);
   const loadOpcoesObjetivos = () => {
@@ -189,17 +167,7 @@ function AptPlanoTerapeutico() {
       setarrayopcoesmetas(x.rows);
     });
   }
-  const [opcoesintervencoes, setopcoesintervencoes] = useState([]);
-  const [arrayopcoesintervencoes, setarrayopcoesintervencoes] = useState([]);
-  const loadOpcoesIntervencoes = () => {
-    axios.get(htmlopcoespropostasterapeuticas).then((response) => {
-      var x = [0, 1];
-      x = response.data;
-      setopcoesintervencoes(x.rows);
-      setarrayopcoesintervencoes(x.rows);
-    });
-  }
-
+  
   // tela ocupado.
   const [busy, setbusy] = useState(0);
   function Busy() {
@@ -227,9 +195,9 @@ function AptPlanoTerapeutico() {
   // crud para planos terapêuticos, objetivos e metas.
   // PLANO TERAPÊUTICO.
   // inserir plano terapêutico.
-  const [moraes, setmoraes] = useState(0);
-  const [decliniofuncional, setdecliniofuncional] = useState(0);
-  const [riscofuncional, setriscofuncional] = useState(0);
+  const [moraes] = useState(0);
+  const [decliniofuncional] = useState(0);
+  const [riscofuncional] = useState(0);
   const insertPlanoTerapeutico = () => {
     if (planoterapeutico.filter(item => item.datatermino == null).length > 0) {
       toast(1, '#ec7063', 'EXISTE UM PLANO TERAPÊUTICO ATIVO. FINALIZE-O PARA CRIAR UM NOVO PLANO TERAPÊUTICO.', 5000);
@@ -431,16 +399,9 @@ function AptPlanoTerapeutico() {
     }
   }
 
-  // deletar plano terapêutico.
-  const deletePlanoTerapeutico = (item) => {
-    axios.get(htmldeleteplanoterapeutico + item.id).then(() => {
-      loadPlanosTerapeuticos();
-    });
-  }
-
   // OBJETIVOS.
   // inserir objetivo.
-  const [idobjetivo, setidobjetivo] = useState(0);
+  const [idobjetivo] = useState(0);
   const insertObjetivo = (idobjetivo, objetivo, tipo, escala, dimensao) => {
     // alert(idobjetivo + ' - ' + objetivo + ' - ' + tipo + ' - ' + escala);
     if (objetivos.filter(item => item.datatermino == null && item.idobjetivo == idobjetivo).length > 0) {
@@ -779,7 +740,7 @@ function AptPlanoTerapeutico() {
                       key={item.id}
                       id="item da lista"
                       className="blue-button"
-                      onClick={() => updateIntervencao(selected_intervencao, selected_intervencao.frequencia, selected_intervencao.local, 0)}
+                      // onClick={() => updateIntervencao(selected_intervencao, selected_intervencao.frequencia, selected_intervencao.local, 0)}
                     >
                       <div style={{ padding: 5 }}>{item.nome}</div>
                     </div>
@@ -793,84 +754,7 @@ function AptPlanoTerapeutico() {
       </div>
     )
   }
-
-  // PROPOSTAS TERAPÊUTICAS / INTERVENÇÕES.
-  // inserir intervenções.
-  const insertIntervencao = (item) => {
-    if (intervencoes.filter(item => item.datatermino != null && item.idmeta == idmeta).length > 0) {
-      toast(1, '#ec7063', 'INTERVENÇÃO JÁ CADASTRADA.', 5000);
-    } else {
-      var obj = {
-        idpct: idpaciente,
-        idatendimento: idatendimento,
-        idplanoterapeutico: idplanoterapeutico,
-        idobjetivo: item.idobjetivo,
-        idmeta: item.idmeta,
-        propostaterapeutica: item.propostaterapeutica,
-        datainicio: moment(),
-        dataestimada: null,
-        datatermino: null,
-        idprofissional: 0,
-        statusintervencao: 0, // 0 = inativa, 1 = ativa. 2 = concluída. 3 = não alcançada. 4 = cancelada.
-        idespecialidade: item.idespecialidade,
-        local: item.local,
-        frequencia: item.frequencia,
-      }
-      axios.post(htmlinsertpropostaterapeutica, obj).then(() => {
-        loadIntervencoes();
-      });
-    }
-  }
-  // atualizar intervenções (no sentido de concluída, cancelada, etc.).
-  const updateIntervencao = (item, frequencia, local, status) => {
-    var obj = {
-      idpct: idpaciente,
-      idatendimento: idatendimento,
-      idplanoterapeutico: idplanoterapeutico,
-      idobjetivo: item.idobjetivo,
-      idmeta: item.idmeta,
-      propostaterapeutica: item.propostaterapeutica,
-      datainicio: moment(),
-      dataestimada: null,
-      datatermino: null,
-      idprofissional: 0,
-      statusintervencao: status, // 0 = inativa, 1 = ativa. 2 = concluída. 3 = não alcançada. 4 = cancelada.
-      idespecialidade: item.idespecialidade,
-      local: local,
-      frequencia: frequencia,
-    }
-    axios.post(htmlupdatepropostaterapeutica + item.id, obj).then(() => {
-      loadIntervencoes();
-    });
-  }
-  // deletar proposta terapêutica.
-  const deleteIntervencao = (item) => {
-    axios.get(htmldeletepropostaterapeutica + item.id).then(() => {
-      loadIntervencoes();
-    });
-  }
-  // filtrar metas.
-  var searchintervencao = '';
-  var timeout = null;
-  const [filterintervencao, setfilterintervencao] = useState([]);
-  const filterIntervencao = () => {
-    clearTimeout(timeout);
-    document.getElementById("inputIntervencao").focus();
-    searchintervencao = document.getElementById("inputIntervencao").value.toUpperCase();
-    timeout = setTimeout(() => {
-      if (searchintervencao === '') {
-        setarrayopcoesintervencoes([]);
-        document.getElementById("inputIntervencao").value = '';
-        document.getElementById("inputIntervencao").focus();
-      } else {
-        setfilterintervencao(document.getElementById("inputIntervencao").value.toUpperCase());
-        setarrayopcoesintervencoes(opcoesintervencoes.filter(item => item.intervencao.toUpperCase().includes(searchintervencao) === true));
-        document.getElementById("inputIntervencao").value = searchintervencao;
-        document.getElementById("inputIntervencao").focus();
-      }
-    }, 500);
-  }
-
+  
   // componentes (telas) para inserir ou atualizar objetivos, metas e propostas terapêuticas.
   // objetivos.
   const [viewobjetivo, setviewobjetivo] = useState(0); // 1 = objetivo primário; 2 = objetivo secundário.
@@ -1082,97 +966,7 @@ function AptPlanoTerapeutico() {
       </div>
     )
   }
-  // intervenções.
-  const [viewintervencao, setviewintervencao] = useState(0);
-  function ViewIntervencoes() {
-    return (
-      <div
-        className="menucover"
-        onClick={(e) => { setviewintervencao(0); e.stopPropagation() }}
-        style={{
-          display: viewintervencao == 0 ? 'none' : 'flex',
-          zIndex: 9, flexDirection: 'column',
-          justifyContent: 'center', alignItems: 'center'
-        }}>
-        <div className="menucontainer">
-          <div id="cabeçalho" className="cabecalho">
-            <div>{'INSERIR INTERVENÇÃO'}</div>
-            <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-              <button className="red-button" onClick={() => setviewintervencao(0)}>
-                <img
-                  alt=""
-                  src={deletar}
-                  style={{
-                    margin: 10,
-                    height: 30,
-                    width: 30,
-                  }}
-                ></img>
-              </button>
-            </div>
-          </div>
-          <div className="corpo" onClick={(e) => e.stopPropagation()}>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                borderRadius: 5,
-                marginTop: 5,
-                marginBottom: 0,
-              }}
-            >
-              <div id="divIntervencao" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', width: window.innerWidth > 400 ? '55vw' : '90vw', alignSelf: 'center' }}>
-                <label className="title2">
-                  {'BUSCAR INTERVENÇÃO'}
-                </label>
-                <input
-                  autoComplete="off"
-                  className="input"
-                  placeholder="BUSCAR..."
-                  onFocus={(e) => {
-                    (e.target.placeholder = '');
-                  }}
-                  onBlur={(e) => (e.target.placeholder = 'BUSCAR...')}
-                  onChange={() => filterIntervencao()}
-                  title={"BUSCAR INTERVENÇÃO."}
-                  type="text"
-                  maxLength={200}
-                  id="inputMeta"
-                ></input>
-                <div
-                  className="scroll"
-                  id="LISTA DE INTERVENÇÕES"
-                  style={{ width: '60vw', maxWidth: '60vw', minWidth: '60vw', height: '30vh', marginTop: 20 }}
-                >
-                  {arrayopcoesintervencoes.filter(item => item.idobjetivo == idobjetivo && item.idmeta == idmeta).map((item) => (
-                    <p
-                      key={item.id}
-                      id="item da lista"
-                      className="row"
-                      onClick={() => insertIntervencao(item)}
-                    >
-                      <button
-                        className="blue-button"
-                        style={{
-                          width: '100%',
-                          margin: 2.5,
-                          flexDirection: 'column',
-                        }}
-                      >
-                        <div>{item.propostaterapeutica}</div>
-                      </button>
-                    </p>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
+  
   // ESCALA EDITÁVEL IVCF (ESCALA DE MORAES).
   const [data, setdata] = useState(moment().format('DD/MM/YYYY'))
   const [valor, setvalor] = useState();
@@ -1669,7 +1463,6 @@ function AptPlanoTerapeutico() {
     loadOpcoesMetas();
     loadOpcoesMetodos();
     loadOpcoesMetodosPt();
-    loadIntervencoes();
     // escalas.
     loadOpcoesEscalas();
     loadEscalas();
@@ -2087,7 +1880,7 @@ function AptPlanoTerapeutico() {
                     }}
                     onClick={() => selecaoAlerta(item)}
                   >
-                    {arraycategoriaprofissional.filter(valor => valor.id == item.idespecialidade).map(valor => valor.nome) + ' - '
+                    {listcategoriaprofissional.filter(valor => valor.id == item.idespecialidade).map(valor => valor.nome) + ' - '
                       + opcoesobjetivos.filter(valor => valor.id == item.idobjetivo).map(valor => valor.objetivo) + ' - '
                       + item.meta}
                   </div>
@@ -2357,7 +2150,7 @@ function AptPlanoTerapeutico() {
             <ListaDePlanosTerapeuticos></ListaDePlanosTerapeuticos>
           </div>
         </div>
-        <div className="title2center" style={{ margin: 0, marginTop: 5, fontSize: 18 }}>OBJETIVOS PRIMÁRIOS</div>
+        <div className="title4" style={{ margin: 0, marginTop: 5 }}>OBJETIVOS PRIMÁRIOS</div>
         <div style={{ display: 'flex', width: '100%', padding: 10, paddingBottom: 0 }}>
           <ObjetivosPrimarios></ObjetivosPrimarios>
         </div>
@@ -4234,253 +4027,12 @@ function AptPlanoTerapeutico() {
             <div id="título das intervenções"
               className="title4" style={{ display: 'none', marginTop: 10 }}>{'INTERVENÇÕES TERAPÊUTICAS'}
             </div>
-            <div id="scroll das intervenções" className="scroll"
-              style={{
-                display: 'none',
-                scrollBehavior: 'smooth', flexDirection: 'row', justifyContent: 'flex-center',
-                overflowY: 'hidden', overflowX: 'scroll',
-                width: '100%', height: 165, minHeight: 165,
-                margin: 0,
-                backgroundColor: '#f2f2f2', borderColor: '#f2f2f2',
-              }}>
-              {intervencoes.filter(valor => valor.idobjetivo == item.idobjetivo && valor.idmeta == item.meta && valor.idplanoterapeutico == idplanoterapeutico).map(item => getIntervencoes(item))}
-              <button
-                title={"INSERIR INTERVENÇÃO."}
-                className="green-button"
-                onClick={() => { setidobjetivo(item.idobjetivo); setidmeta(item.meta); setviewintervencao(1) }}
-                style={{ maxWidth: 50, alignSelf: 'flex-end' }}
-              >
-                <img
-                  alt=""
-                  src={novo}
-                  style={{
-                    margin: 10,
-                    height: 20,
-                    width: 20,
-                  }}
-                ></img>
-              </button>
-            </div>
 
           </div>
         </div>
       </div>
     )
   }, [listescalas, opcoesescalas, arraycategoriaprofissional, ChartDataLabels, tipousuario, selectedcategoria]);
-
-  // gráfico que exibe o tempo decorrido entre o início da intervenção e seu prazo.
-  const getIntervencoes = (item) => {
-    return (
-      <div id="ITEM DE INTERVENÇÃO"
-        className="animationintervencao"
-        style={{
-          display: 'flex', flexDirection: 'row', justifyContent: 'center', alignSelf: 'center',
-          width: '100%', margin: 2.5,
-        }}>
-
-        <div id="identificador do profissional" // 1 = médico, 2 = enfermeiro, 3 = fisioterapeuta, 4 = fonoaudiólogo, 5 = terapeuta ocupacional, 6 = psicólogo, 7 = assistente social.
-          className="blue-button"
-          style={{
-            display: item.idprofissional != 0 ? 'flex' : 'none',
-            flexDirection: 'column', justifyContent: 'center',
-            height: '100%', minHeight: '100%', maxHeight: '100%',
-            width: 150, minWidth: 150,
-            padding: 10,
-            backgroundColor: item.idespecialidade == 1 ? '#AED6F1' : item.idespecialidade == 2 ? '#76D7C4' :
-              item.idespecialidade == 3 ? '#F1948A' : item.idespecialidade == 4 ? '#C39BD3' :
-                item.idespecialidade == 5 ? '#F8C471' : item.idespecialidade == 6 ? '#F7DC6F' : '#CCD1D1'
-          }}
-        >
-          <div>
-            {item.idespecialidade == 1 ? 'MEDICO' : item.idespecialidade == 2 ? 'ENFERMEIRO' : item.idespecialidade == 3 ? 'FISIOTERAPEUTA' :
-              item.idespecialidade == 4 ? 'FONOAUDIOLOGO' : item.idespecialidade == 5 ? 'TERAPEUTA OCUPACIONAL' :
-                item.idespecialidade == 6 ? 'PSICOLOGO' : 'ASSISTENTE SOCIAL'
-            }
-          </div>
-          <div>{arrayprofissionais.filter(valor => valor.idprofissional == item.idprofissional).map(valor => valor.nome)}</div>
-        </div>
-        <div id="identificador da especialidade (sem profissional)" // 1 = médico, 2 = enfermeiro, 3 = fisioterapeuta, 4 = fonoaudiólogo, 5 = terapeuta ocupacional, 6 = psicólogo, 7 = assistente social.
-          className="blue-button"
-          title="CLIQUE PARA DELEGAR UM COLABORADOR PARA A INTERVENÇÃO."
-          onClick={() => {
-            setselected_intervencao(item);
-            setviewprofissionalselector(1);
-          }}
-          style={{
-            position: 'relative',
-            padding: 10,
-            display: item.idprofissional == 0 ? 'flex' : 'none',
-            flexDirection: 'column', justifyContent: 'center',
-            height: '100%', minHeight: '100%', maxHeight: '100%',
-            width: 150, minWidth: 150,
-            backgroundColor:
-              item.idespecialidade == 1 ? '#AED6F1' :
-                item.idespecialidade == 2 ? '#76D7C4' :
-                  item.idespecialidade == 3 ? '#F1948A' :
-                    item.idespecialidade == 4 ? '#C39BD3' :
-                      item.idespecialidade == 5 ? '#F8C471' :
-                        item.idespecialidade == 6 ? '#F7DC6F' :
-                          '#CCD1D1'
-          }}
-        >
-          <div>
-            {
-              item.idespecialidade == 1 ? 'MEDICO' :
-                item.idespecialidade == 2 ? 'ENFERMEIRO' :
-                  item.idespecialidade == 3 ? 'FISIOTERAPEUTA' :
-                    item.idespecialidade == 4 ? 'FONOAUDIOLOGO' :
-                      item.idespecialidade == 5 ? 'TERAPEUTA OCUPACIONAL' :
-                        item.idespecialidade == 6 ? 'PSICOLOGO' : 'ASSISTENTE SOCIAL'
-            }
-          </div>
-        </div>
-
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: window.innerWidth > 400 ? 'row' : 'column',
-            width: '100%',
-            justifyContent: 'space-between', alignItems: 'center',
-          }}>
-          <div style={{
-            display: 'flex',
-            flexDirection: window.innerWidth > 400 ? 'row' : 'column',
-            justifyContent: 'center', alignItems: 'center'
-          }}>
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', marginLeft: 5 }}>
-              <div className={window.innerWidth > 400 ? "title2" : "title2center"}
-                style={{
-                  alignSelf: 'flex-start',
-                  marginLeft: 0,
-                  padding: 0, marginBottom: 5
-                }}>
-                {item.propostaterapeutica}
-              </div>
-              <div className={window.innerWidth > 400 ? "title2" : "title2center"}
-                style={{
-                  fontSize: 12, margin: 0, padding: 0,
-                  alignSelf: window.innerWidth > 400 ? 'flex-start' : 'center'
-                }}>
-                {'DEFINIÇÃO: ' + moment(item.datainicio).format('DD/MM/YY')}
-              </div>
-              <div id="AGENDA DA INTERVENÇÃO">
-                CODIFICAR AGENDA COM DATAS E HORÁRIOS DAS INTERVENÇÕES, SE APLICÁVEL...
-              </div>
-            </div>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-            <input
-              className="input"
-              defaultValue={'CONTÍNUA'}
-              autoComplete="off"
-              placeholder="FREQUÊNCIA."
-              onFocus={(e) => (e.target.placeholder = '')}
-              onBlur={(e) => (e.target.placeholder = 'QTDE.')}
-              title="FREQUÊNCIA."
-              style={{
-                display: item.statusintervencao == 0 ? 'flex' : 'none',
-                width: 100,
-                margin: 2.5,
-                flexDirection: 'column',
-                boxShadow: '0px 1px 5px 1px rgba(0, 0, 0, 0.1)',
-              }}
-              type="text"
-              id="inputFrequencia"
-              maxLength={20}>
-            </input>
-            <input
-              className="input"
-              defaultValue={'LOCAL'}
-              autoComplete="off"
-              placeholder="LOCAL."
-              onFocus={(e) => (e.target.placeholder = '')}
-              onBlur={(e) => (e.target.placeholder = 'LOCAL.')}
-              title="LOCAL."
-              style={{
-                display: item.statusintervencao == 0 ? 'flex' : 'none',
-                width: 100,
-                margin: 2.5,
-                flexDirection: 'column',
-                boxShadow: '0px 1px 5px 1px rgba(0, 0, 0, 0.1)',
-              }}
-              type="text"
-              id="inputLocal"
-              maxLength={20}>
-            </input>
-
-            <div title={
-              item.statusintervencao == 0 ? 'INATIVA' :
-                item.statusintervencao == 1 ? 'ATIVA' :
-                  item.statusintervencao == 2 ? 'CONCLUÍDA' : 'CANCELADA'}>
-              <img
-                className={item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 1 ? "pulsarplanoterapeutico" : ''}
-                src={
-                  item.statusintervencao == 0 ? plano_validar :
-                    item.statusintervencao == 1 ? plano_ativo :
-                      item.statusintervencao == 2 ? flag : plano_cancelado}
-                style={{
-                  display: 'flex',
-                  margin: 2.5,
-                  marginRight: item.status == 4 ? 7.5 : 2.5,
-                  height: 50,
-                  width: 50,
-                }}
-              ></img>
-            </div>
-
-            <button
-              title="EXCLUIR INTERVENÇÃO."
-              style={{ display: item.statusintervencao == 0 ? 'flex' : 'none' }}
-              className="animatedintervencao-red-button"
-              onClick={(e) => { deleteIntervencao(item); e.stopPropagation() }}
-            >
-              <img
-                alt=""
-                src={deletar}
-                style={{
-                  margin: 10,
-                  height: 30,
-                  width: 30,
-                }}
-              ></img>
-            </button>
-            <button
-              title="CANCELAR INTERVENÇÃO."
-              style={{ display: item.statusintervencao == 1 ? 'flex' : 'none' }}
-              className="animatedintervencao-yellow-button"
-              onClick={(e) => { updateIntervencao(item, item.frequencia, item.local, 3); e.stopPropagation() }} // atualiza a intervenção como cancelada.
-            >
-              <img
-                alt=""
-                src={suspender}
-                style={{
-                  margin: 10,
-                  height: 30,
-                  width: 30,
-                }}
-              ></img>
-            </button>
-            <button
-              title="VALIDAR INTERVENÇÃO."
-              style={{ display: item.statusintervencao == 0 ? 'flex' : 'none' }}
-              className="animatedintervencao-green-button"
-              onClick={(e) => { updateIntervencao(item, document.getElementById("inputFrequencia"), document.getElementById("inputLocal"), 1); e.stopPropagation() }} // atualiza a intervenção como ativa.
-            >
-              <img
-                alt=""
-                src={salvar}
-                style={{
-                  margin: 10,
-                  height: 30,
-                  width: 30,
-                }}
-              ></img>
-            </button>
-          </div>
-        </div>
-      </div >
-    )
-  }
 
   // MÉTRICAS.
   /*
@@ -4562,139 +4114,6 @@ function AptPlanoTerapeutico() {
 
   // preparando os gráficos em linha para as escalas.
   var dataChartEscalas = [];
-  function getEscala(item) {
-    var datas = escalas.filter(value => value.tipo == item.tipoescala && value.idpaciente == idpaciente).map(item => item.data);
-    var valores = escalas.filter(value => value.tipo == item.tipoescala && value.idpaciente == idpaciente).map(item => parseInt(item.valor));
-    dataChartEscalas = {
-      labels: datas,
-      datasets: [
-        {
-          lineTension: 0,
-          borderRadius: 5,
-          // borderWidth: 3,
-          boxShadow: '0px 2px 20px 5px rgba(0, 0, 0, 0.1)',
-          data: valores,
-          pointBackgroundColor: '#52be80',
-          fill: true,
-          backgroundColor: 'transparent',
-          boxShadow: '0px 2px 20px 5px rgba(0, 0, 0, 0.1)',
-          borderColor: 'rgba(82, 190, 128, 1)',
-          hoverBorderColor: '#E1E5F2',
-          shadowOffsetX: 0,
-          shadowOffsetY: 2,
-          shadowBlur: 10,
-          shadowColor: effectColors.shadow
-        },
-      ],
-    }
-    return (
-      <div
-        className="scroll"
-        style={{
-          display: 'flex', flexDirection: 'row', justifyContent: 'flex-start',
-          margin: 5, padding: 0, paddingRight: 0,
-          overflowY: 'hidden', overflowX: 'scroll',
-          width: '50vw',
-          backgroundColor: '#f2f2f2', borderColor: '#f2f2f2', scrollBehavior: 'smooth',
-        }}
-      >
-        <div style={{ alignSelf: 'flex-start' }}>
-          <Line
-            data={dataChartEscalas}
-            padding={10}
-            width={valores.length * 0.1 * window.innerWidth}
-            height={0.13 * window.innerWidth}
-            plugins={ChartDataLabels}
-            options={
-              {
-                layout: {
-                  padding: 10
-                },
-                scales: {
-                  xAxes: [
-                    {
-                      display: window.innerWidth > 400 ? true : false,
-                      ticks: {
-                        fontColor: '#61636e',
-                        fontWeight: 'bold',
-                      },
-                      gridLines: {
-                        zeroLineColor: 'transparent',
-                        lineWidth: 0,
-                        drawOnChartArea: true,
-                      },
-                    },
-                  ],
-                  yAxes: [
-                    {
-                      display: false,
-                      ticks: {
-                        suggestedMin: item.min,
-                        suggestedMax: item.max + 10,
-                        fontColor: '#61636e',
-                        fontWeight: 'bold',
-                      },
-                      gridLines: {
-                        zeroLineColor: 'transparent',
-                        lineWidth: 0,
-                        drawOnChartArea: true,
-                      },
-                    },
-                  ],
-                },
-                plugins: {
-                  datalabels: {
-                    display: false,
-                    color: '#ffffff',
-                    font: {
-                      weight: 'bold',
-                      size: 16,
-                    },
-                  },
-                },
-                tooltips: {
-                  enabled: window.innerWidth > 400 ? true : false,
-                  displayColors: false,
-                },
-                hover: { mode: null },
-                elements: {},
-                animation: {
-                  duration: 500,
-                },
-                title: {
-                  display: false,
-                  text: 'ESCALA',
-                },
-                legend: {
-                  display: false,
-                  position: 'bottom',
-                },
-                maintainAspectRatio: true,
-                responsive: false,
-              }}
-          />
-        </div>
-      </div >
-    )
-  }
-
-  // última evolução por categoria profissional.
-  function Evolucoes() {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignSelf: 'center' }}>
-        <div id="EVOLUÇÃO" className="title4">EVOLUÇÃO</div>
-        <div id="view das evoluções" className="scroll"
-          style={{
-            width: window.innerWidth > 1024 ? '58vw' : window.innerWidth < 1025 && window.innerWidth > 400 ? '65vw' : '75vw',
-            height: window.innerWidth > 1024 ? '56vh' : window.innerWidth < 1025 && window.innerWidth > 400 ? '43vh' : '51vh',
-            margin: 0, marginBottom: 10,
-            backgroundColor: '#f2f2f2', borderColor: '#f2f2f2'
-          }}>
-          {listevolucoes.filter(item => item.idpaciente == idpaciente && item.funcao == categoria).map(item => item.evolucao).slice(-1)}
-        </div>
-      </div>
-    )
-  }
 
   // função para construção dos toasts.
   const [valortoast, setvalortoast] = useState(0);
@@ -4709,20 +4128,6 @@ function AptPlanoTerapeutico() {
     setTimeout(() => {
       setvalortoast(0);
     }, time);
-  }
-
-  function EscalaDeMoraes() {
-    return (
-      <div>
-        <div className="title4" style={{ margin: 15, marginTop: 15 }}>ESCALA DE MORAES</div>
-        <Regua></Regua>
-        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          <AvaliacaoDeDeclinioFuncional></AvaliacaoDeDeclinioFuncional>
-          <ClassificacaoDeRiscoFuncional></ClassificacaoDeRiscoFuncional>
-        </div>
-        <DeterminantesDoDeclinioFuncionalEstabelecido></DeterminantesDoDeclinioFuncionalEstabelecido>
-      </div>
-    )
   }
 
   const [viewgerirplano, setviewgerirplano] = useState(0);
@@ -4806,7 +4211,6 @@ function AptPlanoTerapeutico() {
   // EDITAR OPÇÕES DE LINHAS DE CUIDADO.
   // componente para manejo das linhas de cuidado.
   const [viewopcoeslinhasdecuidado, setviewopcoeslinhasdecuidado] = useState(0);
-  const [selectedlinhadecuidado, setselectedlinhadecuidado] = useState(0);
   var picklinhadecuidado = 0;
   function OpcoesLinhasDeCuidado() {
     return (
@@ -4834,7 +4238,6 @@ function AptPlanoTerapeutico() {
                   }
                   document.getElementById("item linha de cuidado" + item.id).className = "red-button";
                   picklinhadecuidado = item.id;
-                  setselectedlinhadecuidado(item.id);
                 }}
               >
                 {item.linhadecuidado}
@@ -5138,7 +4541,7 @@ function AptPlanoTerapeutico() {
       loadOpcoesObjetivos();
     })
   }
-  var htmldeleteopcaoobjetivo = process.env.REACT_APP_API_CLONE_DELETEOPCAOOBJETIVO;
+  
   const deleteOpcaoObjetivo = (item) => {
     axios.get(htmldeleteopcaoobjetivo + item.id).then(() => {
       toast(1, '#52be80', 'OBJETIVO EXCLUÍDO COM SUCESSO.', 3000);
@@ -5509,7 +4912,6 @@ function AptPlanoTerapeutico() {
       <Busy></Busy>
       <ViewObjetivo></ViewObjetivo>
       <ViewMeta></ViewMeta>
-      <ViewIntervencoes></ViewIntervencoes>
       <AlertasPlanoTerapeutico></AlertasPlanoTerapeutico>
       <div
         id="scroll"
@@ -5550,6 +4952,7 @@ function AptPlanoTerapeutico() {
               height: window.innerWidth < 426 ? '' : '80vh',
               width: window.innerWidth < 426 ? 'calc(100vw - 30px)' : '65vw',
               marginLeft: 5,
+              marginRight: 5
             }}>
             <div id="título das metas."
               className="title4"

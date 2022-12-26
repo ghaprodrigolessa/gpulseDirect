@@ -1,51 +1,31 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
-import axios from 'axios';
+import React, { useState, useContext, useEffect } from 'react';
 import moment from 'moment';
 import 'moment/locale/pt-br';
 import Context from '../Context';
-import salvar from '../images/salvar.svg';
 import bell from '../images/bell.svg';
-import emojihappy from '../images/emojihappy.svg';
-import emojineutral from '../images/emojineutral.svg';
-import emojisad from '../images/emojisad.svg';
-
-// import setaesquerda from '../images/arrowleft.svg';
-// import setadireita from '../images/arrowright.svg';
 
 function AlertasPlanoTerapeutico() {
   // recuperando estados globais (Context.API).
   const {
-    idpaciente,
-    idatendimento,
-    setplanoterapeutico, planoterapeutico,
-    linhadecuidado, setlinhadecuidado,
-    setdatainicioplanoterapeutico,
-    setstatusplanoterapeutico,
-    objetivos, setobjetivos,
-    idplanoterapeutico, setidplanoterapeutico,
-    metas, setmetas,
-    linhasdecuidado, setlinhasdecuidado,
+    planoterapeutico,
+    linhadecuidado,
+    objetivos,
+    idplanoterapeutico,
+    metas,
+    linhasdecuidado,
     opcoesobjetivos,
     hide, sethide,
-    lastplanoterapeutico, setlastplanoterapeutico,
+    lastplanoterapeutico,
     arraycategoriaprofissional, setarraycategoriaprofissional,
     setselectedobjetivosecundario,
     setselectedobjetivo,
     setselectedcategoria,
     opcoesmetas,
-    setviewjustificaobjetivoprimario,
   } = useContext(Context)
-
-  var htmlplanosterapeuticos = process.env.REACT_APP_API_CLONE_PLANOSTERAPEUTICOS;
-  var htmllinhasdecuidado = process.env.REACT_APP_API_CLONE_LINHASDECUIDADO;
-  var htmlupdateobjetivo = process.env.REACT_APP_API_CLONE_UPDATEOBJETIVO;
-  var htmlobjetivos = process.env.REACT_APP_API_CLONE_OBJETIVOS;
-  var htmlmetas = process.env.REACT_APP_API_CLONE_METAS;
 
   const [idlinhadecuidado, setidlinhadecuidado] = useState(0); // id absoluto do registro (chave primária).
   const [id_linhadecuidado, setid_linhadecuidado] = useState(0); // designa o tipo de linha de cuidado.
   const [var_linhadecuidado, setvar_linhadecuidado] = useState('');
-  const [datainicio_linhadecuidado, setdatainicio_linhadecuidado] = useState(0);
 
   var listcategoriaprofissional = [
     { id: 4, nome: 'ENFERMAGEM', cor: '#76D7C4' },
@@ -81,50 +61,13 @@ function AlertasPlanoTerapeutico() {
     if (linhadecuidado != '') {
       loadLinhasDeCuidado();
     }
-    // planos terapêuticos.
-    // loadPlanosTerapeuticos();
-    // objetivos e metas.
-    // loadObjetivos();
-    // loadMetas();
+    // eslint-disable-next-line
   }, [linhadecuidado, linhasdecuidado, id_linhadecuidado, idplanoterapeutico, planoterapeutico, lastplanoterapeutico, objetivos, metas]);
 
   const loadLinhasDeCuidado = () => {
     setid_linhadecuidado(idlinhadecuidado);
     setvar_linhadecuidado(linhadecuidado);
     console.log(var_linhadecuidado);
-  }
-
-  const loadPlanosTerapeuticos = () => {
-    axios.get(htmlplanosterapeuticos + idatendimento).then((response) => {
-      var x = [0, 1];
-      var y = [0, 1];
-      x = response.data;
-      y = x.rows;
-      setplanoterapeutico(x.rows.sort((a, b) => moment(a.datainicio) > moment(b.datainicio) ? 1 : -1));
-      // carregando último plano terapêutico (ativo).
-      setlastplanoterapeutico(y.filter(item => item.datatermino == null).slice(-1)); // recuperando último registro de plano terapêutico.
-      setidplanoterapeutico(y.filter(item => item.datatermino == null).slice(-1).map(item => item.id).pop()); // recuperando a id do último plano terapêutico.
-      // alert('LAST ID: ' + idplanoterapeutico);
-      setdatainicioplanoterapeutico(y.filter(item => item.datatermino == null).slice(-1).map(item => moment(item.datainicio).format('DD/MM/YY'))); // recuperando a data de início do último plano terapêutico.
-      setstatusplanoterapeutico(y.filter(item => item.datatermino == null).slice(-1).map(item => item.status));
-    });
-  }
-
-  var htmlmetas = process.env.REACT_APP_API_CLONE_METAS;
-  const loadMetas = () => {
-    axios.get(htmlmetas + idatendimento).then((response) => {
-      var x = [0, 1];
-      x = response.data;
-      setmetas(x.rows);
-    });
-  }
-
-  const loadObjetivos = () => {
-    axios.get(htmlobjetivos + idatendimento).then((response) => {
-      var x = [0, 1];
-      x = response.data;
-      setobjetivos(x.rows);
-    });
   }
 
   const selecaoAlerta = (item) => {
@@ -343,7 +286,6 @@ function AlertasPlanoTerapeutico() {
   } else {
     return (
       <div
-        // onMouseOut={() => sethide(0)}
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -351,7 +293,6 @@ function AlertasPlanoTerapeutico() {
           padding: 10,
           alignContent: 'center',
           position: 'absolute', top: 10, right: 10, zIndex: 20,
-          // width: '12vw', minWidth: '12vw'
         }}
       >
         <div
@@ -408,7 +349,6 @@ function AlertasPlanoTerapeutico() {
               {objetivos.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.tipoobjetivo == 2 && item.statusobjetivo == 1).map(item => checametas(item))}
             </div>
           </div>
-
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <div style={{
               margin: 5,

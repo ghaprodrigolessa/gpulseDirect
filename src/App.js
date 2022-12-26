@@ -103,7 +103,7 @@ function IddleTimeOut() {
     window.addEventListener("load", () => {
       history.push('/');
     });
-
+    // eslint-disable-next-line
   }, [])
 
   return (
@@ -317,50 +317,17 @@ function App() {
   // assinatura digital de documentos / certificado digital.
   const [signature, setsignature] = useState(0);
 
-  // cid10.
-  const [listcid, setlistcid] = useState([]);
-  const [arraylistcid, setarraylistcid] = useState([]);
-
-  // cid10.
-  var htmlghapcid = process.env.REACT_APP_API_CLONE_CID;
-  const getCid = () => {
-    axios.get(htmlghapcid).then((response) => {
-      var x = [0, 1];
-      x = response.data;
-      setlistcid(x.rows);
-      setarraylistcid(x.rows);
-    });
-  }
-
-  var html = 'https://pulsarapp-server.herokuapp.com';
-  const loadSettings = () => {
-    axios.get(html + "/settings").then((response) => {
-      var x = [0, 1];
-      x = response.data;
-      setsettings(response.data);
-      // definindo as cores da aplicação.
-      var paleta = x.filter(valor => valor.componente == "COLORSCHEME").map(valor => valor.view);
-      setschemecolor(paleta == 1 ? 'purplescheme' : 'bluescheme');
-    });
-  }
-
   const loadLeitos = () => {
     axios.get(htmlleitos).then((response) => {
       var x = [0, 1]
       x = response.data
       settodosleitos([0, 1]);
       settodosleitos(x.filter(item => item.tp_situacao == "A"));
-      // alert('LEITOS: ' + x.filter(item => item.unidade.setor.empresa_id == 1 && item.tp_situacao == "A").length);
-      // alert('LEITOS: ' + x.length);
     })
   }
 
   useEffect(() => {
-    //loadHospitais();
-    //loadUnidades();
-    //loadSettings();
     loadLeitos();
-    // getCid();
   }, [])
 
   return (
@@ -524,10 +491,6 @@ function App() {
 
         // assinatura digital.
         signature, setsignature,
-
-        // cid 10
-        listcid, setlistcid,
-        arraylistcid, setarraylistcid,
       }}
     >
       <div className={schemecolor}>
