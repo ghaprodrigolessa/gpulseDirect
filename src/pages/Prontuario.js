@@ -55,7 +55,7 @@ function Prontuario() {
     dn, setdn,
     box, setbox,
     setidatendimentoghap,
-    
+
     stateprontuario,
     setstateprontuario,
     // APT IVCF / curva de Moraes.
@@ -150,7 +150,6 @@ function Prontuario() {
     setendereço(paciente.map(item => item.ds_endereco) + ', Nº ' + paciente.map(item => item.nr_endereco) + ', ' + paciente.map(item => item.ds_complemento) + ', BAIRRO ' + paciente.map(item => item.nm_bairro) + ', CIDADE: ' + paciente.map(item => item.nm_cidade) + ' - CEP: ' + paciente.map(item => item.nr_cep));
     setdn(moment(paciente.map(item => item.data_nascimento_paciente), 'YYYY-MM-DD').format('DD/MM/YYYY'));
     setidade(moment().diff(moment(dn), 'DD/MM/YYYY'), 'years');
-    // alert(dn);
   }
 
   // carregando o histórico de atendimentos do paciente.
@@ -462,7 +461,7 @@ function Prontuario() {
                     }}
                     id="inputNome"
                   >
-                    {nomepaciente + ', ' + idade + ' ANOS'}
+                    {window.innerWidth < 426 ? nomepaciente + ', ' + idade + ' ANOS' : nomepaciente}
                   </button>
                   <div style={{ display: 'flex', felxDirection: 'row', justifyContent: 'flex-start', position: 'relative' }}>
                     <img id="info"
