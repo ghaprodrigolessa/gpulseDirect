@@ -1545,15 +1545,19 @@ function AptPlanoTerapeutico() {
             <div style={{ display: 'flex', padding: 10 }}>{item.objetivo}</div>
             <div id="botões de carinhas"
               style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-              <button id='objetivo atingido'
-                className="green-button"
+              <button id='objetivo não atingido'
+                title='OBJETIVO SECUNDÁRIO NÃO ATINGIDO.'
+                className="red-button"
                 onClick={(e) => {
-                  updateObjetivo(item, 2); e.stopPropagation();
+                  setselectedobjetivosecundario(item);
+                  setstatusobjetivo(3);
+                  setviewjustificaobjetivosecundario(1);
+                  e.stopPropagation();
                 }}
               >
                 <img
                   alt=""
-                  src={emojihappy}
+                  src={emojisad}
                   style={{
                     margin: 10,
                     height: 30,
@@ -1562,6 +1566,7 @@ function AptPlanoTerapeutico() {
                 ></img>
               </button>
               <button id='objetivo parcialmente atingido'
+                title='OBJETIVO SECUNDÁRIO PARCIALMENTE ATINGIDO.'
                 className="yellow-button"
                 onClick={(e) => {
                   setselectedobjetivosecundario(item);
@@ -1580,18 +1585,16 @@ function AptPlanoTerapeutico() {
                   }}
                 ></img>
               </button>
-              <button id='objetivo não atingido'
-                className="red-button"
+              <button id='objetivo atingido'
+                title='OBJETIVO SECUNDÁRIO PLENAMENTE ATINGIDO.'
+                className="green-button"
                 onClick={(e) => {
-                  setselectedobjetivosecundario(item);
-                  setstatusobjetivo(3);
-                  setviewjustificaobjetivosecundario(1);
-                  e.stopPropagation();
+                  updateObjetivo(item, 2); e.stopPropagation();
                 }}
               >
                 <img
                   alt=""
-                  src={emojisad}
+                  src={emojihappy}
                   style={{
                     margin: 10,
                     height: 30,
@@ -1851,9 +1854,7 @@ function AptPlanoTerapeutico() {
               <div style={{
                 margin: 5,
               }}>
-                {'OBJETIVOS SECUNDÁRIOS FINALIZÁVEIS: '
-                  // + objetivos.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.tipoobjetivo == 2 && item.statusobjetivo == 1).length
-                }
+                {'OBJETIVOS SECUNDÁRIOS FINALIZÁVEIS:'}
               </div>
               <div
                 style={{
@@ -2772,7 +2773,7 @@ function AptPlanoTerapeutico() {
           >
             <div id="botoes" // 0 = a validar, 1 = ativo. 2 = concluído. 3 = não alcançado. 4 = cancelado. 5 = parcialmente atingido.
               style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-              <button id="btn excluir"
+              <button id="btn excluir (oculto)"
                 title="EXCLUIR OBJETIVO SECUNDÁRIO."
                 style={{ display: item.statusobjetivo == 0 ? 'flex' : 'none' }}
                 className={window.innerWidth < 426 ? 'red-button' : "animatedobj-red-button"}
@@ -2824,7 +2825,7 @@ function AptPlanoTerapeutico() {
                 ></img>
               </button>
               <button id="btn não alcançado"
-                title="DEFINIR OBJETIVO SECUNDÁRIO COMO NÃO ALCANÇADO."
+                title="OBJETIVO SECUNDÁRIO NÃO ATINGIDO."
                 style={{ display: item.statusobjetivo == 1 ? 'flex' : 'none' }}
                 className={window.innerWidth < 426 ? 'red-button' : "animatedobj-red-button"}
                 onClick={(e) => {
@@ -2847,7 +2848,7 @@ function AptPlanoTerapeutico() {
               >
                 <img
                   alt=""
-                  src={suspender}
+                  src={emojisad}
                   style={{
                     margin: 10,
                     height: 30,
@@ -2855,7 +2856,7 @@ function AptPlanoTerapeutico() {
                   }}
                 ></img>
               </button>
-              <button id="btn a validar"
+              <button id="btn a validar (oculto)"
                 title="VALIDAR OBJETIVO SECUNDÁRIO."
                 style={{ display: item.statusobjetivo == 0 ? 'flex' : 'none' }}
                 className={window.innerWidth < 426 ? 'green-button' : "animatedobj-green-button"}
@@ -2871,40 +2872,8 @@ function AptPlanoTerapeutico() {
                   }}
                 ></img>
               </button>
-              <button id="btn finalizar pleno"
-                title="FINALIZAR OBJETIVO SECUNDÁRIO (PLENAMENTE ATINGIDO)."
-                style={{ display: item.statusobjetivo == 1 ? 'flex' : 'none' }}
-                className={window.innerWidth < 426 ? 'green-button' : "animatedobj-green-button"}
-                onClick={(e) => {
-                  axios.get(htmlmetas + idatendimento).then((response) => {
-                    var x = [0, 1];
-                    x = response.data.rows;
-                    var check1 = x.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.idobjetivo == item.idobjetivo).length;
-                    var check2 = x.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.idobjetivo == item.idobjetivo && valor.status < 2).length;
-                    if (check1 == 0) {
-                      toast(1, '#ec7063', 'NÃO É POSSÍVEL FINALIZAR UM OBJETIVO SEM METAS.', 3000);
-                    } else if (check2 > 0) {
-                      toast(1, '#ec7063', 'NÃO É POSSÍVEL FINALIZAR UM OBJETIVO COM METAS ATIVAS.', 3000);
-                    } else {
-                      updateObjetivo(item, 2); e.stopPropagation();
-                      setselectedobjetivo(0);
-                      setselectedobjetivosecundario(0);
-                    }
-                  });
-                }}
-              >
-                <img
-                  alt=""
-                  src={emojihappy}
-                  style={{
-                    margin: 10,
-                    height: 30,
-                    width: 30,
-                  }}
-                ></img>
-              </button>
               <button id="btn finalizar parcial"
-                title="FINALIZAR OBJETIVO SECUNDÁRIO (PARCIALMENTE ATINGIDO)."
+                title="OBJETIVO SECUNDÁRIO PARCIALMENTE ATINGIDO."
                 style={{ display: item.statusobjetivo == 1 ? 'flex' : 'none' }}
                 className={window.innerWidth < 426 ? 'yellow-button' : "animatedobj-yellow-button"}
                 onClick={(e) => {
@@ -2931,6 +2900,38 @@ function AptPlanoTerapeutico() {
                 <img
                   alt=""
                   src={emojineutral}
+                  style={{
+                    margin: 10,
+                    height: 30,
+                    width: 30,
+                  }}
+                ></img>
+              </button>
+              <button id="btn finalizar pleno"
+                title="OBJETIVO SECUNDÁRIO PLENAMENTE ATINGIDO."
+                style={{ display: item.statusobjetivo == 1 ? 'flex' : 'none' }}
+                className={window.innerWidth < 426 ? 'green-button' : "animatedobj-green-button"}
+                onClick={(e) => {
+                  axios.get(htmlmetas + idatendimento).then((response) => {
+                    var x = [0, 1];
+                    x = response.data.rows;
+                    var check1 = x.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.idobjetivo == item.idobjetivo).length;
+                    var check2 = x.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.idobjetivo == item.idobjetivo && valor.status < 2).length;
+                    if (check1 == 0) {
+                      toast(1, '#ec7063', 'NÃO É POSSÍVEL FINALIZAR UM OBJETIVO SEM METAS.', 3000);
+                    } else if (check2 > 0) {
+                      toast(1, '#ec7063', 'NÃO É POSSÍVEL FINALIZAR UM OBJETIVO COM METAS ATIVAS.', 3000);
+                    } else {
+                      updateObjetivo(item, 2); e.stopPropagation();
+                      setselectedobjetivo(0);
+                      setselectedobjetivosecundario(0);
+                    }
+                  });
+                }}
+              >
+                <img
+                  alt=""
+                  src={emojihappy}
                   style={{
                     margin: 10,
                     height: 30,
@@ -3029,7 +3030,7 @@ function AptPlanoTerapeutico() {
                 ></img>
               </button>
               <button id="btn não alcançado"
-                title="DEFINIR OBJETIVO SECUNDÁRIO COMO NÃO ALCANÇADO."
+                title="OBJETIVO SECUNDÁRIO NÃO ATINGIDO."
                 style={{ display: item.statusobjetivo == 1 ? 'flex' : 'none' }}
                 className={window.innerWidth < 426 ? 'red-button' : "animatedobj-red-button"}
                 onClick={(e) => {
@@ -3061,7 +3062,7 @@ function AptPlanoTerapeutico() {
                 ></img>
               </button>
               <button id="btn finalizar parcial"
-                title="FINALIZAR OBJETIVO SECUNDÁRIO (PARCIALMENTE ATINGIDO)."
+                title="OBJETIVO SECUNDÁRIO PARCIALMENTE ATINGIDO."
                 style={{ display: item.statusobjetivo == 1 ? 'flex' : 'none' }}
                 className={window.innerWidth < 426 ? 'yellow-button' : "animatedobj-yellow-button"}
                 onClick={(e) => {
@@ -3096,7 +3097,7 @@ function AptPlanoTerapeutico() {
                 ></img>
               </button>
               <button id="btn finalizar pleno" // 0 = a validar, 1 = ativo. 2 = concluído. 3 = não alcançado. 4 = cancelado. 5 = parcialmente atingido.
-                title="FINALIZAR OBJETIVO SECUNDÁRIO (PLENAMENTE ATINGIDO)."
+                title="OBJETIVO SECUNDÁRIO PLENAMENTE ATINGIDO."
                 style={{ display: item.statusobjetivo == 1 ? 'flex' : 'none' }}
                 className={window.innerWidth < 426 ? 'green-button' : "animatedobj-green-button"}
                 onClick={(e) => {
@@ -3512,10 +3513,8 @@ function AptPlanoTerapeutico() {
             </div>
             <div id="identificador da especialidade" // 1 = médico, 2 = enfermeiro, 3 = fisioterapeuta, 4 = fonoaudiólogo, 5 = terapeuta ocupacional, 6 = psicólogo, 7 = assistente social.
               className="blue-button"
-              title="CLIQUE PARA DELEGAR UM COLABORADOR PARA A META."
               onClick={() => {
                 setselected_meta(item);
-                // setviewprofissionalselector(1);
               }}
               style={{
                 position: 'relative',
@@ -3638,7 +3637,6 @@ function AptPlanoTerapeutico() {
                   }}
                 ></img>
               </div>
-
               <div id="definição"
                 style={{
                   display: 'flex', flexDirection: 'row',
@@ -3684,7 +3682,8 @@ function AptPlanoTerapeutico() {
               <div style={{ display: item.status == 3 || item.status == 4 ? 'flex' : 'none', color: '#ec7063', fontWeight: 'bold' }}>{'JUSTIFICATIVA: ' + item.justificativa}</div>
             </div>
           </div>
-          <div id="INPUT PRAZO, INPUT CHECAGEM e INPUT NOTA (META CUMPRIDA)"
+
+          <div id="botões, inputs prazo, checagem e nota (meta cumprida)"
             style={{
               display: 'flex',
               flexDirection: 'row',
@@ -3711,122 +3710,9 @@ function AptPlanoTerapeutico() {
                   boxShadow: '0px 1px 5px 1px rgba(0, 0, 0, 0.1)',
 
                 }}
-                onChange={(e) => {
-                  clearTimeout(timeout)
-                  timeout = setTimeout(() => {
-                    // alert(document.getElementById("inputPrazo" + item.id).value);
-                    // updateMeta(item, document.getElementById("inputPrazo" + item.id).value, item.nota, 0, item.idprofissional, item.justificativa, item.checagem)
-                  }, 2000);
-                }}
                 type="number"
                 maxLength={3}>
               </input>
-              <input id={"inputChecagem" + item.id}
-                className="input"
-                defaultValue={item.checagem}
-                autoComplete="off"
-                placeholder="QTDE."
-                onFocus={(e) => (e.target.placeholder = '')}
-                onBlur={(e) => (e.target.placeholder = 'QTDE.')}
-                title="INTERVALO DE DIAS PARA CHECAGEM DA META."
-                style={{
-                  display: 'none',
-                  width: 50,
-                  margin: 2.5,
-                  flexDirection: 'column',
-                  boxShadow: '0px 1px 5px 1px rgba(0, 0, 0, 0.1)',
-                }}
-                onChange={(e) => {
-                  clearTimeout(timeout)
-                  timeout = setTimeout(() => {
-                    // alert(document.getElementById("inputPrazo" + item.id).value);
-                    updateMeta(item, document.getElementById("inputPrazo" + item.id).value, item.nota, 0, item.idprofissional, item.justificativa, document.getElementById("inputChecagem" + item.id).value)
-                  }, 2000);
-                }}
-                type="number"
-                maxLength={3}>
-              </input>
-              <div id={"input versus flag" + item.id} style={{ margin: 0, marginRight: 5 }}
-                onMouseOver={() => {
-                  if (item.status == 2) {
-                    document.getElementById("inputNota" + item.id).style.display = "flex";
-                    document.getElementById("flag" + item.id).style.display = "none";
-                  }
-                }}
-                onMouseOut={() => {
-                  if (item.status == 2) {
-                    document.getElementById("inputNota" + item.id).style.display = "none";
-                    document.getElementById("flag" + item.id).style.display = "flex";
-                  }
-                }}
-              >
-                <input
-                  className="input"
-                  defaultValue={item.nota}
-                  autoComplete="off"
-                  placeholder="?"
-                  onFocus={(e) => (e.target.placeholder = '')}
-                  onBlur={(e) => (e.target.placeholder = '?')}
-                  title="AVALIAÇÃO DA META ALCANÇADA."
-                  style={{
-                    display: 'none',
-                    width: 50,
-                    margin: 2.5,
-                    flexDirection: 'column',
-                    boxShadow: '0px 1px 5px 1px rgba(0, 0, 0, 0.1)',
-                  }}
-                  onChange={(e) => {
-                    clearTimeout(timeout)
-                    timeout = setTimeout(() => {
-                      // alert(document.getElementById("inputNota" + item.id).value);
-                      updateMeta(item, moment(item.dataestimada).startOf('day').diff(moment(item.datainicio).startOf('day'), 'days'), document.getElementById("inputNota" + item.id).value, 2, item.idprofissional, item.justificativa, item.checagem)
-                    }, 2000);
-                  }}
-                  type="number"
-                  id={"inputNota" + item.id}
-                  maxLength={2}>
-                </input>
-                <div id={"flag" + item.id}
-                  className="input"
-                  style={{
-                    display: item.status == 2 ? 'flex' : 'none',
-                    justifyContent: 'center',
-                    width: 50,
-                    margin: 2.5,
-                    padding: 0,
-                    position: 'relative',
-                    boxShadow: 'none',
-                    backgroundColor: 'none',
-                  }}
-                >
-                  <img
-                    alt=""
-                    src={flag}
-                    style={{
-                      position: 'absolute',
-                      top: 0, bottom: 0, left: 0, right: 0,
-                      margin: 0,
-                      height: 50,
-                      width: 50,
-                    }}
-                  ></img>
-                  <div
-                    className='title2center'
-                    style={{
-                      color: '#ffffff',
-                      position: 'absolute',
-                      top: 10, bottom: 0, left: 3, right: 0,
-                      margin: 10,
-                      marginTop: 0,
-                      height: 30,
-                      width: 30,
-                    }}
-                  >
-                    {item.nota}
-                  </div>
-                </div>
-              </div>
-
               <div id="imagens de ação"
                 title={
                   item.status == 0 ? 'INATIVA' :
@@ -3837,18 +3723,19 @@ function AptPlanoTerapeutico() {
                 <img
                   className={item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 1 ? "pulsarplanoterapeutico" : ''}
                   src={
-                    item.status == 0 ? plano_validar :
+                    item.status == 0 ? plano_validar : item.status == 2 ? emojihappy : item.status == 3 ? plano_cancelado : item.status == 4 ? emojisad : item.status == 5 ? emojineutral :
                       item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 0 && moment().startOf('day').diff(moment(item.dataestimada), 'days') < 0 ? plano_ativo :
-                        // item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada), 'days') < 0 && moment().startOf('day').diff(moment(item.datachecagem), 'days') > -1 ? plano_checagem :
                         item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -1 ? plano_fracassado :
-                          item.status == 3 ? plano_cancelado : item.status == 4 ? plano_fail : ''}
+                          ''}
                   style={{
-                    display: item.status != 2 ? 'flex' : 'none',
+                    display: 'flex',
                     margin: 2.5,
                     marginRight: item.status == 4 ? 7.5 : 2.5,
                     height: 50,
                     width: 50,
                     alignSelf: 'center', verticalAlign: 'center',
+                    backgroundColor: item.status == 2 ? '#52be80' : item.status == 4 ? '#ec7063' : item.status == 5 ? '#f5b041' : '',
+                    borderRadius: 5,
                   }}
                 ></img>
               </div>
@@ -3857,7 +3744,23 @@ function AptPlanoTerapeutico() {
               style={{
                 display: 'flex', flexDirection: 'row',
               }}>
-              <button id="btn meta validada"
+              <button id="btn excluir meta (erro de registro)"
+                title="EXCLUIR META."
+                style={{ display: (selectedcategoria == tipousuario || boss_planoterapeutico_usuario == 1) && item.status == 0 ? 'flex' : 'none' }}
+                className={window.innerWidth < 426 ? 'red-button' : "animated-red-button"}
+                onClick={(e) => { deleteMeta(item); e.stopPropagation() }}
+              >
+                <img
+                  alt=""
+                  src={trash}
+                  style={{
+                    margin: 10,
+                    height: 30,
+                    width: 30,
+                  }}
+                ></img>
+              </button>
+              <button id="btn validar meta"
                 title="VALIDAR META."
                 style={{ display: item.status == 0 ? 'flex' : 'none' }}
                 className={window.innerWidth < 426 ? 'green-button' : "animated-green-button"}
@@ -3879,27 +3782,7 @@ function AptPlanoTerapeutico() {
                   }}
                 ></img>
               </button>
-              <button id="btn meta restartada"
-                title="CONTINUAR META."
-                style={{ display: 'none' }}
-                // style={{ display: item.status == 1 && statusplanoterapeutico == 1 && moment().startOf('day').diff(moment(item.dataestimada), 'days') < 0 && moment().startOf('day').diff(moment(item.datachecagem), 'days') > -1 ? 'flex' : 'none' }}
-                className={window.innerWidth < 426 ? 'yellow-button' : "animated-yellow-button"}
-                onClick={(e) => {
-                  checkedMeta(item);
-                  e.stopPropagation()
-                }} // atualiza a meta como cancelada.
-              >
-                <img
-                  alt=""
-                  src={restart}
-                  style={{
-                    margin: 10,
-                    height: 30,
-                    width: 30,
-                  }}
-                ></img>
-              </button>
-              <button id="btn meta retomada"
+              <button id="btn retomar meta"
                 title="RETOMAR META."
                 style={{
                   // display: (selectedcategoria == tipousuario || boss_planoterapeutico_usuario == 1) && (item.status == 3 || item.status == 4) && statusplanoterapeutico == 1 && objetivos.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.idobjetivo == item.idobjetivo && valor.statusobjetivo == 1).length > 0 && metas.filter(valor => valor.idmeta == item.idmeta && (valor.status == 0 || valor.status == 1)).length == 0 ? 'flex' : 'none'
@@ -3926,15 +3809,15 @@ function AptPlanoTerapeutico() {
                   }}
                 ></img>
               </button>
-              <button id="btn meta cancelada"
+              <button id="btn cancelar meta"
                 title="CANCELAR META."
-                style={{ display: (selectedcategoria == tipousuario || boss_planoterapeutico_usuario == 1) && item.status == 0 || item.status == 1 ? 'flex' : 'none' }}
+                style={{ display: (selectedcategoria == tipousuario || boss_planoterapeutico_usuario == 1) && item.status == 1 ? 'flex' : 'none' }}
                 className={window.innerWidth < 426 ? 'yellow-button' : "animated-yellow-button"}
                 onClick={() => document.getElementById("divJustificativaSuspender" + item.id).style.display = 'flex'}
               >
                 <img
                   alt=""
-                  src={suspender}
+                  src={trash}
                   style={{
                     margin: 10,
                     height: 30,
@@ -3942,15 +3825,16 @@ function AptPlanoTerapeutico() {
                   }}
                 ></img>
               </button>
-              <button id="btn meta excluida"
-                title="EXCLUIR META."
-                style={{ display: (selectedcategoria == tipousuario || boss_planoterapeutico_usuario == 1) && item.status == 0 ? 'flex' : 'none' }}
+
+              <button id="btn meta não atingida"
+                title="CLASSIFICAR META COMO NÃO ATINGIDA."
+                style={{ display: (selectedcategoria == tipousuario || boss_planoterapeutico_usuario == 1) && item.status == 1 ? 'flex' : 'none' }}
                 className={window.innerWidth < 426 ? 'red-button' : "animated-red-button"}
-                onClick={(e) => { deleteMeta(item); e.stopPropagation() }}
+                onClick={() => document.getElementById("divJustificativaMetaNaoAtingida" + item.id).style.display = 'flex'}
               >
                 <img
                   alt=""
-                  src={deletar}
+                  src={emojisad}
                   style={{
                     margin: 10,
                     height: 30,
@@ -3958,14 +3842,39 @@ function AptPlanoTerapeutico() {
                   }}
                 ></img>
               </button>
-              <button id="btn meta alcançada"
-                title="CLASSIFICAR META COMO ALCANÇADA."
+              <button id="btn meta parcialmente atingida"
+                title="CLASSIFICAR META COMO PARCIALMENTE ATINGIDA."
+                style={{ display: (selectedcategoria == tipousuario || boss_planoterapeutico_usuario == 1) && item.status == 1 ? 'flex' : 'none' }}
+                className={window.innerWidth < 426 ? 'yellow-button' : "animated-yellow-button"}
+                onClick={() => document.getElementById("divJustificativaMetaParcialAtingida" + item.id).style.display = 'flex'}
+              >
+                <img
+                  alt=""
+                  src={emojineutral}
+                  style={{
+                    margin: 10,
+                    height: 30,
+                    width: 30,
+                  }}
+                ></img>
+              </button>
+              <button id="btn meta plenamente atingida"
+                title="CLASSIFICAR META COMO PLENAMENTE ATINGIDA." // status da meta = 2.
                 style={{ display: (selectedcategoria == tipousuario || boss_planoterapeutico_usuario == 1) && item.status == 1 ? 'flex' : 'none' }}
                 className={window.innerWidth < 426 ? 'green-button' : "animated-green-button"}
                 onClick={(e) => { updateMeta(item, moment(item.dataestimada).startOf('day').diff(moment(item.datainicio).startOf('day'), 'days'), item.nota, 2, item.idprofissional, item.justificativa, item.checagem); e.stopPropagation() }} // atualiza a meta como alcançada.
               >
-                {'✔'}
+                <img
+                  alt=""
+                  src={emojihappy}
+                  style={{
+                    margin: 10,
+                    height: 30,
+                    width: 30,
+                  }}
+                ></img>
               </button>
+
             </div>
           </div>
         </div>
@@ -4033,7 +3942,6 @@ function AptPlanoTerapeutico() {
 
           </div>
         </div>
-
         <div id={"divJustificativaRestart" + item.id} style={{ display: 'none', marginTop: 10 }}>
           <textarea
             id={"inputJustificativaRestart" + item.id}
@@ -4096,10 +4004,131 @@ function AptPlanoTerapeutico() {
 
           </div>
         </div>
+        <div id={"divJustificativaMetaNaoAtingida" + item.id} style={{ display: 'none', marginTop: 10 }}>
+          <textarea
+            id={"inputJustificativaMetaNaoAtingida" + item.id}
+            className="textarea"
+            defaultValue={item.justificativa}
+            autoComplete="off"
+            placeholder="JUSTIFICAR AQUI POR QUE A META NÃO FOI ATINGIDA."
+            onFocus={(e) => (e.target.placeholder = '')}
+            onBlur={(e) => (e.target.placeholder = 'JUSTIFICAR AQUI POR QUE A META NÃO FOI ATINGIDA.')}
+            title="JUSTIFICAR AQUI POR QUE A META NÃO FOI ATINGIDA."
+            style={{
+              display: 'flex',
+              width: '100%',
+              height: 120,
+              margin: 2.5,
+              flexDirection: 'column',
+              boxShadow: '0px 1px 5px 1px rgba(0, 0, 0, 0.1)',
+            }}
+            type="text"
+            maxLength={200}>
+          </textarea>
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: 5 }}>
+            <button
+              title="SALVAR JUSTIFICATIVA."
+              className={window.innerWidth < 426 ? 'green-button' : "animated-green-button"}
+              onClick={(e) => {
+                updateMeta(item, moment(item.dataestimada).startOf('day').diff(moment(item.datainicio).startOf('day'), 'days'), item.nota, 4, item.idprofissional, document.getElementById("inputJustificativaMetaNaoAtingida" + item.id).value.toUpperCase(), item.checagem); // status 4 = meta não atingida.
+                document.getElementById("divJustificativaMetaNaoAtingida" + item.id).style.display = 'none';
+                e.stopPropagation()
+              }}
+            >
+              <img
+                alt=""
+                src={salvar}
+                style={{
+                  margin: 10,
+                  height: 30,
+                  width: 30,
+                }}
+              ></img>
+            </button>
+            <button
+              title="CANCELAR JUSTIFICATIVA."
+              className={window.innerWidth < 426 ? 'red-button' : "animated-red-button"}
+              onClick={(e) => {
+                document.getElementById("divJustificativaMetaNaoAtingida" + item.id).style.display = 'none';
+                e.stopPropagation()
+              }}
+            >
+              <img
+                alt=""
+                src={suspender}
+                style={{
+                  margin: 10,
+                  height: 30,
+                  width: 30,
+                }}
+              ></img>
+            </button>
+          </div>
+        </div>
+        <div id={"divJustificativaMetaParcialAtingida" + item.id} style={{ display: 'none', marginTop: 10 }}>
+          <textarea
+            id={"inputJustificativaMetaParcialAtingida" + item.id}
+            className="textarea"
+            defaultValue={item.justificativa}
+            autoComplete="off"
+            placeholder="JUSTIFICAR AQUI POR QUE A META FOI PARCIALMENTE ATINGIDA."
+            onFocus={(e) => (e.target.placeholder = '')}
+            onBlur={(e) => (e.target.placeholder = 'JUSTIFICAR AQUI POR QUE A META FOI PARCIALMENTE ATINGIDA.')}
+            title="JUSTIFICAR AQUI POR QUE A META FOI PARCIALMENTE ATINGIDA."
+            style={{
+              display: 'flex',
+              width: '100%',
+              height: 120,
+              margin: 2.5,
+              flexDirection: 'column',
+              boxShadow: '0px 1px 5px 1px rgba(0, 0, 0, 0.1)',
+            }}
+            type="text"
+            maxLength={200}>
+          </textarea>
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: 5 }}>
+            <button
+              title="SALVAR JUSTIFICATIVA."
+              className={window.innerWidth < 426 ? 'green-button' : "animated-green-button"}
+              onClick={(e) => {
+                updateMeta(item, moment(item.dataestimada).startOf('day').diff(moment(item.datainicio).startOf('day'), 'days'), item.nota, 5, item.idprofissional, document.getElementById("inputJustificativaMetaParcialAtingida" + item.id).value.toUpperCase(), item.checagem); // status 5 = meta parcialmente atingida.
+                document.getElementById("divJustificativaMetaParcialAtingida" + item.id).style.display = 'none';
+                e.stopPropagation()
+              }}
+            >
+              <img
+                alt=""
+                src={salvar}
+                style={{
+                  margin: 10,
+                  height: 30,
+                  width: 30,
+                }}
+              ></img>
+            </button>
+            <button
+              title="CANCELAR JUSTIFICATIVA."
+              className={window.innerWidth < 426 ? 'red-button' : "animated-red-button"}
+              onClick={(e) => {
+                document.getElementById("divJustificativaMetaAprcialAtingida" + item.id).style.display = 'none';
+                e.stopPropagation()
+              }}
+            >
+              <img
+                alt=""
+                src={suspender}
+                style={{
+                  margin: 10,
+                  height: 30,
+                  width: 30,
+                }}
+              ></img>
+            </button>
+          </div>
+        </div>
 
         <div className="hide" id={"metodos + intervencao" + item.id}
           style={{ justifyContent: 'center', alignSelf: 'center', width: '100%', padding: 5 }}>
-
           <div id="view dos métodos de mensuração e das intervenções terapêuticas">
             <div id="título métodos de avaliação"
               className="title4"
@@ -4211,13 +4240,6 @@ function AptPlanoTerapeutico() {
     })
   };
 
-  // exibição de escalas para mensuração de desempenho, por categoria profissional.
-  var effectColors = {
-    highlight: 'rgba(255, 255, 255, 0.75)',
-    shadow: 'rgba(0, 0, 0, 0.5)',
-    glow: 'rgb(255, 255, 0)'
-  };
-
   // carregando as opções de escalas.
   const loadOpcoesEscalas = () => {
     axios.get(htmlghapopcoesescalas).then((response) => {
@@ -4237,26 +4259,6 @@ function AptPlanoTerapeutico() {
       setarraylistescalas(x.rows.filter(item => item.idatendimento == idatendimento));
     });
   }
-
-
-
-  // exibição das escalas (métodos de avaliação) para cada objetivo secundário.
-  function Metricas() {
-    return (
-      <div
-        style={{
-          // display: listopcoesmetodos.filter(item => item.id_objetivo == selectedobjetivo).length > 0 ? 'flex' : 'none',
-          flexDirection: 'column', justifyContent: 'center', padding: 0, marign: 0,
-          overflowX: 'hidden', overflowY: 'hidden', flexDirection: 'column', justifyContent: 'center', width: '100%', padding: 5,
-        }}
-      >
-
-      </div>
-    )
-  }
-
-  // preparando os gráficos em linha para as escalas.
-  var dataChartEscalas = [];
 
   // função para construção dos toasts.
   const [valortoast, setvalortoast] = useState(0);
