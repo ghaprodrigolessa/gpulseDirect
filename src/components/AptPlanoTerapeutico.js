@@ -2693,10 +2693,10 @@ function AptPlanoTerapeutico() {
                     title="FINALIZAR OBJETIVO PRIMÁRIO."
                     style={{
                       display:
-                        boss_planoterapeutico_usuario == 1 &&
-                          item.statusobjetivo == 1 &&
-                          objetivos.filter(item => item.tipoobjetivo == 2 && item.idplanoterapeutico == idplanoterapeutico).length > 0 &&
-                          objetivos.filter(item => item.tipoobjetivo == 2 && item.idplanoterapeutico == idplanoterapeutico && item.statusobjetivo < 2).length == 0 ? 'flex' : 'none'
+                        boss_planoterapeutico_usuario == 1 && item.statusobjetivo == 1 &&
+                          objetivos.filter(valor => valor.tipoobjetivo == 2 && valor.idplanoterapeutico == idplanoterapeutico && valor.statusobjetivo == 1).length == 0 &&
+                          objetivos.filter(valor => valor.tipoobjetivo == 2 && valor.idplanoterapeutico == idplanoterapeutico && valor.statusobjetivo == 2 && moment(valor.datainicio).diff(moment(item.datainicio), 'milliseconds') > 0).length > 0
+                          ? 'flex' : 'none'
                     }}
                     className={window.innerWidth < 426 ? 'green-button' : "animated-green-button"}
                     onClick={(e) => {
@@ -2705,7 +2705,8 @@ function AptPlanoTerapeutico() {
                       setTimeout(() => {
                         if (
                           objetivos.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.tipoobjetivo == 2 && valor.statusobjetivo < 2).length < 1 &&
-                          metas.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.status < 2).length < 1) {
+                          metas.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.status < 2).length < 1
+                        ) {
                           updateObjetivo(item, 2); e.stopPropagation();
                         } else if (metas.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.status < 2).length > 0) {
                           toast(1, '#ec7063', 'NÃO É POSSÍVEL FINALIZAR UM OBJETIVO PRINCIPAL SEM METAS CONCLUÍDAS.', 3000);
@@ -3133,19 +3134,43 @@ function AptPlanoTerapeutico() {
               style={{ display: item.statusobjetivo == 3 ? 'flex' : 'none', padding: 10, marginTop: 10, marginBottom: 10 }}
               title={item.justificativa}
             >
-              NÃO ATINGIDO
+              <img
+                alt=""
+                src={emojisad}
+                style={{
+                  margin: 10,
+                  height: 30,
+                  width: 30,
+                }}
+              ></img>
             </div>
-            <div className='orange-button'
+            <div className='yellow-button'
               style={{ display: item.statusobjetivo == 4 ? 'flex' : 'none', padding: 10, marginTop: 10, marginBottom: 10 }}
               title={item.justificativa}
             >
-              CANCELADO
+              <img
+                alt=""
+                src={trash}
+                style={{
+                  margin: 10,
+                  height: 30,
+                  width: 30,
+                }}
+              ></img>
             </div>
             <div className='green-button'
               style={{ display: item.statusobjetivo == 2 ? 'flex' : 'none', padding: 10, marginTop: 10, marginBottom: 10 }}
               title={"OBJETIVO SECUNDÁRIO ATINGIDO!"}
             >
-              ATINGIDO
+              <img
+                alt=""
+                src={emojihappy}
+                style={{
+                  margin: 10,
+                  height: 30,
+                  width: 30,
+                }}
+              ></img>
             </div>
             <div>{item.objetivo}</div>
           </div>
@@ -3172,11 +3197,16 @@ function AptPlanoTerapeutico() {
               document.getElementById("objetivo" + item.id).className = "red-button-objetivos animationobjetivos";
             }}
           >
-            <div className='green-button'
-              style={{ display: item.statusobjetivo == 2 ? 'flex' : 'none', padding: 10, marginTop: 10, marginBottom: 10 }}
-              title={"OBJETIVO SECUNDÁRIO ATINGIDO!"}
-            >
-              ATINGIDO
+            <div className='green-button'>
+              <img
+                alt=""
+                src={emojihappy}
+                style={{
+                  margin: 10,
+                  height: 30,
+                  width: 30,
+                }}
+              ></img>
             </div>
             <div>{item.objetivo}</div>
           </div>
@@ -3202,11 +3232,16 @@ function AptPlanoTerapeutico() {
               document.getElementById("objetivo" + item.id).className = "red-button-objetivos animationobjetivos";
             }}
           >
-            <div className='orange-button'
-              style={{ display: item.statusobjetivo == 5 ? 'flex' : 'none', padding: 10, marginTop: 10, marginBottom: 10 }}
-              title={item.justificativa}
-            >
-              PARCIALMENTE ATINGIDO
+            <div className="yellow-button">
+              <img
+                alt=""
+                src={emojineutral}
+                style={{
+                  margin: 10,
+                  height: 30,
+                  width: 30,
+                }}
+              ></img>
             </div>
             <div>{item.objetivo}</div>
           </div>
@@ -3235,21 +3270,45 @@ function AptPlanoTerapeutico() {
           >
             <div className='red-button'
               style={{ display: item.statusobjetivo == 3 ? 'flex' : 'none', padding: 10, marginTop: 10, marginBottom: 10 }}
-              title={item.justificativa}
+              title={"OBJETIVO NÃO ATINGIDO: " + item.justificativa}
             >
-              NÃO ATINGIDO
+              <img
+                alt=""
+                src={emojisad}
+                style={{
+                  margin: 10,
+                  height: 30,
+                  width: 30,
+                }}
+              ></img>
             </div>
-            <div className='orange-button'
+            <div className='red-button'
               style={{ display: item.statusobjetivo == 4 ? 'flex' : 'none', padding: 10, marginTop: 10, marginBottom: 10 }}
-              title={item.justificativa}
+              title={"OBJETIVO SECUNDÁRIO CANCELADO: " + item.justificativa}
             >
-              CANCELADO
+              <img
+                alt=""
+                src={emojisad}
+                style={{
+                  margin: 10,
+                  height: 30,
+                  width: 30,
+                }}
+              ></img>
             </div>
             <div className='green-button'
               style={{ display: item.statusobjetivo == 2 ? 'flex' : 'none', padding: 10, marginTop: 10, marginBottom: 10 }}
               title={"OBJETIVO SECUNDÁRIO ATINGIDO!"}
             >
-              ATINGIDO
+              <img
+                alt=""
+                src={emojihappy}
+                style={{
+                  margin: 10,
+                  height: 30,
+                  width: 30,
+                }}
+              ></img>
             </div>
             <div>{item.objetivo}</div>
           </div>
