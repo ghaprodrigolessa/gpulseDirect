@@ -369,31 +369,36 @@ function AptPlanoTerapeutico() {
       }
       // cancelando um plano terapêutico.
     } else {
-      var obj = {
-        idpct: idpaciente,
-        idatendimento: idatendimento,
-        datainicio: planoterapeutico.filter(item => item.id == idplanoterapeutico).map(item => item.datainicio).pop(),
-        datatermino: moment(),
-        idprofissional: 0,
-        moraes: moraes,
-        decliniofuncional: decliniofuncional,
-        riscofuncional: riscofuncional,
-        linhadecuidados: 0,
-        status: 3
-      }
-      // alert(JSON.stringify(obj));
-      axios.post(htmlupdateplanoterapeutico + id, obj).then(() => {
-        // desabilitar objetivos e metas quando o plano terapêutico é cancelado.
-        objetivos.filter(item => item.idplanoterapeutico == idplanoterapeutico).map(item => {
-          updateObjetivo(item, 3);
-        })
-        metas.filter(item => item.idplanoterapeutico == idplanoterapeutico).map(item => {
-          updateMeta(item, moment(item.dataestimada).startOf('day').diff(moment(item.datainicio).startOf('day'), 'days'), item.nota, 4, item.idprofissional, 'PLANO TERAPÊUTICO CANCELADO.', item.checagem);
-        })
-        setTimeout(() => {
+      // impedindo o cancelamento do plano terapêutico se existem objetivos ou metas ativas.
+      if (objetivos.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.statusobjetivo == 1).length > 0 || metas.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.status == 1).length > 0) {
+        toast(1, '#ec7063', 'NÃO É POSSÍVEL CANCELAR UM PLANO TERAPÊUTICO COM OBJETIVOS OU METAS ATIVAS.', 4000);
+      } else {
+        // permitindo o cancelamento do plano terapêutico.
+        var obj = {
+          idpct: idpaciente,
+          idatendimento: idatendimento,
+          datainicio: planoterapeutico.filter(item => item.id == idplanoterapeutico).map(item => item.datainicio).pop(),
+          datatermino: moment(),
+          idprofissional: 0,
+          moraes: moraes,
+          decliniofuncional: decliniofuncional,
+          riscofuncional: riscofuncional,
+          linhadecuidados: 0,
+          status: 3
+        }
+        axios.post(htmlupdateplanoterapeutico + id, obj).then(() => {
+          /*
+            // desabilitar objetivos e metas quando o plano terapêutico é cancelado.
+            objetivos.filter(item => item.idplanoterapeutico == idplanoterapeutico).map(item => {
+            updateObjetivo(item, 3);
+            })
+            metas.filter(item => item.idplanoterapeutico == idplanoterapeutico).map(item => {
+            updateMeta(item, moment(item.dataestimada).startOf('day').diff(moment(item.datainicio).startOf('day'), 'days'), item.nota, 4, item.idprofissional, 'PLANO TERAPÊUTICO CANCELADO.', item.checagem);
+            })
+          */
           loadPlanosTerapeuticos();
-        }, 3000);
-      });
+        });
+      }
     }
   }
 
@@ -1483,6 +1488,8 @@ function AptPlanoTerapeutico() {
     // escalas.
     loadOpcoesEscalas();
     loadEscalas();
+    setselectedobjetivo(0);
+    setarraycategoriaprofissional([]);
     // alert(idlinhadecuidado);
   }, []);
 
@@ -1711,7 +1718,7 @@ function AptPlanoTerapeutico() {
                     onClick={() => selecaoAlerta(item)}
                     style={{ borderRadius: 5, backgroundColor: '#ec7063', padding: 5, margin: 2.5 }}
                   >
-                    {arraycategoriaprofissional.filter(valor => valor.id == item.idespecialidade).map(valor => valor.nome) + ' - ' + item.meta}
+                    {listcategoriaprofissional.filter(valor => valor.id == item.idespecialidade).map(valor => valor.nome) + ' - ' + item.meta}
                   </div>
                 ))}
               </div>
@@ -1738,18 +1745,33 @@ function AptPlanoTerapeutico() {
                   <div style={{ borderRadius: 5, backgroundColor: '#ec7063', padding: 5, margin: 2.5 }}
                     onClick={() => selecaoAlerta(item)}
                   >
-                    {arraycategoriaprofissional.filter(valor => valor.id == item.idespecialidade).map(valor => valor.nome) + ' - ' + item.meta}
+                    {listcategoriaprofissional.filter(valor => valor.id == item.idespecialidade).map(valor => valor.nome) + ' - ' + item.meta}
                   </div>
                 ))}
               </div>
             </div>
-            <div id="## METAS A VENCER ##" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <div style={{ margin: 5, alignSelf: 'center', display: metas.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -3).length > 0 ? 'flex' : 'none' }}>
-                {'METAS A VENCER: ' + metas.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -3).length}
+            <div
+              id="## METAS A VENCER (SINO VERMELHO) ##"
+              style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <div
+                style={{
+                  display:
+                    metas.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.status == 1 &&
+                      moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -3 &&
+                      moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 0).length > 0 ? 'flex' : 'none',
+                  margin: 5, alignSelf: 'center',
+                }}>
+                {'METAS A VENCER: ' + metas.filter(item => item.idplanoterapeutico == idplanoterapeutico &&
+                  item.status == 1 &&
+                  moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -3 &&
+                  moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 0).length}
               </div>
               <div
                 style={{
-                  display: metas.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -3).length > 0 ? 'flex' : 'none',
+                  display:
+                    metas.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.status == 1 &&
+                      moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -3 &&
+                      moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 0).length > 0 ? 'flex' : 'none',
                   flexDirection: 'column',
                   justifyContent: 'center',
                   margin: 5,
@@ -1763,14 +1785,20 @@ function AptPlanoTerapeutico() {
                   <div style={{ borderRadius: 5, backgroundColor: '#ec7063', padding: 5, margin: 2.5 }}
                     onClick={() => selecaoAlerta(item)}
                   >
-                    {arraycategoriaprofissional.filter(valor => valor.id == item.idespecialidade).map(valor => valor.nome) + ' - ' + item.meta}
+                    {listcategoriaprofissional.filter(valor => valor.id == item.idespecialidade).map(valor => valor.nome) + ' - ' + item.meta}
                   </div>
                 ))}
               </div>
             </div>
             <div id="## METAS VENCIDAS ##" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <div style={{ margin: 5, alignSelf: 'center', display: metas.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -1).length > 0 ? 'flex' : 'none' }}>
-                {'METAS VENCIDAS: ' + metas.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -1).length}
+              <div
+                style={{
+                  margin: 5, alignSelf: 'center',
+                  display: metas.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -1).length > 0 ? 'flex' : 'none'
+                }}>
+                {
+                  'METAS VENCIDAS: ' + metas.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -1).length // ATENÇÃO: PONTO CRÍTICO!
+                }
               </div>
               <div
                 style={{
@@ -1788,7 +1816,7 @@ function AptPlanoTerapeutico() {
                   <div style={{ borderRadius: 5, backgroundColor: '#ec7063', padding: 5, margin: 2.5 }}
                     onClick={() => selecaoAlerta(item)}
                   >
-                    {arraycategoriaprofissional.filter(valor => valor.id == item.idespecialidade).map(valor => valor.nome) + ' - ' + item.meta}
+                    {listcategoriaprofissional.filter(valor => valor.id == item.idespecialidade).map(valor => valor.nome) + ' - ' + item.meta}
                   </div>
                 ))}
               </div>
@@ -1849,11 +1877,9 @@ function AptPlanoTerapeutico() {
               maxHeight: window.innerWidth < 426 ? '60vh' : '65vh',
               minWidth: window.innerWidth < 426 && hide == 1 ? '80vw' : '10vw',
             }}>
-            {'SEM ALERTAS.'}
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <div style={{
-                margin: 5,
-              }}>
+            <div id="objetivos finalizáveis"
+              style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <div style={{ margin: 5 }}>
                 {'OBJETIVOS SECUNDÁRIOS FINALIZÁVEIS:'}
               </div>
               <div
@@ -1872,11 +1898,9 @@ function AptPlanoTerapeutico() {
                 {objetivos.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.tipoobjetivo == 2 && item.statusobjetivo == 1).map(item => checametas(item))}
               </div>
             </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <div style={{
-                margin: 5,
-              }}>
+            <div id="metas ativas"
+              style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <div style={{ margin: 5 }}>
                 {'METAS ATIVAS: ' + metas.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.status == 1).length}
               </div>
               <div
@@ -1907,8 +1931,46 @@ function AptPlanoTerapeutico() {
                 ))}
               </div>
             </div>
+            <div id="## METAS A VENCER (SINO VERDE) ##"
+              style={{
+                display:
+                  metas.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.status == 1 &&
+                    moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -3 &&
+                    moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 0).length > 0 ? 'flex' : 'none',
+                margin: 5, alignSelf: 'center',
+                flexDirection: 'column', justifyContent: 'center'
+              }}>
+              <div style={{ margin: 5 }}>
+                {'METAS A VENCER: ' + metas.filter(item => item.idplanoterapeutico == idplanoterapeutico &&
+                  item.status == 1 &&
+                  moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -3 &&
+                  moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 0).length}
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  margin: 5,
+                  width: window.innerWidth < 426 ? '75vw' : '30vw',
+                  borderRadius: 5,
+                  backgroundColor: '#f2f2f2',
+                  padding: 10,
+                  alignSelf: 'center',
+                }}>
+                {metas.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.status == 1 &&
+                  moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -3 &&
+                  moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 0).map(item => (
+                    <div style={{ borderRadius: 5, backgroundColor: '#52be80', padding: 5, margin: 2.5 }}
+                      onClick={() => selecaoAlerta(item)}
+                    >
+                      {listcategoriaprofissional.filter(valor => valor.id == item.idespecialidade).map(valor => valor.nome) + ' - ' + item.meta}
+                    </div>
+                  ))}
+              </div>
+            </div>
           </div>
-        </div>
+        </div >
       )
     }
   }
@@ -2140,11 +2202,16 @@ function AptPlanoTerapeutico() {
                   // PENDÊNCIA
                   onClick={() => { setselectedobjetivo(0); setviewmodalplanoterapeutico(2); setselectedobjetivo(0); }}
                   title="CANCELAR PLANO TERAPÊUTICO"
-                  style={{ display: statusplanoterapeutico == 1 ? 'flex' : 'none' }}
+                  style={{
+                    display: statusplanoterapeutico == 1 &&
+                      objetivos.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.statusobjetivo == 1).length == 0 &&
+                      metas.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.status == 1).length == 0 ?
+                      'flex' : 'none'
+                  }}
                   className={window.innerWidth < 426 ? 'red-button' : "animated-red-button"}>
                   <img
                     alt=""
-                    src={deletar}
+                    src={trash}
                     style={{
                       margin: 10,
                       height: 30,
@@ -2434,10 +2501,10 @@ function AptPlanoTerapeutico() {
           <textarea id={"inputJustificativaObjetivo"}
             className="textarea"
             autoComplete="off"
-            placeholder="JUSTIFICAR AQUI POR QUE OBJETIVO FOI CANCELADO OU NÃO FOI ATINGIDO."
+            placeholder="JUSTIFICAR AQUI POR QUE OBJETIVO FOI CANCELADO."
             onFocus={(e) => (e.target.placeholder = '')}
-            onBlur={(e) => (e.target.placeholder = 'JUSTIFICAR AQUI POR QUE OBJETIVO FOI CANCELADO OU NÃO FOI ATINGIDO.')}
-            title="JUSTIFICAR AQUI POR QUE OBJETIVO FOI CANCELADO OU NÃO FOI ATINGIDO."
+            onBlur={(e) => (e.target.placeholder = 'JUSTIFICAR AQUI POR QUE OBJETIVO FOI CANCELADO.')}
+            title="JUSTIFICAR AQUI POR QUE OBJETIVO FOI CANCELADO."
             style={{
               width: '100%',
               height: 100,
@@ -2608,9 +2675,24 @@ function AptPlanoTerapeutico() {
               </div>
               <div style={{ display: 'flex', flexDirection: window.innerWidth < 426 ? 'column' : 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <div
-                  className={item.statusobjetivo == 0 ? "grey-button" : item.statusobjetivo == 1 ? "blue-button" : item.statusobjetivo == 2 ? "green-button" : item.statusobjetivo == 3 ? "red-button" : "yellow-button"}
-                  style={{ width: 150 }}>
-                  {item.statusobjetivo == 0 ? 'INATIVO' : item.statusobjetivo == 1 ? 'ATIVO' : item.statusobjetivo == 2 ? 'SUCESSO' : item.statusobjetivo == 3 ? 'NÃO ATINGIDO' : 'CANCELADO'}
+                  className={item.statusobjetivo == 0 ? "grey-button" : item.statusobjetivo == 1 ? "yellow-button" : item.statusobjetivo == 2 ? "green-button" : item.statusobjetivo == 3 ? "red-button" : "red-button"}
+                  style={{ width: 150 }}
+                  title={item.statusobjetivo == 0 ? 'INATIVO' : item.statusobjetivo == 1 ? 'ATIVO' : item.statusobjetivo == 2 ? 'ATINGIDO' : item.statusobjetivo == 3 ? 'NÃO ATINGIDO' : 'CANCELADO'}
+                >
+                  <div>
+                    {item.statusobjetivo == 0 ? 'INATIVO' : item.statusobjetivo == 1 ? 'ATIVO' : item.statusobjetivo == 2 ? 'ATINGIDO' : item.statusobjetivo == 3 ? 'NÃO ATINGIDO' : 'CANCELADO'}
+                  </div>
+                  <img
+                    alt=""
+                    src={item.statusobjetivo == 1 ? plano_ativo : item.statusobjetivo == 2 ? emojihappy : item.statusobjetivo == 3 ? emojisad : trash}
+                    style={{
+                      display: 'none',
+                      marginRight: item.statusplanoterapeutico == 1 ? 0 : 5,
+                      margin: 10,
+                      height: 30,
+                      width: 30,
+                    }}
+                  ></img>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                   <button id="exlcuir objetivo primário"
@@ -2632,13 +2714,22 @@ function AptPlanoTerapeutico() {
                   <button id="cancelar objetivo primário"
                     title="CANCELAR OBJETIVO PRIMÁRIO."
                     style={{ display: boss_planoterapeutico_usuario == 1 && item.statusobjetivo == 1 ? 'flex' : 'none' }}
-                    className={window.innerWidth < 426 ? 'yellow-button' : "animated-yellow-button"}
+                    className={window.innerWidth < 426 ? 'red-button' : "animated-red-button"}
                     onClick={(e) => {
-                      setselectedobjetivo(0);
-                      setselectedobjetivoprimario(item);
-                      setTimeout(() => {
-                        setstatusobjetivo(4); setviewjustificaobjetivoprimario(1); e.stopPropagation();
-                      }, 500);
+                      if (
+                        objetivos.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.tipoobjetivo == 2 && valor.statusobjetivo < 2).length < 1 &&
+                        metas.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.status < 2).length < 1
+                      ) {
+                        setselectedobjetivo(0);
+                        setselectedobjetivoprimario(item);
+                        setTimeout(() => {
+                          setstatusobjetivo(4); setviewjustificaobjetivoprimario(1); e.stopPropagation();
+                        }, 500);
+                      } else if (metas.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.status < 2).length > 0) {
+                        toast(1, '#ec7063', 'NÃO É POSSÍVEL FINALIZAR UM OBJETIVO PRINCIPAL SEM METAS CONCLUÍDAS.', 3000);
+                      } else {
+                        toast(1, '#ec7063', 'NÃO É POSSÍVEL FINALIZAR UM OBJETIVO PRINCIPAL COM OBJETIVOS SECUNDÁRIOS ABERTOS.', 3000);
+                      }
                     }}
                   >
                     <img
@@ -2652,8 +2743,14 @@ function AptPlanoTerapeutico() {
                     ></img>
                   </button>
                   <button id="objetivo primário não alcançado"
-                    title="DEFINIR OBJETIVO PRIMÁRIO COMO NÃO ALCANÇADO."
-                    style={{ display: boss_planoterapeutico_usuario == 1 && item.statusobjetivo == 1 ? 'flex' : 'none' }}
+                    title="OBJETIVO PRIMÁRIO NÃO ATINGIDO."
+                    style={{
+                      display:
+                        boss_planoterapeutico_usuario == 1 && item.statusobjetivo == 1 &&
+                          objetivos.filter(valor => valor.tipoobjetivo == 2 && valor.idplanoterapeutico == idplanoterapeutico && valor.statusobjetivo == 1).length == 0 &&
+                          objetivos.filter(valor => valor.tipoobjetivo == 2 && valor.idplanoterapeutico == idplanoterapeutico && valor.statusobjetivo == 2 && moment(valor.datainicio).diff(moment(item.datainicio), 'milliseconds') > 0).length > 0
+                          ? 'flex' : 'none'
+                    }}
                     className={window.innerWidth < 426 ? 'red-button' : "animated-red-button"}
                     onClick={(e) => {
                       setselectedobjetivo(0);
@@ -2665,7 +2762,7 @@ function AptPlanoTerapeutico() {
                   >
                     <img
                       alt=""
-                      src={suspender}
+                      src={emojisad}
                       style={{
                         margin: 10,
                         height: 30,
@@ -2674,23 +2771,7 @@ function AptPlanoTerapeutico() {
                     ></img>
                   </button>
                   <button
-                    title="VALIDAR OBJETIVO PRIMÁRIO."
-                    style={{ display: item.statusobjetivo == 0 ? 'flex' : 'none' }}
-                    className={window.innerWidth < 426 ? 'green-button' : "animated-green-button"}
-                    onClick={(e) => { updateObjetivo(item, 1); setselectedobjetivo(0); e.stopPropagation() }}
-                  >
-                    <img
-                      alt=""
-                      src={salvar}
-                      style={{
-                        margin: 10,
-                        height: 30,
-                        width: 30,
-                      }}
-                    ></img>
-                  </button>
-                  <button
-                    title="FINALIZAR OBJETIVO PRIMÁRIO."
+                    title="OBJETIVO PRIMÁRIO ATINGIDO."
                     style={{
                       display:
                         boss_planoterapeutico_usuario == 1 && item.statusobjetivo == 1 &&
@@ -2716,7 +2797,15 @@ function AptPlanoTerapeutico() {
                       }, 1000);
                     }}
                   >
-                    ✔
+                    <img
+                      alt=""
+                      src={emojihappy}
+                      style={{
+                        margin: 10,
+                        height: 30,
+                        width: 30,
+                      }}
+                    ></img>
                   </button>
                 </div>
               </div>
@@ -2773,7 +2862,7 @@ function AptPlanoTerapeutico() {
             }}
           >
             <div id="botoes" // 0 = a validar, 1 = ativo. 2 = concluído. 3 = não alcançado. 4 = cancelado. 5 = parcialmente atingido.
-              style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+              style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', margin: 5 }}>
               <button id="btn excluir (oculto)"
                 title="EXCLUIR OBJETIVO SECUNDÁRIO."
                 style={{ display: item.statusobjetivo == 0 ? 'flex' : 'none' }}
@@ -2793,7 +2882,7 @@ function AptPlanoTerapeutico() {
               <button id="btn cancelar"
                 title="CANCELAR OBJETIVO SECUNDÁRIO."
                 style={{ display: item.statusobjetivo == 1 ? 'flex' : 'none' }}
-                className={window.innerWidth < 426 ? 'yellow-button' : "animatedobj-yellow-button"}
+                className={window.innerWidth < 426 ? 'red-button' : "animatedobj-red-button"}
                 onClick={(e) => {
                   axios.get(htmlmetas + idatendimento).then((response) => {
                     var x = [0, 1];
@@ -2961,7 +3050,6 @@ function AptPlanoTerapeutico() {
             style={{
               flexDirection: 'column', justifyContent: 'center',
               width: '100%', minWidth: '100%', padding: 10,
-              paddingBottom: 15,
             }}
             onClick={() => {
               setTimeout(() => {
@@ -2977,6 +3065,7 @@ function AptPlanoTerapeutico() {
               document.getElementById("objetivo" + item.id).className = "red-button-objetivos animationobjetivos";
             }}
           >
+            <div className="yellow-button" style={{ width: 150 }}>ATIVO</div>
             <div id="botoes" // 0 = a validar, 1 = ativo. 2 = concluído. 3 = não alcançado. 4 = cancelado. 5 = parcialmente atingido.
               style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
               <button id="btn excluir"
@@ -2998,7 +3087,7 @@ function AptPlanoTerapeutico() {
               <button id="btn cancelar"
                 title="CANCELAR OBJETIVO SECUNDÁRIO."
                 style={{ display: item.statusobjetivo == 1 ? 'flex' : 'none' }}
-                className={window.innerWidth < 426 ? 'yellow-button' : "animatedobj-yellow-button"}
+                className={window.innerWidth < 426 ? 'red-button' : "animatedobj-red-button"}
                 onClick={(e) => {
                   axios.get(htmlmetas + idatendimento).then((response) => {
                     var x = [0, 1];
@@ -3131,7 +3220,7 @@ function AptPlanoTerapeutico() {
               </button>
             </div>
             <div className='red-button'
-              style={{ display: item.statusobjetivo == 3 ? 'flex' : 'none', padding: 10, marginTop: 10, marginBottom: 10 }}
+              style={{ display: item.statusobjetivo == 3 ? 'flex' : 'none', padding: 10, marginTop: 10, marginBottom: 15 }}
               title={item.justificativa}
             >
               <img
@@ -3144,8 +3233,8 @@ function AptPlanoTerapeutico() {
                 }}
               ></img>
             </div>
-            <div className='yellow-button'
-              style={{ display: item.statusobjetivo == 4 ? 'flex' : 'none', padding: 10, marginTop: 10, marginBottom: 10 }}
+            <div className='red-button'
+              style={{ display: item.statusobjetivo == 4 ? 'flex' : 'none' }}
               title={item.justificativa}
             >
               <img
@@ -3159,7 +3248,7 @@ function AptPlanoTerapeutico() {
               ></img>
             </div>
             <div className='green-button'
-              style={{ display: item.statusobjetivo == 2 ? 'flex' : 'none', padding: 10, marginTop: 10, marginBottom: 10 }}
+              style={{ display: item.statusobjetivo == 2 ? 'flex' : 'none' }}
               title={"OBJETIVO SECUNDÁRIO ATINGIDO!"}
             >
               <img
@@ -3180,8 +3269,7 @@ function AptPlanoTerapeutico() {
             className={"blue-button-objetivos animationobjetivos"}
             style={{
               flexDirection: 'column', justifyContent: 'center',
-              width: '100%', minWidth: '100%', padding: 10,
-              paddingBottom: 15,
+              width: '100%', minWidth: '100%', padding: 10
             }}
             onClick={() => {
               setTimeout(() => {
@@ -3197,7 +3285,7 @@ function AptPlanoTerapeutico() {
               document.getElementById("objetivo" + item.id).className = "red-button-objetivos animationobjetivos";
             }}
           >
-            <div className='green-button'>
+            <div className='green-button' style={{ marginBottom: 10 }}>
               <img
                 alt=""
                 src={emojihappy}
@@ -3217,7 +3305,6 @@ function AptPlanoTerapeutico() {
             style={{
               flexDirection: 'column', justifyContent: 'center',
               width: '100%', minWidth: '100%', padding: 10,
-              paddingBottom: 15,
             }}
             onClick={() => {
               setTimeout(() => {
@@ -3232,7 +3319,7 @@ function AptPlanoTerapeutico() {
               document.getElementById("objetivo" + item.id).className = "red-button-objetivos animationobjetivos";
             }}
           >
-            <div className="yellow-button">
+            <div className="yellow-button" style={{ marginBottom: 10 }}>
               <img
                 alt=""
                 src={emojineutral}
@@ -3252,7 +3339,6 @@ function AptPlanoTerapeutico() {
             style={{
               flexDirection: 'column', justifyContent: 'center',
               width: '100%', minWidth: '100%', padding: 10,
-              paddingBottom: 15,
             }}
             onClick={() => {
               setTimeout(() => {
@@ -3269,7 +3355,7 @@ function AptPlanoTerapeutico() {
             }}
           >
             <div className='red-button'
-              style={{ display: item.statusobjetivo == 3 ? 'flex' : 'none', padding: 10, marginTop: 10, marginBottom: 10 }}
+              style={{ marginBottom: 10 }}
               title={"OBJETIVO NÃO ATINGIDO: " + item.justificativa}
             >
               <img
@@ -3282,38 +3368,10 @@ function AptPlanoTerapeutico() {
                 }}
               ></img>
             </div>
-            <div className='red-button'
-              style={{ display: item.statusobjetivo == 4 ? 'flex' : 'none', padding: 10, marginTop: 10, marginBottom: 10 }}
-              title={"OBJETIVO SECUNDÁRIO CANCELADO: " + item.justificativa}
-            >
-              <img
-                alt=""
-                src={emojisad}
-                style={{
-                  margin: 10,
-                  height: 30,
-                  width: 30,
-                }}
-              ></img>
-            </div>
-            <div className='green-button'
-              style={{ display: item.statusobjetivo == 2 ? 'flex' : 'none', padding: 10, marginTop: 10, marginBottom: 10 }}
-              title={"OBJETIVO SECUNDÁRIO ATINGIDO!"}
-            >
-              <img
-                alt=""
-                src={emojihappy}
-                style={{
-                  margin: 10,
-                  height: 30,
-                  width: 30,
-                }}
-              ></img>
-            </div>
             <div>{item.objetivo}</div>
           </div>
         ))}
-        <button
+        <button id="botão novo objetivo secundário"
           className="green-button"
           onClick={() => setviewobjetivo(2)}
           style={{
@@ -3334,7 +3392,7 @@ function AptPlanoTerapeutico() {
         </button>
       </div>
     )
-  }, [objetivos, idplanoterapeutico, opcoesmetas])
+  }, [objetivos, idplanoterapeutico, opcoesmetas]);
 
   var listcategoriaprofissional = [
     { id: 4, nome: 'ENFERMAGEM', cor: '#76D7C4' },
@@ -3770,6 +3828,16 @@ function AptPlanoTerapeutico() {
 
                 }}
                 type="number"
+                onKeyUp={() => {
+                  clearTimeout(timeout);
+                  timeout = setTimeout(() => {
+                    var number = parseInt(document.getElementById("inputPrazo" + item.id).value);
+                    if (number < 0) {
+                      document.getElementById("inputPrazo" + item.id).value = '';
+                      document.getElementById("inputPrazo" + item.id).focus();
+                    }
+                  }, 500);
+                }}
                 maxLength={3}>
               </input>
               <div id="imagens de ação"
@@ -3801,7 +3869,7 @@ function AptPlanoTerapeutico() {
             </div>
             <div id="botões"
               style={{
-                display: 'flex', flexDirection: 'row',
+                display: 'flex', flexDirection: 'row', flexWrap: 'wrap', maxWidth: 200,
               }}>
               <button id="btn excluir meta (erro de registro)"
                 title="EXCLUIR META."
@@ -3821,7 +3889,7 @@ function AptPlanoTerapeutico() {
               </button>
               <button id="btn validar meta"
                 title="VALIDAR META."
-                style={{ display: item.status == 0 ? 'flex' : 'none' }}
+                style={{ display: item.status == 0 && (selectedcategoria == tipousuario || boss_planoterapeutico_usuario == 1) ? 'flex' : 'none' }}
                 className={window.innerWidth < 426 ? 'green-button' : "animated-green-button"}
                 onClick={(e) => {
                   if (objetivos.filter(valor => valor.idobjetivo == item.idobjetivo && valor.statusobjetivo == 0 && valor.idplanoterapeutico == idplanoterapeutico).length > 0) {
@@ -3871,7 +3939,7 @@ function AptPlanoTerapeutico() {
               <button id="btn cancelar meta"
                 title="CANCELAR META."
                 style={{ display: (selectedcategoria == tipousuario || boss_planoterapeutico_usuario == 1) && item.status == 1 ? 'flex' : 'none' }}
-                className={window.innerWidth < 426 ? 'yellow-button' : "animated-yellow-button"}
+                className={window.innerWidth < 426 ? 'red-button' : "animated-red-button"}
                 onClick={() => document.getElementById("divJustificativaSuspender" + item.id).style.display = 'flex'}
               >
                 <img
