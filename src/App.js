@@ -290,7 +290,7 @@ function App() {
   const [selectedobjetivosecundario, setselectedobjetivosecundario] = useState([]);
   const [selectedobjetivo, setselectedobjetivo] = useState(0);
   const [selectedcategoria, setselectedcategoria] = useState(0);
-  const [opcoesmetas, setopcoesmetas] = useState(0);
+  const [opcoesmetas, setopcoesmetas] = useState([]);
   const [viewjustificaobjetivoprimario, setviewjustificaobjetivoprimario] = useState(0);
 
   // APT escalas.

@@ -43,7 +43,7 @@ function EscalasAssistenciais() {
       setarraylistescalas(x.rows.filter(item => item.idatendimento == idatendimento));
       setTimeout(() => {
         setshowescala(0);
-      }, 1000);
+      }, 2000);
     });
   }
 
@@ -86,7 +86,6 @@ function EscalasAssistenciais() {
     }
     axios.post(htmlghapinsertescala, obj).then(() => {
       loadEscalas();
-      setshowescala(0);
     })
   }
 
@@ -345,7 +344,7 @@ function EscalasAssistenciais() {
         </div>
       </div >
     );
-  }, [showescala, listescalas]);
+  }, [showescala, listescalas, arraylistescalas]);
 
   // ESCALA DE MORSE (showescala = 2).
   let quedas = -1;
@@ -377,7 +376,6 @@ function EscalasAssistenciais() {
     }
     axios.post(htmlghapinsertescala, obj).then(() => {
       loadEscalas();
-      setshowescala(0);
     })
   }
   const Morse = useCallback(() => {
@@ -549,7 +547,7 @@ function EscalasAssistenciais() {
         </div>
       </div>
     );
-  }, [showescala]);
+  }, [showescala, listescalas]);
 
   // ESCALA DE OXFORD (showescala = 3).
   const [grau, setgrau] = useState(0);
@@ -581,7 +579,6 @@ function EscalasAssistenciais() {
     }
     axios.post(htmlghapinsertescala, obj).then(() => {
       loadEscalas();
-      setshowescala(0);
     })
   }
   function Oxford() {
@@ -828,7 +825,6 @@ function EscalasAssistenciais() {
     }
     axios.post(htmlghapinsertescala, obj).then(() => {
       loadEscalas();
-      setshowescala(0);
     })
   }
   const Fugulin = useCallback(() => {
@@ -1214,7 +1210,6 @@ function EscalasAssistenciais() {
     }
     axios.post(htmlghapinsertescala, obj).then(() => {
       loadEscalas();
-      setshowescala(0);
     })
   }
 
@@ -1726,7 +1721,6 @@ function EscalasAssistenciais() {
     }
     axios.post(htmlghapinsertescala, obj).then(() => {
       loadEscalas();
-      setshowescala(0);
     })
   }
   function Eva() {
@@ -1867,7 +1861,6 @@ function EscalasAssistenciais() {
     }
     axios.post(htmlghapinsertescala, obj).then(() => {
       loadEscalas();
-      setshowescala(0);
     })
   }
   const RiscoAspirativo = useCallback(() => {
@@ -2050,12 +2043,11 @@ function EscalasAssistenciais() {
   }, [showescala]);
 
   // ESCALA DE GIJÓN (showescala = 9).
-  const [gijon, setgijon] = useState(0);
-  const [situacaofamiliar, setsituacaofamiliar] = useState(0);
-  const [situacaoeconomica, setsituacaoeconomica] = useState(0);
-  const [relacoessociais, setrelacoessociais] = useState(0);
-  const [contatofamilia, setcontatofamilia] = useState(0);
-  const [apoioredesocial, setapoioredesocial] = useState(0);
+  let situacaofamiliar = -1;
+  let situacaoeconomica = -1;
+  let relacoessociais = -1;
+  let contatofamilia = -1;
+  let apoioredesocial = -1;
 
   const insertGijon = () => {
     var score = situacaofamiliar + situacaoeconomica + relacoessociais + contatofamilia + apoioredesocial;
@@ -2080,12 +2072,11 @@ function EscalasAssistenciais() {
     }
     axios.post(htmlghapinsertescala, obj).then(() => {
       loadEscalas();
-      setshowescala(0);
     })
   }
-  function Gijon() {
+  const Gijon = useCallback(() => {
     return (
-      <div className="menucover" style={{ zIndex: 9, display: showescala == 7 ? 'flex' : 'none', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+      <div className="menucover" style={{ zIndex: 9, display: showescala == 9 ? 'flex' : 'none', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
         <div className="menucontainer">
           <div id="cabeçalho" className="cabecalho">
             <div className="title5">{'ESCALA DE GIJÓN'}</div>
@@ -2102,7 +2093,7 @@ function EscalasAssistenciais() {
                 ></img>
               </button>
               <button className="green-button"
-                onClick={() => insertGijon()}
+                onClick={() => checkEscala([situacaofamiliar, situacaoeconomica, relacoessociais, contatofamilia, apoioredesocial], insertGijon)}
               >
                 <img
                   alt=""
@@ -2119,180 +2110,181 @@ function EscalasAssistenciais() {
           <div
             className="corpo">
             <div>
-              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', marginBottom: 5 }}>
+              <div className="scroll"
+                style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', marginBottom: 5, height: '60vh', width: '80vw' }}>
                 <div className="title2center">SITUAÇÃO FAMILIAR</div>
-                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-                  <button
-                    onClick={() => { setsituacaofamiliar(1) }}
-                    className={situacaofamiliar == 1 ? "red-button" : "blue-button"}
+                <div id="SITUACAO_FAMILIAR" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <button id="sf1"
+                    className="blue-button"
+                    onClick={() => { situacaofamiliar = 1; setActive("SITUACAO_FAMILIAR", "sf1") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     VIVE COM A FAMÍLIA SEM DEPENDÊNCIA FÍSICA OU PSÍQUICA
                   </button>
-                  <button
-                    onClick={() => { setsituacaofamiliar(2) }}
-                    className={situacaofamiliar == 2 ? "red-button" : "blue-button"}
+                  <button id="sf2"
+                    className="blue-button"
+                    onClick={() => { situacaofamiliar = 2; setActive("SITUACAO_FAMILIAR", "sf2") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     VIVE COM CONJUJE/ COMPANHEIRO DE SIMILARIDADE
                   </button>
-                  <button
-                    onClick={() => { setsituacaofamiliar(3) }}
-                    className={situacaofamiliar == 3 ? "red-button" : "blue-button"}
+                  <button id="sf3"
+                    className="blue-button"
+                    onClick={() => { situacaofamiliar = 3; setActive("SITUACAO_FAMILIAR", "sf3") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     VIVE COM A FAMÍLIA E/OU CONJUGUE/COMPANHEIRO COM ALGUM GRAU DE DEPENDÊNCIA
                   </button>
-                  <button
-                    onClick={() => { setsituacaofamiliar(4) }}
-                    className={situacaofamiliar == 4 ? "red-button" : "blue-button"}
+                  <button id="sf4"
+                    className="blue-button"
+                    onClick={() => { situacaofamiliar = 4; setActive("SITUACAO_FAMILIAR", "sf4") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     VIVE COM PESSOAS QUE NÃO SÃO FAMILIARES POR LAÇOS SANGUÍNEOS
                   </button>
-                  <button
-                    onClick={() => { setsituacaofamiliar(5) }}
-                    className={situacaofamiliar == 5 ? "red-button" : "blue-button"}
+                  <button id="sf5"
+                    className="blue-button"
+                    onClick={() => { situacaofamiliar = 5; setActive("SITUACAO_FAMILIAR", "sf5") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     VIVE SOZINHO, MAS TEM FAMILIARES PRÓXIMOS
                   </button>
-                  <button
-                    onClick={() => { setsituacaofamiliar(6) }}
-                    className={situacaofamiliar == 6 ? "red-button" : "blue-button"}
+                  <button id="sf6"
+                    className="blue-button"
+                    onClick={() => { situacaofamiliar = 6; setActive("SITUACAO_FAMILIAR", "sf6") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     VIVE SOZINHO, SEM FILHOS OU FAMILIARES PRÓXIMOS
                   </button>
-                  <button
-                    onClick={() => { setsituacaofamiliar(7) }}
-                    className={situacaofamiliar == 7 ? "red-button" : "blue-button"}
+                  <button id="sf7"
+                    className="blue-button"
+                    onClick={() => { situacaofamiliar = 7; setActive("SITUACAO_FAMILIAR", "sf7") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     {"ESTÁ INSTITUCIONALIZADO (LONGA PERMANÊNCIA)"}
                   </button>
                 </div>
                 <div className="title2center">SITUAÇÃO ECONÔMICA</div>
-                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-                  <button
-                    onClick={() => { setsituacaoeconomica(1) }}
-                    className={situacaoeconomica == 1 ? "red-button" : "blue-button"}
+                <div id="SITUACAO_ECONOMICA" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <button id="se1"
+                    className="blue-button"
+                    onClick={() => { situacaoeconomica = 1; setActive("SITUACAO_ECONOMICA", "se1") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     MAIS DE 3 SALÁRIOS MÍNIMOS
                   </button>
-                  <button
-                    onClick={() => { setsituacaoeconomica(2) }}
-                    className={situacaoeconomica == 2 ? "red-button" : "blue-button"}
+                  <button id="se2"
+                    className="blue-button"
+                    onClick={() => { situacaoeconomica = 2; setActive("SITUACAO_ECONOMICA", "se2") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     DE 2 A 3 SALÁRIOS MÍNIMOS
                   </button>
-                  <button
-                    onClick={() => { setsituacaoeconomica(3) }}
-                    className={situacaoeconomica == 3 ? "red-button" : "blue-button"}
+                  <button id="se3"
+                    className="blue-button"
+                    onClick={() => { situacaoeconomica = 3; setActive("SITUACAO_ECONOMICA", "se3") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     DE 1 A 2 SALÁRIOS MÍNIMOS
                   </button>
-                  <button
-                    onClick={() => { setsituacaoeconomica(4) }}
-                    className={situacaoeconomica == 4 ? "red-button" : "blue-button"}
+                  <button id="se4"
+                    className="blue-button"
+                    onClick={() => { situacaoeconomica = 4; setActive("SITUACAO_ECONOMICA", "se4") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     ABAIXO DE 1 SALÁRIO MÍNIMO
                   </button>
-                  <button
-                    onClick={() => { setsituacaoeconomica(5) }}
-                    className={situacaoeconomica == 5 ? "red-button" : "blue-button"}
+                  <button id="se5"
+                    className="blue-button"
+                    onClick={() => { situacaoeconomica = 5; setActive("SITUACAO_ECONOMICA", "se5") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     SEM RENDIMENTO
                   </button>
                 </div>
                 <div className="title2center">RELAÇÕES SOCIAIS</div>
-                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-                  <button
-                    onClick={() => { setrelacoessociais(1) }}
-                    className={relacoessociais == 1 ? "red-button" : "blue-button"}
+                <div id="RELACOES_SOCIAIS" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <button id="rl1"
+                    className="blue-button"
+                    onClick={() => { relacoessociais = 1; setActive("RELACOES_SOCIAIS", "rl1") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     RELAÇÕES SOCIAIS, VIDA SOCIAL ATIVA
                   </button>
-                  <button
-                    onClick={() => { setrelacoessociais(2) }}
-                    className={relacoessociais == 2 ? "red-button" : "blue-button"}
+                  <button id="rl2"
+                    className="blue-button"
+                    onClick={() => { relacoessociais = 2; setActive("RELACOES_SOCIAIS", "rl2") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     RELAÇÕES SOCIAIS SÓ COM FAMÍLIA E VIZINHOS, SAI DE CASA
                   </button>
-                  <button
-                    onClick={() => { setrelacoessociais(3) }}
-                    className={relacoessociais == 3 ? "red-button" : "blue-button"}
+                  <button id="rl3"
+                    className="blue-button"
+                    onClick={() => { relacoessociais = 3; setActive("RELACOES_SOCIAIS", "rl3") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     APENAS SE RELACIONA COM A FAMÍLIA, SAI DE CASA
                   </button>
-                  <button
-                    onClick={() => { setrelacoessociais(4) }}
-                    className={relacoessociais == 4 ? "red-button" : "blue-button"}
+                  <button id="rl4"
+                    className="blue-button"
+                    onClick={() => { relacoessociais = 4; setActive("RELACOES_SOCIAIS", "rl4") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     NÃO SAI DE CASA, RECEBE FAMÍLIA OU VISITAS
                   </button>
-                  <button
-                    onClick={() => { setrelacoessociais(5) }}
-                    className={relacoessociais == 5 ? "red-button" : "blue-button"}
+                  <button id="rl5"
+                    className="blue-button"
+                    onClick={() => { relacoessociais = 5; setActive("RELACOES_SOCIAIS", "rl5") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     NÃO SAI DE CASA NEM RECEBE VISITAS
                   </button>
                 </div>
                 <div className="title2center">CONTATO COM A FAMÍLIA</div>
-                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-                  <button
-                    onClick={() => { setcontatofamilia(1) }}
-                    className={contatofamilia == 1 ? "red-button" : "blue-button"}
+                <div id="CONTATO_FAMILIA" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <button id="cf1"
+                    className="blue-button"
+                    onClick={() => { contatofamilia = 1; setActive("CONTATO_FAMILIA", "cf1") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
-                    QUINZENAL/SEMANAL/DIÁRIO
+                    QUINZENAL / SEMANAL / DIÁRIO
                   </button>
-                  <button
-                    onClick={() => { setcontatofamilia(2) }}
-                    className={contatofamilia == 2 ? "red-button" : "blue-button"}
+                  <button id="cf2"
+                    className="blue-button"
+                    onClick={() => { contatofamilia = 2; setActive("CONTATO_FAMILIA", "cf2") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     MENSAL
                   </button>
-                  <button
-                    onClick={() => { setcontatofamilia(3) }}
-                    className={contatofamilia == 3 ? "red-button" : "blue-button"}
+                  <button id="cf3"
+                    className="blue-button"
+                    onClick={() => { contatofamilia = 3; setActive("CONTATO_FAMILIA", "cf3") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     4 A 11 VEZES AO ANO
                   </button>
-                  <button
-                    onClick={() => { setcontatofamilia(4) }}
-                    className={contatofamilia == 4 ? "red-button" : "blue-button"}
+                  <button id="cf4"
+                    className="blue-button"
+                    onClick={() => { contatofamilia = 4; setActive("CONTATO_FAMILIA", "cf4") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     1 A 3 VEZES AO ANO
                   </button>
-                  <button
-                    onClick={() => { setcontatofamilia(5) }}
-                    className={contatofamilia == 5 ? "red-button" : "blue-button"}
+                  <button id="cf5"
+                    className="blue-button"
+                    onClick={() => { contatofamilia = 5; setActive("CONTATO_FAMILIA", "cf5") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     SEM CONTATO
                   </button>
                 </div>
                 <div className="title2center">APOIO DE REDE SOCIAL</div>
-                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-                  <button
-                    onClick={() => { setapoioredesocial(1) }}
-                    className={apoioredesocial == 1 ? "red-button" : "blue-button"}
+                <div id="REDE_SOCIAL" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <button id="rs1"
+                    className="blue-button"
+                    onClick={() => { apoioredesocial = 1; setActive("REDE_SOCIAL", "rs1") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     COM APOIO DE FAMILIAR OU DE VIZINHOS
                   </button>
-                  <button
-                    onClick={() => { setapoioredesocial(2) }}
-                    className={apoioredesocial == 2 ? "red-button" : "blue-button"}
+                  <button id="rs2"
+                    className="blue-button"
+                    onClick={() => { apoioredesocial = 2; setActive("REDE_SOCIAL", "rs2") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     VOLUNTARIADO SOCIAL, AJUDA DOMICILIÁRIA
                   </button>
-                  <button
-                    onClick={() => { setapoioredesocial(3) }}
-                    className={apoioredesocial == 3 ? "red-button" : "blue-button"}
+                  <button id="rs3"
+                    className="blue-button"
+                    onClick={() => { apoioredesocial = 3; setActive("REDE_SOCIAL", "rs3") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     NÃO TEM APOIO
                   </button>
-                  <button
-                    onClick={() => { setapoioredesocial(4) }}
-                    className={apoioredesocial == 4 ? "red-button" : "blue-button"}
+                  <button id="rs4"
+                    className="blue-button"
+                    onClick={() => { apoioredesocial = 4; setActive("REDE_SOCIAL", "rs4") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     COM CRITÉRIOS PARA INGRESSO EM INSTITUIÇÃO GERIÁTRICA
                   </button>
-                  <button
-                    onClick={() => { setapoioredesocial(5) }}
-                    className={apoioredesocial == 5 ? "red-button" : "blue-button"}
+                  <button id="rs5"
+                    className="blue-button"
+                    onClick={() => { apoioredesocial = 5; setActive("REDE_SOCIAL", "rs5") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     TEM CUIDADOS PERMANENTES
                   </button>
@@ -2303,7 +2295,7 @@ function EscalasAssistenciais() {
         </div>
       </div>
     );
-  }
+  }, [showescala]);
 
   // função para construção dos toasts.
   const [valortoast, setvalortoast] = useState(0);
@@ -2320,6 +2312,406 @@ function EscalasAssistenciais() {
     }, time);
   }
 
+  // ESCALA ASIA (showescala = 10).
+  const [asia, setasia] = useState(0);
+  const insertAsia = () => {
+    var significado = '';
+    if (asia == 'A') {
+      significado = 'Lesão Completa: Sem preservação das funções motora e sensitiva no segmento sacral S4-S5.';
+    } else if (asia == 'B') {
+      significado = 'Lesão Incompleta: Perda da função motora, porém função sensitiva preservada abaixo do nível neurológico e inclui sensibilidade do segmento sacral S4-S5.';
+    } else if (asia == 'C') {
+      significado = ' Lesão Incompleta: Função motora preservada abaixo do nível neurológico, e mais da metade dos músculos-chave abaixo do nível neurológico possuem grau de força inferior a 3 (apesar de haver contração muscular, não são capazes de vencer a gravidade).';
+    } else if (asia == 'D') {
+      significado = 'Lesão Incompleta: Função motora preservada abaixo do nível neurológico, e mais da metade dos músculos-chave abaixo do nível neurológico possuem grau de força igual ou superior a 3 (vencem a gravidade).'
+    } else {
+      significado = ' Lesão Incompleta: Funções Motora e sensitiva são normais.'
+    }
+    var obj = {
+      idpct: idpaciente,
+      idatendimento: idatendimento,
+      data: moment(),
+      cd_escala: 10,
+      ds_escala: 'ASIA',
+      valor_resultado: asia,
+      ds_resultado: significado.toUpperCase(),
+      idprofissional: 0,
+      status: 1,
+    }
+    // console.log(JSON.stringify(obj));
+    axios.post(htmlghapinsertescala, obj).then(() => {
+      loadEscalas();
+    })
+  }
+  function Asia() {
+    return (
+      <div className="menucover" style={{ zIndex: 9, display: showescala == 10 ? 'flex' : 'none', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+        <div className="menucontainer">
+          <div id="cabeçalho" className="cabecalho">
+            <div className="title5">{'ESCALA ASIA'}</div>
+            <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+              <button className="red-button" onClick={() => setshowescala(0)}>
+                <img
+                  alt=""
+                  src={deletar}
+                  style={{
+                    margin: 10,
+                    height: 30,
+                    width: 30,
+                  }}
+                ></img>
+              </button>
+              <button className="green-button"
+                onClick={() => insertAsia()}
+              >
+                <img
+                  alt=""
+                  src={salvar}
+                  style={{
+                    margin: 10,
+                    height: 30,
+                    width: 30,
+                  }}
+                ></img>
+              </button>
+            </div>
+          </div>
+          <div>
+            <div className="scroll"
+              style={{
+                display: 'flex', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start',
+                marginBottom: 5, height: '60vh', width: '30vw',
+              }}>
+              <button
+                onClick={() => { setasia('A') }}
+                className={asia == 'A' ? "red-button" : "blue-button"}
+                style={{ padding: 10, minWidth: 200 }}>
+                ASIA A - SEM FUNÇÕES SENSITIVA E MOTORA NO SEGMENTO S4-S5
+              </button>
+              <button
+                onClick={() => { setasia('B') }}
+                className={asia == 'B' ? "red-button" : "blue-button"}
+                style={{ padding: 10, minWidth: 200 }}>
+                ASIA B - SEM FUNÇÃO MOTORA, PORÉM SENSIBILIDADE PRESERVADA ABAIXO DO NÍVEL NEUROLÓGICO, INLCUINDO S4-S5
+              </button>
+              <button
+                onClick={() => { setasia('C') }}
+                className={asia == 'C' ? "red-button" : "blue-button"}
+                style={{ padding: 10, minWidth: 200 }}>
+                ASIA C - MAIS DA METADE DOS MÚSCULOS ABAIXO DO NÍVEL NEUROLÓGICO POSSUEM FORÇA MENOR A 3
+              </button>
+              <button
+                onClick={() => { setasia('D') }}
+                className={asia == 'D' ? "red-button" : "blue-button"}
+                style={{ padding: 10, minWidth: 200 }}>
+                ASIA D - MAIS DA METADE DOS MÚSCULOS ABAIXO DO NÍVEL NEUROLÓGICO POSSUEM FORÇA IGUAL OU MAIOR QUE 3
+              </button>
+              <button
+                onClick={() => { setasia('C') }}
+                className={asia == 'E' ? "red-button" : "blue-button"}
+                style={{ padding: 10, minWidth: 200 }}>
+                ASIA E - FUNÇÕES MOTORAS E SENSITIVAS SÃO NORMAIS
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ESCALA MEEM (showescala = 11).
+  // orientação.
+  const [diasemana, setdiasemana] = useState(0);
+  const [diames, setdiames] = useState(0);
+  const [mes, setmes] = useState(0);
+  const [ano, setano] = useState(0);
+  const [hora, sethora] = useState(0);
+  const [local, setlocal] = useState(0);
+  const [instituicao, setinstituicao] = useState(0);
+  const [bairro, setbairro] = useState(0);
+  const [cidade, setcidade] = useState(0);
+  const [estado, setestado] = useState(0);
+  // memória imediata.
+  const [palavra1, setpalavra1] = useState(0);
+  const [palavra2, setpalavra2] = useState(0);
+  const [palavra3, setpalavra3] = useState(0);
+  // atenção e cálculo.
+  const [calculo1, setcalculo1] = useState(0);
+  const [calculo2, setcalculo2] = useState(0);
+  const [calculo3, setcalculo3] = useState(0);
+  const [calculo4, setcalculo4] = useState(0);
+  const [calculo5, setcalculo5] = useState(0);
+  // evocação.
+  const [palavra4, setpalavra4] = useState(0);
+  const [palavra5, setpalavra5] = useState(0);
+  const [palavra6, setpalavra6] = useState(0);
+  // linguagem.
+  const [nomearrelogio, setnomearrelogio] = useState(0);
+  const [nomearcaneta, setnomearcaneta] = useState(0);
+  const [nemaqui, setnemaqui] = useState(0);
+  const [peguepapel, setpeguepapel] = useState(0);
+  const [fecheolhos, setfecheolhos] = useState(0);
+  const [escrevafrase, setescrevafrase] = useState(0);
+  const [copiedesenho, setcopiedesenho] = useState(0);
+
+  const insertMeem = () => {
+    var score =
+      diasemana + diames + mes + ano + hora + local + instituicao + bairro + cidade + estado +
+      palavra1 + palavra2 + palavra3 + palavra4 + palavra5 + palavra6 +
+      calculo1 + calculo2 + calculo3 + calculo4 + calculo5 +
+      nomearrelogio + nomearcaneta + nemaqui + peguepapel + fecheolhos + escrevafrase + copiedesenho;
+
+    var significado = '';
+    if (score < 10) {
+      significado = 'PERDA COGNITIVA GRAVE';
+    } else if (score > 9 && score < 21) {
+      significado = 'PERDA COGNITIVA MODERADA';
+    } else if (score > 20 && score < 25) {
+      significado = 'PERDA COGNITIVA LEVE';
+    } else {
+      significado = 'NORMAL';
+    }
+    var obj = {
+      idpct: idpaciente,
+      idatendimento: idatendimento,
+      data: moment(),
+      cd_escala: 11,
+      ds_escala: 'MEEM',
+      valor_resultado: score,
+      ds_resultado: significado,
+      idprofissional: 0,
+      status: 1,
+    }
+    axios.post(htmlghapinsertescala, obj).then(() => {
+      loadEscalas();
+    })
+  }
+  function MEEM() {
+    return (
+      <div className="menucover" style={{ zIndex: 9, display: showescala == 11 ? 'flex' : 'none', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+        <div className="menucontainer">
+          <div id="cabeçalho" className="cabecalho">
+            <div className="title5">{'MEEM'}</div>
+            <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+              <button className="red-button" onClick={() => setshowescala(0)}>
+                <img
+                  alt=""
+                  src={deletar}
+                  style={{
+                    margin: 10,
+                    height: 30,
+                    width: 30,
+                  }}
+                ></img>
+              </button>
+              <button className="green-button"
+                onClick={() => insertMeem()}
+              >
+                <img
+                  alt=""
+                  src={salvar}
+                  style={{
+                    margin: 10,
+                    height: 30,
+                    width: 30,
+                  }}
+                ></img>
+              </button>
+            </div>
+          </div>
+          <div
+            className="corpo">
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', marginBottom: 5 }}>
+              <div className="title2center">ORIENTAÇÃO</div>
+              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <button
+                  onClick={() => { diasemana == 0 ? setdiasemana(1) : setdiasemana(0) }}
+                  className={diasemana == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  DIA DA SEMANA
+                </button>
+                <button
+                  onClick={() => { diames == 0 ? setdiames(1) : setdiames(0) }}
+                  className={diames == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  DIA DO MÊS
+                </button>
+                <button
+                  onClick={() => { mes == 0 ? setmes(1) : setmes(0) }}
+                  className={mes == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  MÊS
+                </button>
+                <button
+                  onClick={() => { ano == 0 ? setano(1) : setano(0) }}
+                  className={ano == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  ANO
+                </button>
+                <button
+                  onClick={() => { hora == 0 ? sethora(1) : sethora(0) }}
+                  className={hora == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  HORA
+                </button>
+                <button
+                  onClick={() => { local == 0 ? setlocal(1) : setlocal(0) }}
+                  className={local == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  LOCAL
+                </button>
+                <button
+                  onClick={() => { instituicao == 0 ? setinstituicao(1) : setinstituicao(0) }}
+                  className={instituicao == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  INSTITUIÇÃO
+                </button>
+                <button
+                  onClick={() => { bairro == 0 ? setbairro(1) : setbairro(0) }}
+                  className={bairro == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  BAIRRO
+                </button>
+                <button
+                  onClick={() => { cidade == 0 ? setcidade(1) : setcidade(0) }}
+                  className={cidade == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  CIDADE
+                </button>
+                <button
+                  onClick={() => { estado == 0 ? setestado(1) : setestado(0) }}
+                  className={estado == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  ESTADO
+                </button>
+              </div>
+              <div className="title2center">MEMÓRIA IMEDIATA</div>
+              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <button
+                  onClick={() => { palavra1 == 0 ? setpalavra1(1) : setpalavra1(0) }}
+                  className={palavra1 == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  PALAVRA 1
+                </button>
+                <button
+                  onClick={() => { palavra2 == 0 ? setpalavra2(1) : setpalavra2(0) }}
+                  className={palavra2 == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  PALAVRA 2
+                </button>
+                <button
+                  onClick={() => { palavra3 == 0 ? setpalavra3(1) : setpalavra3(0) }}
+                  className={palavra3 == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  PALAVRA 3
+                </button>
+              </div>
+              <div className="title2center">ATENÇÃO E CÁLCULO</div>
+              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <button
+                  onClick={() => { calculo1 == 0 ? setcalculo1(1) : setcalculo1(0) }}
+                  className={calculo1 == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  100 - 7 = 93
+                </button>
+                <button
+                  onClick={() => { calculo2 == 0 ? setcalculo2(1) : setcalculo2(0) }}
+                  className={calculo2 == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  93 - 7 = 86
+                </button>
+                <button
+                  onClick={() => { calculo3 == 0 ? setcalculo3(1) : setcalculo3(0) }}
+                  className={calculo3 == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  86 - 7 = 79
+                </button>
+                <button
+                  onClick={() => { calculo4 == 0 ? setcalculo4(1) : setcalculo4(0) }}
+                  className={calculo4 == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  79 - 7 = 72
+                </button>
+                <button
+                  onClick={() => { calculo5 == 0 ? setcalculo5(1) : setcalculo5(0) }}
+                  className={calculo5 == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  72 - 7 = 65
+                </button>
+              </div>
+              <div className="title2center">EVOCAÇÃO</div>
+              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <button
+                  onClick={() => { palavra4 == 0 ? setpalavra4(1) : setpalavra4(0) }}
+                  className={palavra4 == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  PALAVRA 1
+                </button>
+                <button
+                  onClick={() => { palavra5 == 0 ? setpalavra5(1) : setpalavra5(0) }}
+                  className={palavra5 == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  PALAVRA 2
+                </button>
+                <button
+                  onClick={() => { palavra6 == 0 ? setpalavra6(1) : setpalavra6(0) }}
+                  className={palavra6 == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  PALAVRA 3
+                </button>
+              </div>
+              <div className="title2center">LINGUAGEM</div>
+              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <button
+                  onClick={() => { nomearrelogio == 0 ? setnomearrelogio(1) : setnomearrelogio(0) }}
+                  className={nomearrelogio == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  RELÓGIO
+                </button>
+                <button
+                  onClick={() => { nomearcaneta == 0 ? setnomearcaneta(1) : setnomearcaneta(0) }}
+                  className={nomearcaneta == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  CANETA
+                </button>
+                <button
+                  onClick={() => { nemaqui == 0 ? setnemaqui(1) : setnemaqui(0) }}
+                  className={nemaqui == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  NEM AQUI, NEM ALI, NEM LÁ
+                </button>
+                <button
+                  onClick={() => { peguepapel == 0 ? setpeguepapel(1) : setpeguepapel(0) }}
+                  className={peguepapel == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  PEGAR E DOBRAR PAPEL
+                </button>
+                <button
+                  onClick={() => { fecheolhos == 0 ? setfecheolhos(1) : setfecheolhos(0) }}
+                  className={fecheolhos == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  LER E FECHAR OLHOS
+                </button>
+                <button
+                  onClick={() => { escrevafrase == 0 ? setescrevafrase(1) : setescrevafrase(0) }}
+                  className={escrevafrase == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  ESCREVA FRASE
+                </button>
+                <button
+                  onClick={() => { copiedesenho == 0 ? setcopiedesenho(1) : setcopiedesenho(0) }}
+                  className={copiedesenho == 1 ? "red-button" : "blue-button"}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  COPIE DESENHO
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <Braden></Braden>
@@ -2331,6 +2723,8 @@ function EscalasAssistenciais() {
       <Eva></Eva>
       <RiscoAspirativo></RiscoAspirativo>
       <Gijon></Gijon>
+      <Asia></Asia>
+
       <div
         className="menucover"
         style={{

@@ -16,10 +16,17 @@ import back from '../images/back.svg';
 import foto from '../images/3x4.jpg';
 import info from '../images/info.svg';
 import lupabranca from '../images/lupabranca.svg';
+import deletar from '../images/deletar.svg';
+import scales from '../images/scales.svg'
 // importando componentes de sobreposição.
 import EscalasAssistenciais from '../pages/EscalasAssistenciais';
 import Toast from '../components/Toast';
 import DatePicker from '../components/DatePicker';
+
+// importando gráficos.
+import { Line, Doughnut } from 'react-chartjs-2';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import 'chartjs-plugin-style';
 
 // componentes do Paulo de Tarso (APT).
 import AptPlanoTerapeutico from '../components/AptPlanoTerapeutico';
@@ -38,7 +45,9 @@ function Prontuario() {
     nomeunidade,
     tipounidade,
     setlistescalas,
+    listescalas,
     setarraylistescalas,
+    arraylistescalas,
     // todos os leitos e atendimentos.
     todospacientes,
     todosatendimentos,
@@ -75,6 +84,9 @@ function Prontuario() {
     setmetas,
     setlinhasdecuidado,
     setlastplanoterapeutico,
+    setopcoesmetas,
+
+    setshowescala, showescala,
   } = useContext(Context)
 
   useEffect(() => {
@@ -96,6 +108,8 @@ function Prontuario() {
       loadPlanosTerapeuticos();
       loadObjetivos();
       loadMetas();
+      loadOpcoesEscalas();
+      loadOpcoesMetas();
       setstateprontuario(21);
     }, 3000);
     // eslint-disable-next-line
@@ -115,6 +129,17 @@ function Prontuario() {
       // alert('LAST ID: ' + idplanoterapeutico);
       setdatainicioplanoterapeutico(y.filter(item => item.datatermino == null).slice(-1).map(item => moment(item.datainicio).format('DD/MM/YY'))); // recuperando a data de início do último plano terapêutico.
       setstatusplanoterapeutico(y.filter(item => item.datatermino == null).slice(-1).map(item => item.status));
+    });
+  }
+
+  var htmlopcoesmetas = process.env.REACT_APP_API_CLONE_OPCOES_METAS;
+  const [arrayopcoesmetas, setarrayopcoesmetas] = useState([]);
+  const loadOpcoesMetas = () => {
+    axios.get(htmlopcoesmetas).then((response) => {
+      var x = [0, 1];
+      x = response.data;
+      setopcoesmetas(x.rows);
+      setarrayopcoesmetas(x.rows);
     });
   }
 
@@ -235,6 +260,20 @@ function Prontuario() {
     }
   }, [stateprontuario]);
 
+  const ShowListEscalas = useCallback(() => {
+    if (stateprontuario === 20) {
+      return (
+        <div id="ivcf"
+          className="conteudo" style={{ margin: 0, padding: 0 }}>
+          <ShowEscalas></ShowEscalas>
+        </div>
+      )
+    } else {
+      return null;
+    }
+  }, [stateprontuario, showescala, listescalas]);
+
+
   // plano terapêutico.
   const ShowResumoPlanoTerapeutico = useCallback(() => {
     if (stateprontuario === 31) {
@@ -319,6 +358,309 @@ function Prontuario() {
     });
   }
 
+  // carregando as opções de escalas.
+  var htmlghapopcoesescalas = process.env.REACT_APP_API_CLONE_OPCOES_ESCALAS;
+  const [opcoesescalas, setopcoesescalas] = useState([]);
+  const loadOpcoesEscalas = () => {
+    axios.get(htmlghapopcoesescalas).then((response) => {
+      var x = [];
+      x = response.data;
+      setopcoesescalas(x.rows);
+    })
+  }
+
+  // atualizando ou suspendendo uma escala.
+  var htmlghapupdateescala = process.env.REACT_APP_API_CLONE_UPDATEESCALA;
+  const updateEscala = (item, valor) => {
+    var obj = {
+      idpct: item.idpct,
+      idatendimento: item.idatendimento,
+      data: item.data,
+      cd_escala: item.cd_escala,
+      ds_escala: item.ds_escala,
+      valor_resultado: item.valor_resultado,
+      ds_resultado: item.ds_resultado,
+      idprofissional: item.idprofissional,
+      status: 2 // escala suspensa.
+    };
+    axios.post(htmlghapupdateescala + item.id, obj).then(() => {
+      toast(1, '#52be80', 'REGISTRO DE ESCALA CANCELADO COM SUCESSO.', 3000);
+      loadEscalas();
+    });
+  }
+
+  var timeout = null;
+  var deletekey = 0;
+  const deletetoast = (funcao, item) => {
+    document.getElementById("deletekey 1 " + item.id).style.display = "flex"
+    document.getElementById("deletekey 0 " + item.id).style.display = "none"
+    if (deletekey == 0) {
+      deletekey = 1;
+      document.getElementById("deletekey 1 " + item.id).style.display = "flex"
+      document.getElementById("deletekey 0 " + item.id).style.display = "none"
+    } else {
+      deletekey = 0;
+      document.getElementById("deletekey 0 " + item.id).style.display = "flex"
+      document.getElementById("deletekey 1 " + item.id).style.display = "none"
+    }
+    clearTimeout(timeout);
+    console.log('VIEW: ' + deletekey)
+    timeout = setTimeout(() => {
+      if (deletekey == 1) {
+        funcao(item);
+        console.log('REGISTRO EXCLUÍDO.');
+      } else {
+        console.log('REGISTRO MANTIDO.');
+      }
+      if (document.getElementById("deletekey 1 " + item.id) != null) {
+        document.getElementById("deletekey 0 " + item.id).style.display = "flex"
+        document.getElementById("deletekey 1 " + item.id).style.display = "none"
+      }
+    }, 3000);
+  }
+
+  // ESCALAS.
+  const myChartRef = React.createRef();
+  const ShowEscalas = useCallback(() => {
+    if (stateprontuario == 20) {
+      return (
+        <div className="scroll" style={{ height: '80vh', padding: 10, backgroundColor: 'transparent', borderColor: 'transparent' }}>
+          {opcoesescalas.map(item => (
+            <div className="card"
+              style={{
+                display: 'flex', flexDirection: 'row',
+                justifyContent: 'space-between', padding: 10,
+              }}>
+              <div style={{
+                display: 'flex', flexDirection: 'column',
+                justifyContent: 'flex-start', alignItems: 'flex-start', verticalAlign: 'flex-start',
+                alignContent: 'flex-start', height: '100%', width: '12vw',
+              }}>
+                <button
+                  className="blue-button"
+                  style={{ width: '12vw', minWidth: '12vw', height: '12vw', minHeight: '12vw', alignSelf: 'flex-start' }}
+                  onClick={() => setshowescala(item.cd_escala)}
+                >
+                  {item.ds_escala}
+                </button>
+              </div>
+              <div style={{
+                display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
+                width: '100%',
+              }}>
+                <div id="GRÁFICO"
+                  style={{
+                    display: 'flex', flexDirection: 'column', justifyContent: 'center',
+                    width: '100%',
+                    padding: 10
+                  }}>
+                  <Line
+                    ref={myChartRef}
+                    data={{
+                      labels:
+                        window.innerWidth > 1000 ?
+                          arraylistescalas.filter(valor => valor.cd_escala == item.cd_escala)
+                            .sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).slice(-5)
+                            .map(item => moment(item.data).format('DD/MM'))
+                          :
+                          arraylistescalas.filter(valor => valor.cd_escala == item.cd_escala)
+                            .sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).slice(-2)
+                            .map(item => moment(item.data).format('DD/MM')),
+                      datasets: [
+                        {
+                          data:
+                            window.innerWidth > 1000 ?
+                              arraylistescalas.filter(valor => valor.cd_escala == item.cd_escala)
+                                .sort((a, b) => moment(a.data) < moment(b.data) ? 1 : -1).slice(-5)
+                                .map(item => item.valor_resultado)
+                              :
+                              arraylistescalas.filter(valor => valor.cd_escala == item.cd_escala)
+                                .sort((a, b) => moment(a.data) < moment(b.data) ? 1 : -1).slice(-5)
+                                .map(item => item.valor_resultado),
+                          // label: arraylistescalas.filter(valor => valor.cd_escala == item.cd_escala).map(item => moment(item.data).format('DD/MM/YY')),
+                          borderColor: '#BB8FCE',
+                          pointBackgroundColor: '#BB8FCE',
+                          fill: 'false'
+                        },
+                      ],
+                    }}
+                    plugins={ChartDataLabels}
+                    width="400"
+                    height="100"
+                    options={{
+                      layout: {
+                        padding: {
+                          left: 0,
+                          right: 4,
+                          top: 0,
+                          bottom: 0
+                        }
+                      },
+                      scales: {
+                        xAxes: [
+                          {
+                            display: true,
+                            ticks: {
+                              fontSize: 10,
+                              width: 50,
+                              padding: 10,
+                              display: true,
+                              fontColor: '#61636e',
+                              fontWeight: 'bold',
+                            },
+                            gridLines: {
+                              tickMarkLength: false,
+                              zeroLineColor: 'transparent',
+                              lineWidth: 1,
+                              drawOnChartArea: true,
+                            },
+                          },
+                        ],
+                        yAxes: [
+                          {
+                            display: true,
+                            ticks: {
+                              padding: 10,
+                              fontSize: 10,
+                              display: true,
+                              suggestedMin: 0,
+                              suggestedMax:
+                                item.cd_escala == 1 ? 23 :
+                                  item.cd_escala == 2 ? 125 :
+                                    item.cd_escala == 3 ? 5 :
+                                      item.cd_escala == 4 ? 7 :
+                                        item.cd_escala == 5 ? 10 :
+                                          item.cd_escala == 6 ? 100 :
+                                            item.cd_escala == 7 ? 10 :
+                                              100,
+                              fontColor: '#61636e',
+                              fontWeight: 'bold',
+                            },
+                            gridLines: {
+                              tickMarkLength: false,
+                              zeroLineColor: 'transparent',
+                              lineWidth: 1,
+                              drawOnChartArea: true,
+                            },
+                          },
+                        ],
+                      },
+                      plugins: {
+                        datalabels: {
+                          display: false,
+                          color: '#ffffff',
+                          font: {
+                            weight: 'bold',
+                            size: 16,
+                          },
+                        },
+                      },
+                      tooltips: {
+                        enabled: true,
+                        displayColors: false,
+                      },
+                      hover: { mode: null },
+                      elements: {},
+                      animation: {
+                        duration: 500,
+                      },
+                      title: {
+                        display: false,
+                        text: 'PPS',
+                      },
+                      legend: {
+                        display: false,
+                        position: 'bottom',
+                        align: 'start'
+                      },
+                      maintainAspectRatio: true,
+                      responsive: true,
+                    }}
+                  />
+                </div>
+                <div id="CARDS COM VALORES"
+                  className="scroll"
+                  style={{
+                    display: arraylistescalas.filter(value => value.cd_escala == item.cd_escala).length > 0 ? 'flex' : 'none',
+                    overflowX: 'scroll', overflowY: 'hidden', flexDirection: 'row', justifyContent: 'flex-start',
+                    width: '100%',
+                    backgroundColor: "#F2F2F2", borderColor: '#F2F2F2', padding: 10, paddingLeft: 5,
+                  }}>
+                  {arraylistescalas.filter(value => value.cd_escala == item.cd_escala)
+                    .sort((a, b) => moment(a.data) < moment(b.data) ? 1 : -1)
+                    .map(item => (
+                      <div
+                        key={item.id}
+                        id="item da lista"
+                        className="row"
+                        title={item.ds_resultado}
+                        style={{
+                          flexDirection: 'column',
+                          justifyContent: 'flex-start',
+                          position: 'relative', opacity: item.status == 2 ? 0.5 : 1,
+                          minWidth: 120,
+                          width: 120, height: 120,
+                          backgroundColor: 'lightgray'
+                        }}
+                      >
+                        <div
+                          style={{
+                            position: 'absolute', bottom: 5, right: 5, display: 'flex',
+                            flexDirection: 'row', justifyContent: 'center',
+                            display: item.status == 2 ? 'none' : 'flex'
+                          }}>
+                          <button
+                            id={"deletekey 0 " + item.id}
+                            className="animated-red-button"
+                            style={{ display: item.status == 2 ? 'none' : 'flex' }}
+                            onClick={(e) => { deletetoast(updateEscala, item); e.stopPropagation() }}
+                          >
+                            <img
+                              alt=""
+                              src={deletar}
+                              style={{
+                                display: 'flex',
+                                margin: 10,
+                                height: 30,
+                                width: 30,
+                              }}
+                            ></img>
+                          </button>
+                          <button
+                            id={"deletekey 1 " + item.id}
+                            style={{ display: 'none', width: 100 }}
+                            className="animated-red-button"
+                            onClick={(e) => { deletetoast(updateEscala, item); e.stopPropagation() }}
+                          >
+                            <div>DESFAZER</div>
+                            <div className="deletetoast"
+                              style={{
+                                height: 5, borderRadius: 5, backgroundColor: 'pink', alignSelf: 'flex-start',
+                                marginLeft: 5, marginRight: 5, maxWidth: 90,
+                              }}>
+                            </div>
+                          </button>
+                        </div>
+                        <div className="title2center" style={{ fontWeight: 'bold', margin: 2.5, padding: 0 }}>{moment(item.data).format('DD/MM/YY')}</div>
+                        <div className="title2center" style={{ fontSize: 22, margin: 2.5, padding: 0 }}>{item.valor_resultado}</div>
+                        <div
+                          title={item.ds_resultado}
+                          className="title2center"
+                          style={{ fontSize: 12, margin: 2.5, padding: 0 }}>
+                          {JSON.stringify(item.ds_resultado).length > 20 ? item.ds_resultado.toString().substring(0, 15) + '...' : item.ds_resultado}
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )
+    } else {
+      return null;
+    }
+  }, [stateprontuario, listescalas, showescala, arraylistescalas])
 
   // LINHAS DE CUIDADO.
   var htmllinhasdecuidado = process.env.REACT_APP_API_CLONE_LINHASDECUIDADO;
@@ -620,7 +962,26 @@ function Prontuario() {
             }}
           >
             <div
-              className={stateprontuario == 21 ? 'grey-button' : 'red-button'}
+              className={stateprontuario == 20 ? 'red-button' : 'grey-button'}
+              title='ESCALAS.'
+              onClick={stateprontuario == 20 ? () => setstateprontuario(21) : () => setstateprontuario(20)}
+              style={{
+                display: 'flex',
+                bottom: 20, left: 20,
+              }}>
+              <img
+                alt=""
+                src={scales}
+                style={{
+                  display: 'flex',
+                  margin: 10,
+                  height: 30,
+                  width: 30,
+                }}
+              ></img>
+            </div>
+            <div
+              className={stateprontuario == 31 ? 'red-button' : 'grey-button'}
               title='RESUMO DO PLANO TERAPÊUTICO.'
               onClick={stateprontuario == 31 ? () => setstateprontuario(21) : () => setstateprontuario(31)}
               style={{
@@ -838,6 +1199,7 @@ function Prontuario() {
           }}>
           <Paciente></Paciente>
           <ShowPlanoTerapeutico></ShowPlanoTerapeutico>
+          <ShowListEscalas></ShowListEscalas>
           <ShowResumoPlanoTerapeutico></ShowResumoPlanoTerapeutico>
           <CategoriaSelector></CategoriaSelector>
           <EscalasAssistenciais></EscalasAssistenciais>
