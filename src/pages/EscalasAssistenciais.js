@@ -22,6 +22,7 @@ function EscalasAssistenciais() {
     idatendimento, idpaciente,
     showescala, setshowescala,
     listescalas, setlistescalas,
+    dn,
     arraylistescalas, setarraylistescalas,
   } = useContext(Context)
 
@@ -32,6 +33,11 @@ function EscalasAssistenciais() {
       botoes.item(i).className = "blue-button";
     }
     document.getElementById(btn).className = "red-button"
+  }
+
+  // destacando botões selecionados nas escalas.
+  const setMultiplo = (btn) => {
+    document.getElementById(btn).classList.toggle("red-button");
   }
 
   var htmlghapescalas = process.env.REACT_APP_API_CLONE_ESCALAS;
@@ -48,7 +54,7 @@ function EscalasAssistenciais() {
   }
 
   const checkEscala = (elementos, funcao) => {
-    // alert(elementos);
+    console.log(elementos);
     if (elementos.filter(item => item < 0).length == 0) {
       funcao();
     } else {
@@ -2048,9 +2054,10 @@ function EscalasAssistenciais() {
   let relacoessociais = -1;
   let contatofamilia = -1;
   let apoioredesocial = -1;
+  let habitacao = -1;
 
   const insertGijon = () => {
-    var score = situacaofamiliar + situacaoeconomica + relacoessociais + contatofamilia + apoioredesocial;
+    var score = situacaofamiliar + situacaoeconomica + relacoessociais + contatofamilia + apoioredesocial + habitacao;
     var significado = '';
     if (score < 10) {
       significado = 'BOA SITUAÇÃO SOCIAL';
@@ -2116,43 +2123,43 @@ function EscalasAssistenciais() {
                 <div id="SITUACAO_FAMILIAR" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
                   <button id="sf1"
                     className="blue-button"
-                    onClick={() => { situacaofamiliar = 1; setActive("SITUACAO_FAMILIAR", "sf1") }}
+                    onClick={() => { situacaofamiliar = 0; setActive("SITUACAO_FAMILIAR", "sf1") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     VIVE COM A FAMÍLIA SEM DEPENDÊNCIA FÍSICA OU PSÍQUICA
                   </button>
                   <button id="sf2"
                     className="blue-button"
-                    onClick={() => { situacaofamiliar = 2; setActive("SITUACAO_FAMILIAR", "sf2") }}
+                    onClick={() => { situacaofamiliar = 1; setActive("SITUACAO_FAMILIAR", "sf2") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     VIVE COM CONJUJE/ COMPANHEIRO DE SIMILARIDADE
                   </button>
                   <button id="sf3"
                     className="blue-button"
-                    onClick={() => { situacaofamiliar = 3; setActive("SITUACAO_FAMILIAR", "sf3") }}
+                    onClick={() => { situacaofamiliar = 2; setActive("SITUACAO_FAMILIAR", "sf3") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     VIVE COM A FAMÍLIA E/OU CONJUGUE/COMPANHEIRO COM ALGUM GRAU DE DEPENDÊNCIA
                   </button>
                   <button id="sf4"
                     className="blue-button"
-                    onClick={() => { situacaofamiliar = 4; setActive("SITUACAO_FAMILIAR", "sf4") }}
+                    onClick={() => { situacaofamiliar = 3; setActive("SITUACAO_FAMILIAR", "sf4") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     VIVE COM PESSOAS QUE NÃO SÃO FAMILIARES POR LAÇOS SANGUÍNEOS
                   </button>
                   <button id="sf5"
                     className="blue-button"
-                    onClick={() => { situacaofamiliar = 5; setActive("SITUACAO_FAMILIAR", "sf5") }}
+                    onClick={() => { situacaofamiliar = 4; setActive("SITUACAO_FAMILIAR", "sf5") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     VIVE SOZINHO, MAS TEM FAMILIARES PRÓXIMOS
                   </button>
                   <button id="sf6"
                     className="blue-button"
-                    onClick={() => { situacaofamiliar = 6; setActive("SITUACAO_FAMILIAR", "sf6") }}
+                    onClick={() => { situacaofamiliar = 5; setActive("SITUACAO_FAMILIAR", "sf6") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     VIVE SOZINHO, SEM FILHOS OU FAMILIARES PRÓXIMOS
                   </button>
                   <button id="sf7"
                     className="blue-button"
-                    onClick={() => { situacaofamiliar = 7; setActive("SITUACAO_FAMILIAR", "sf7") }}
+                    onClick={() => { situacaofamiliar = 6; setActive("SITUACAO_FAMILIAR", "sf7") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     {"ESTÁ INSTITUCIONALIZADO (LONGA PERMANÊNCIA)"}
                   </button>
@@ -2161,31 +2168,31 @@ function EscalasAssistenciais() {
                 <div id="SITUACAO_ECONOMICA" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
                   <button id="se1"
                     className="blue-button"
-                    onClick={() => { situacaoeconomica = 1; setActive("SITUACAO_ECONOMICA", "se1") }}
+                    onClick={() => { situacaoeconomica = 0; setActive("SITUACAO_ECONOMICA", "se1") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     MAIS DE 3 SALÁRIOS MÍNIMOS
                   </button>
                   <button id="se2"
                     className="blue-button"
-                    onClick={() => { situacaoeconomica = 2; setActive("SITUACAO_ECONOMICA", "se2") }}
+                    onClick={() => { situacaoeconomica = 1; setActive("SITUACAO_ECONOMICA", "se2") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     DE 2 A 3 SALÁRIOS MÍNIMOS
                   </button>
                   <button id="se3"
                     className="blue-button"
-                    onClick={() => { situacaoeconomica = 3; setActive("SITUACAO_ECONOMICA", "se3") }}
+                    onClick={() => { situacaoeconomica = 2; setActive("SITUACAO_ECONOMICA", "se3") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     DE 1 A 2 SALÁRIOS MÍNIMOS
                   </button>
                   <button id="se4"
                     className="blue-button"
-                    onClick={() => { situacaoeconomica = 4; setActive("SITUACAO_ECONOMICA", "se4") }}
+                    onClick={() => { situacaoeconomica = 3; setActive("SITUACAO_ECONOMICA", "se4") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     ABAIXO DE 1 SALÁRIO MÍNIMO
                   </button>
                   <button id="se5"
                     className="blue-button"
-                    onClick={() => { situacaoeconomica = 5; setActive("SITUACAO_ECONOMICA", "se5") }}
+                    onClick={() => { situacaoeconomica = 4; setActive("SITUACAO_ECONOMICA", "se5") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     SEM RENDIMENTO
                   </button>
@@ -2194,31 +2201,31 @@ function EscalasAssistenciais() {
                 <div id="RELACOES_SOCIAIS" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
                   <button id="rl1"
                     className="blue-button"
-                    onClick={() => { relacoessociais = 1; setActive("RELACOES_SOCIAIS", "rl1") }}
+                    onClick={() => { relacoessociais = 0; setActive("RELACOES_SOCIAIS", "rl1") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     RELAÇÕES SOCIAIS, VIDA SOCIAL ATIVA
                   </button>
                   <button id="rl2"
                     className="blue-button"
-                    onClick={() => { relacoessociais = 2; setActive("RELACOES_SOCIAIS", "rl2") }}
+                    onClick={() => { relacoessociais = 1; setActive("RELACOES_SOCIAIS", "rl2") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     RELAÇÕES SOCIAIS SÓ COM FAMÍLIA E VIZINHOS, SAI DE CASA
                   </button>
                   <button id="rl3"
                     className="blue-button"
-                    onClick={() => { relacoessociais = 3; setActive("RELACOES_SOCIAIS", "rl3") }}
+                    onClick={() => { relacoessociais = 2; setActive("RELACOES_SOCIAIS", "rl3") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
-                    APENAS SE RELACIONA COM A FAMÍLIA, SAI DE CASA
+                    APENAS SE RELACIONA COM A FAMÍLIA OU VIZINHOS, SAI DE CASA
                   </button>
                   <button id="rl4"
                     className="blue-button"
-                    onClick={() => { relacoessociais = 4; setActive("RELACOES_SOCIAIS", "rl4") }}
+                    onClick={() => { relacoessociais = 3; setActive("RELACOES_SOCIAIS", "rl4") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     NÃO SAI DE CASA, RECEBE FAMÍLIA OU VISITAS
                   </button>
                   <button id="rl5"
                     className="blue-button"
-                    onClick={() => { relacoessociais = 5; setActive("RELACOES_SOCIAIS", "rl5") }}
+                    onClick={() => { relacoessociais = 4; setActive("RELACOES_SOCIAIS", "rl5") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     NÃO SAI DE CASA NEM RECEBE VISITAS
                   </button>
@@ -2227,31 +2234,31 @@ function EscalasAssistenciais() {
                 <div id="CONTATO_FAMILIA" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
                   <button id="cf1"
                     className="blue-button"
-                    onClick={() => { contatofamilia = 1; setActive("CONTATO_FAMILIA", "cf1") }}
+                    onClick={() => { contatofamilia = 0; setActive("CONTATO_FAMILIA", "cf1") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     QUINZENAL / SEMANAL / DIÁRIO
                   </button>
                   <button id="cf2"
                     className="blue-button"
-                    onClick={() => { contatofamilia = 2; setActive("CONTATO_FAMILIA", "cf2") }}
+                    onClick={() => { contatofamilia = 1; setActive("CONTATO_FAMILIA", "cf2") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     MENSAL
                   </button>
                   <button id="cf3"
                     className="blue-button"
-                    onClick={() => { contatofamilia = 3; setActive("CONTATO_FAMILIA", "cf3") }}
+                    onClick={() => { contatofamilia = 2; setActive("CONTATO_FAMILIA", "cf3") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     4 A 11 VEZES AO ANO
                   </button>
                   <button id="cf4"
                     className="blue-button"
-                    onClick={() => { contatofamilia = 4; setActive("CONTATO_FAMILIA", "cf4") }}
+                    onClick={() => { contatofamilia = 3; setActive("CONTATO_FAMILIA", "cf4") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     1 A 3 VEZES AO ANO
                   </button>
                   <button id="cf5"
                     className="blue-button"
-                    onClick={() => { contatofamilia = 5; setActive("CONTATO_FAMILIA", "cf5") }}
+                    onClick={() => { contatofamilia = 4; setActive("CONTATO_FAMILIA", "cf5") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     SEM CONTATO
                   </button>
@@ -2260,35 +2267,373 @@ function EscalasAssistenciais() {
                 <div id="REDE_SOCIAL" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
                   <button id="rs1"
                     className="blue-button"
-                    onClick={() => { apoioredesocial = 1; setActive("REDE_SOCIAL", "rs1") }}
+                    onClick={() => { apoioredesocial = 0; setActive("REDE_SOCIAL", "rs1") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     COM APOIO DE FAMILIAR OU DE VIZINHOS
                   </button>
                   <button id="rs2"
                     className="blue-button"
-                    onClick={() => { apoioredesocial = 2; setActive("REDE_SOCIAL", "rs2") }}
+                    onClick={() => { apoioredesocial = 1; setActive("REDE_SOCIAL", "rs2") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     VOLUNTARIADO SOCIAL, AJUDA DOMICILIÁRIA
                   </button>
                   <button id="rs3"
                     className="blue-button"
-                    onClick={() => { apoioredesocial = 3; setActive("REDE_SOCIAL", "rs3") }}
+                    onClick={() => { apoioredesocial = 2; setActive("REDE_SOCIAL", "rs3") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     NÃO TEM APOIO
                   </button>
                   <button id="rs4"
                     className="blue-button"
-                    onClick={() => { apoioredesocial = 4; setActive("REDE_SOCIAL", "rs4") }}
+                    onClick={() => { apoioredesocial = 3; setActive("REDE_SOCIAL", "rs4") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     COM CRITÉRIOS PARA INGRESSO EM INSTITUIÇÃO GERIÁTRICA
                   </button>
                   <button id="rs5"
                     className="blue-button"
-                    onClick={() => { apoioredesocial = 5; setActive("REDE_SOCIAL", "rs5") }}
+                    onClick={() => { apoioredesocial = 4; setActive("REDE_SOCIAL", "rs5") }}
                     style={{ padding: 10, width: 200, minWidth: 200 }}>
                     TEM CUIDADOS PERMANENTES
                   </button>
                 </div>
+                <div className="title2center">HABITAÇÃO</div>
+                <div id="HABITAÇÃO" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <button id="hab1"
+                    className="blue-button"
+                    onClick={() => { habitacao = 0; setActive("HABITAÇÃO", "hab1") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    ADEQUADA ÀS NECESSIDADES
+                  </button>
+                  <button id="hab2"
+                    className="blue-button"
+                    onClick={() => { habitacao = 1; setActive("HABITAÇÃO", "hab2") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    BARREIRAS ARQUITETÔNICAS NA CASA/ENTRADA
+                  </button>
+                  <button id="hab3"
+                    className="blue-button"
+                    onClick={() => { habitacao = 2; setActive("HABITAÇÃO", "hab3") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    UMIDADE, FRACAS CONDIÇÕES DE HIGIENE, AUSÊNCIA DE ÁGUA OU INFRAESTRUTURA
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }, [showescala]);
+
+  // ESCALA DE RISCO FARMACÊUTICO (showescala = 11).
+  let polifarmacia = -1;
+  let idade = moment().diff(moment(dn, 'DD/MM/YYYY'), 'years');
+  let endovenoso = -1;
+  let perigoso = -1;
+  let suportenutricao = -1;
+  let comorbidades = -1;
+  let traqueostomizado = -1;
+  let drogadito = -1;
+
+  const insertRiscoFarmaceutico = () => {
+    var pontosidade = idade < 41 ? 0 : idade > 40 && idade < 65 ? 1 : 2;
+    var score = polifarmacia + pontosidade + endovenoso + perigoso + suportenutricao + comorbidades + traqueostomizado + drogadito;
+    var significado = '';
+    if (score > 8) {
+      significado = 'RISCO ALTO: ACOMPANHAMENTO SEMANAL';
+    } else if (score == 7 || score == 8) {
+      significado = 'RISCO MODERADO: ACOMPANHAMENTO QUINZENAL';
+    } else {
+      significado = 'RISCO BAIXO: APENAS MONITORADOS';
+    }
+    var obj = {
+      idpct: idpaciente,
+      idatendimento: idatendimento,
+      data: moment(),
+      cd_escala: 11,
+      ds_escala: 'RISCO FARMACÊUTICO',
+      valor_resultado: score,
+      ds_resultado: significado,
+      idprofissional: 0,
+      status: 1,
+    }
+    axios.post(htmlghapinsertescala, obj).then(() => {
+      loadEscalas();
+    })
+  }
+  const RiscoFarmaceutico = useCallback(() => {
+    return (
+      <div className="menucover" style={{ zIndex: 9, display: showescala == 11 ? 'flex' : 'none', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+        <div className="menucontainer">
+          <div id="cabeçalho" className="cabecalho">
+            <div className="title5">{'RISCO FARMACÊUTICO'}</div>
+            <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+              <button className="red-button" onClick={() => setshowescala(0)}>
+                <img
+                  alt=""
+                  src={deletar}
+                  style={{
+                    margin: 10,
+                    height: 30,
+                    width: 30,
+                  }}
+                ></img>
+              </button>
+              <button className="green-button"
+                onClick={() => checkEscala([polifarmacia, idade, endovenoso, perigoso, suportenutricao, comorbidades, traqueostomizado, drogadito], insertRiscoFarmaceutico)}
+              >
+                <img
+                  alt=""
+                  src={salvar}
+                  style={{
+                    margin: 10,
+                    height: 30,
+                    width: 30,
+                  }}
+                ></img>
+              </button>
+            </div>
+          </div>
+          <div
+            className="corpo">
+            <div>
+              <div className="scroll"
+                style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', marginBottom: 5, height: '60vh', width: '80vw' }}>
+                <div className="title2center">TOTAL DE MEDICAÇÕES EM USO</div>
+                <div id="POLIFARMACIA" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <button id="polifarmacia1"
+                    className="blue-button"
+                    onClick={() => { polifarmacia = 0; setActive("POLIFARMACIA", "polifarmacia1") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    0 - 5 MEDICAMENTOS
+                  </button>
+                  <button id="polifarmacia2"
+                    className="blue-button"
+                    onClick={() => { polifarmacia = 1; setActive("POLIFARMACIA", "polifarmacia2") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    6 - 10 MEDICAMENTOS
+                  </button>
+                  <button id="polifarmacia3"
+                    className="blue-button"
+                    onClick={() => { polifarmacia = 2; setActive("POLIFARMACIA", "polifarmacia3") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    11 OU MAIS MEDICAMENTOS
+                  </button>
+                </div>
+                <div className="title2center">IDADE</div>
+                <div id="IDADE" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <button id="idade"
+                    className="blue-button"
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    {idade}
+                  </button>
+                </div>
+                <div className="title2center">MEDICAMENTOS DE USO ENDOVENOSO</div>
+                <div id="ENDOVENOSO" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <button id="endo1"
+                    className="blue-button"
+                    onClick={() => { endovenoso = 0; setActive("ENDOVENOSO", "endo1") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    NENHUM
+                  </button>
+                  <button id="endo2"
+                    className="blue-button"
+                    onClick={() => { endovenoso = 1; setActive("ENDOVENOSO", "endo2") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    UM OU MAIS
+                  </button>
+                </div>
+                <div className="title2center">MEDICAMENTOS POTENCIALMENTE PERIGOSOS</div>
+                <div id="PERIGOSO" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <button id="perigoso1"
+                    className="blue-button"
+                    onClick={() => { perigoso = 0; setActive("PERIGOSO", "perigoso1") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    NENHUM
+                  </button>
+                  <button id="perigoso2"
+                    className="blue-button"
+                    onClick={() => { perigoso = 1; setActive("PERIGOSO", "perigoso2") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    UM OU MAIS
+                  </button>
+                </div>
+                <div className="title2center">PACIENTE EM SUPORTE NUTRICIONAL</div>
+                <div id="SUPORTE_NUTRICAO" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <button id="suportenutricao1"
+                    className="blue-button"
+                    onClick={() => { suportenutricao = 0; setActive("SUPORTE_NUTRICAO", "suportenutricao1") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    NÃO ESTÁ COM SONDA
+                  </button>
+                  <button id="suportenutricao2"
+                    className="blue-button"
+                    onClick={() => { suportenutricao = 1; setActive("SUPORTE_NUTRICAO", "suportenutricao2") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    {'SIM (SNE, GGT OU NPT)'}
+                  </button>
+                </div>
+                <div className="title2center">COMORBIDADES</div>
+                <div id="COMORBIDADES" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <button id="comorb1"
+                    className="blue-button"
+                    onClick={() => { comorbidades = 0; setActive("COMORBIDADES", "comorb1") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    NÃO
+                  </button>
+                  <button id="comorb2"
+                    className="blue-button"
+                    onClick={() => { comorbidades = 1; setActive("COMORBIDADES", "comorb2") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    SIM
+                  </button>
+                </div>
+                <div className="title2center">PACIENTE TRAQUEOSTOMIZADO</div>
+                <div id="TQT" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <button id="tqt1"
+                    className="blue-button"
+                    onClick={() => { traqueostomizado = 0; setActive("TQT", "tqt1") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    NÃO
+                  </button>
+                  <button id="tqt2"
+                    className="blue-button"
+                    onClick={() => { traqueostomizado = 1; setActive("TQT", "tqt2") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    SIM
+                  </button>
+                </div>
+                <div className="title2center">PACIENTE TABAGISTA OU ALCOOLISTA OU USUÁRIO DE DROGAS</div>
+                <div id="DROGADITO" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <button id="drogadito1"
+                    className="blue-button"
+                    onClick={() => { drogadito = 0; setActive("DROGADITO", "drogadito1") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    NÃO
+                  </button>
+                  <button id="drogadito2"
+                    className="blue-button"
+                    onClick={() => { drogadito = 1; setActive("DROGADITO", "drogadito2") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    SIM, 1 OU 2
+                  </button>
+                  <button id="drogadito3"
+                    className="blue-button"
+                    onClick={() => { drogadito = 2; setActive("DROGADITO", "drogadito3") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    SIM, 3 OU MAIS
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }, [showescala]);
+
+  // ESCALA DE PERFORMANCE ECOG (showescala = 12).
+  let ecog = -1;
+
+  const insertEcog = () => {
+    var score = ecog;
+    var significado = '';
+    if (ecog == 0) {
+      significado = 'COMPLETAMENTE ATIVO; CAPAZ DE REALIZAR TODAS AS SUAS ATIVIDADES SEM RESTRIÇÃO (KARNOFSKY 90-100%).';
+    } else if (ecog == 1) {
+      significado = 'RESTRIÇÃO A ATIVIDADES FÍSICAS RIGOROSAS; É CAPAZ DE TRABALHOS LEVES E DE NATUREZA SEDENTÁRIA (KARNOFSKY 70-80%).';
+    } else if (ecog == 2) {
+      significado = 'CAPAZ DE REALIZAR TODOS OS AUTO-CUIDADOS, MAS INCAPAZ DE REALIZAR QUALQUER ATIVIDADE DE TRABALHO; EM PÉ APROXIMADAMENTE 50% DAS HORAS EM QUE O PACIENTE ESTÁ ACORDADO (KARNOFSKY 50-60%).';
+    } else if (ecog == 3) {
+      significado = 'CAPAZ DE REALIZAR SOMENTE AUTO-CUIDADOS LIMITADOS, CONFINADO AO LEITO OU CADEIRA MAIS DE 50% DAS HORAS EM QUE O PACIENTE ESTÁ ACORDADO (KARNOFSKY 30-40%).'
+    } else if (ecog == 4) {
+      significado = 'COMPLETAMENTE INCAPAZ DE REALIZAR AUTO-CUIDADOS BÁSICOS; TOTALMENTE CONFINADO AO LEITO OU À CADEIRA (KARNOFSKY < 30%).'
+    } else {
+      significado = '';
+    }
+    var obj = {
+      idpct: idpaciente,
+      idatendimento: idatendimento,
+      data: moment(),
+      cd_escala: 12,
+      ds_escala: 'ECOG',
+      valor_resultado: score,
+      ds_resultado: significado,
+      idprofissional: 0,
+      status: 1,
+    }
+    axios.post(htmlghapinsertescala, obj).then(() => {
+      loadEscalas();
+    })
+  }
+  const Ecog = useCallback(() => {
+    return (
+      <div className="menucover" style={{ zIndex: 9, display: showescala == 12 ? 'flex' : 'none', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+        <div className="menucontainer">
+          <div id="cabeçalho" className="cabecalho">
+            <div className="title5">{'ECOG'}</div>
+            <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+              <button className="red-button" onClick={() => setshowescala(0)}>
+                <img
+                  alt=""
+                  src={deletar}
+                  style={{
+                    margin: 10,
+                    height: 30,
+                    width: 30,
+                  }}
+                ></img>
+              </button>
+              <button className="green-button"
+                onClick={() => checkEscala([ecog], insertEcog)}
+              >
+                <img
+                  alt=""
+                  src={salvar}
+                  style={{
+                    margin: 10,
+                    height: 30,
+                    width: 30,
+                  }}
+                ></img>
+              </button>
+            </div>
+          </div>
+          <div
+            className="corpo">
+            <div>
+              <div id="ECOG" className="scroll"
+                style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start', marginBottom: 5, height: '60vh', width: 240 }}>
+                <button id="ecog0"
+                  className="blue-button"
+                  onClick={() => { ecog = 0; setActive("ECOG", "ecog0") }}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  {'COMPLETAMENTE ATIVO; CAPAZ DE REALIZAR TODAS AS SUAS ATIVIDADES SEM RESTRIÇÃO (KARNOFSKY 90-100%)'}
+                </button>
+                <button id="ecog1"
+                  className="blue-button"
+                  onClick={() => { ecog = 1; setActive("ECOG", "ecog1") }}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  {'RESTRIÇÃO A ATIVIDADES FÍSICAS RIGOROSAS; É CAPAZ DE TRABALHOS LEVES E DE NATUREZA SEDENTÁRIA (KARNOFSKY 70-80%).'}
+                </button>
+                <button id="ecog2"
+                  className="blue-button"
+                  onClick={() => { ecog = 2; setActive("ECOG", "ecog2") }}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  {'CAPAZ DE REALIZAR TODOS OS AUTO-CUIDADOS, MAS INCAPAZ DE REALIZAR QUALQUER ATIVIDADE DE TRABALHO; EM PÉ APROXIMADAMENTE 50% DAS HORAS EM QUE O PACIENTE ESTÁ ACORDADO (KARNOFSKY 50-60%).'}
+                </button>
+                <button id="ecog3"
+                  className="blue-button"
+                  onClick={() => { ecog = 3; setActive("ECOG", "ecog3") }}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  {'CAPAZ DE REALIZAR SOMENTE AUTO-CUIDADOS LIMITADOS, CONFINADO AO LEITO OU CADEIRA MAIS DE 50% DAS HORAS EM QUE O PACIENTE ESTÁ ACORDADO (KARNOFSKY 30-40%).'}
+                </button>
+                <button id="ecog4"
+                  className="blue-button"
+                  onClick={() => { ecog = 2; setActive("ECOG", "ecog4") }}
+                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  {'COMPLETAMENTE INCAPAZ DE REALIZAR AUTO-CUIDADOS BÁSICOS; TOTALMENTE CONFINADO AO LEITO OU À CADEIRA (KARNOFSKY < 30%).'}
+                </button>
               </div>
             </div>
           </div>
@@ -2419,40 +2764,40 @@ function EscalasAssistenciais() {
     );
   }
 
-  // ESCALA MEEM (showescala = 11).
+  // ESCALA MEEM (showescala = 13).
   // orientação.
-  const [diasemana, setdiasemana] = useState(0);
-  const [diames, setdiames] = useState(0);
-  const [mes, setmes] = useState(0);
-  const [ano, setano] = useState(0);
-  const [hora, sethora] = useState(0);
-  const [local, setlocal] = useState(0);
-  const [instituicao, setinstituicao] = useState(0);
-  const [bairro, setbairro] = useState(0);
-  const [cidade, setcidade] = useState(0);
-  const [estado, setestado] = useState(0);
+  let diasemana = -1
+  let diames = -1
+  let mes = -1
+  let ano = -1
+  let hora = -1
+  let local = -1
+  let instituicao = -1
+  let bairro = -1
+  let cidade = -1
+  let estado = -1
   // memória imediata.
-  const [palavra1, setpalavra1] = useState(0);
-  const [palavra2, setpalavra2] = useState(0);
-  const [palavra3, setpalavra3] = useState(0);
+  let palavra1 = -1
+  let palavra2 = -1
+  let palavra3 = -1
   // atenção e cálculo.
-  const [calculo1, setcalculo1] = useState(0);
-  const [calculo2, setcalculo2] = useState(0);
-  const [calculo3, setcalculo3] = useState(0);
-  const [calculo4, setcalculo4] = useState(0);
-  const [calculo5, setcalculo5] = useState(0);
+  let calculo1 = -1
+  let calculo2 = -1
+  let calculo3 = -1
+  let calculo4 = -1
+  let calculo5 = -1
   // evocação.
-  const [palavra4, setpalavra4] = useState(0);
-  const [palavra5, setpalavra5] = useState(0);
-  const [palavra6, setpalavra6] = useState(0);
+  let palavra4 = -1
+  let palavra5 = -1
+  let palavra6 = -1
   // linguagem.
-  const [nomearrelogio, setnomearrelogio] = useState(0);
-  const [nomearcaneta, setnomearcaneta] = useState(0);
-  const [nemaqui, setnemaqui] = useState(0);
-  const [peguepapel, setpeguepapel] = useState(0);
-  const [fecheolhos, setfecheolhos] = useState(0);
-  const [escrevafrase, setescrevafrase] = useState(0);
-  const [copiedesenho, setcopiedesenho] = useState(0);
+  let nomearrelogio = -1
+  let nomearcaneta = -1
+  let nemaqui = -1
+  let peguepapel = -1
+  let fecheolhos = -1
+  let escrevafrase = -1
+  let copiedesenho = -1
 
   const insertMeem = () => {
     var score =
@@ -2475,7 +2820,7 @@ function EscalasAssistenciais() {
       idpct: idpaciente,
       idatendimento: idatendimento,
       data: moment(),
-      cd_escala: 11,
+      cd_escala: 13,
       ds_escala: 'MEEM',
       valor_resultado: score,
       ds_resultado: significado,
@@ -2486,10 +2831,14 @@ function EscalasAssistenciais() {
       loadEscalas();
     })
   }
-  function MEEM() {
+  const MEEM = useCallback(() => {
     return (
-      <div className="menucover" style={{ zIndex: 9, display: showescala == 11 ? 'flex' : 'none', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-        <div className="menucontainer">
+      <div className="menucover"
+        style={{
+          zIndex: 9, display: showescala == 13 ? 'flex' : 'none', flexDirection: 'column',
+          justifyContent: 'center', alignItems: 'center'
+        }}>
+        <div className="menucontainer" style={{ width: '90vw', height: '80vh' }}>
           <div id="cabeçalho" className="cabecalho">
             <div className="title5">{'MEEM'}</div>
             <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
@@ -2505,7 +2854,7 @@ function EscalasAssistenciais() {
                 ></img>
               </button>
               <button className="green-button"
-                onClick={() => insertMeem()}
+                onClick={() => checkEscala([diasemana, diames, mes, ano, hora, local, instituicao, bairro, cidade, estado, palavra1, palavra2, palavra3, palavra4, palavra5, palavra6, calculo1, calculo2, calculo3, calculo4, calculo5, nomearrelogio, nomearcaneta, nemaqui, peguepapel, fecheolhos, escrevafrase, copiedesenho], insertMeem)}
               >
                 <img
                   alt=""
@@ -2521,66 +2870,145 @@ function EscalasAssistenciais() {
           </div>
           <div
             className="corpo">
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', marginBottom: 5 }}>
+            <div className="scroll" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', marginBottom: 5 }}>
               <div className="title2center">ORIENTAÇÃO</div>
-              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <div id="ORIENTACAO" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <button
-                  onClick={() => { diasemana == 0 ? setdiasemana(1) : setdiasemana(0) }}
-                  className={diasemana == 1 ? "red-button" : "blue-button"}
+                  id='orient1'
+                  onClick={() => {
+                    setMultiplo("orient1")
+                    if (diasemana == -1 || diasemana == 0) {
+                      diasemana = 1;
+                    } else {
+                      diasemana = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   DIA DA SEMANA
                 </button>
                 <button
-                  onClick={() => { diames == 0 ? setdiames(1) : setdiames(0) }}
-                  className={diames == 1 ? "red-button" : "blue-button"}
+                  id='orient2'
+                  onClick={() => {
+                    setMultiplo("orient2")
+                    if (diames == -1 || diames == 0) {
+                      diames = 1;
+                    } else {
+                      diames = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   DIA DO MÊS
                 </button>
                 <button
-                  onClick={() => { mes == 0 ? setmes(1) : setmes(0) }}
-                  className={mes == 1 ? "red-button" : "blue-button"}
+                  id='orient3'
+                  onClick={() => {
+                    setMultiplo("orient3")
+                    if (mes == -1 || mes == 0) {
+                      mes = 1;
+                    } else {
+                      mes = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   MÊS
                 </button>
                 <button
-                  onClick={() => { ano == 0 ? setano(1) : setano(0) }}
-                  className={ano == 1 ? "red-button" : "blue-button"}
+                  id='orient4'
+                  onClick={() => {
+                    setMultiplo("orient4")
+                    if (ano == -1 || ano == 0) {
+                      ano = 1;
+                    } else {
+                      ano = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   ANO
                 </button>
                 <button
-                  onClick={() => { hora == 0 ? sethora(1) : sethora(0) }}
-                  className={hora == 1 ? "red-button" : "blue-button"}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  id='orient5'
+                  onClick={() => {
+                    setMultiplo("orient5")
+                    if (hora == -1 || hora == 0) {
+                      hora = 1;
+                    } else {
+                      hora = 0;
+                    }
+                  }}
+                  className="blue-button" style={{ padding: 10, width: 200, minWidth: 200 }}>
                   HORA
                 </button>
                 <button
-                  onClick={() => { local == 0 ? setlocal(1) : setlocal(0) }}
-                  className={local == 1 ? "red-button" : "blue-button"}
+                  id='orient6'
+                  onClick={() => {
+                    setMultiplo("orient6")
+                    if (local == -1 || local == 0) {
+                      local = 1;
+                    } else {
+                      local = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   LOCAL
                 </button>
                 <button
-                  onClick={() => { instituicao == 0 ? setinstituicao(1) : setinstituicao(0) }}
-                  className={instituicao == 1 ? "red-button" : "blue-button"}
+                  id='orient7'
+                  onClick={() => {
+                    setMultiplo("orient7")
+                    if (instituicao == -1 || instituicao == 0) {
+                      instituicao = 1;
+                    } else {
+                      instituicao = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   INSTITUIÇÃO
                 </button>
                 <button
-                  onClick={() => { bairro == 0 ? setbairro(1) : setbairro(0) }}
-                  className={bairro == 1 ? "red-button" : "blue-button"}
+                  id='orient8'
+                  onClick={() => {
+                    setMultiplo("orient8")
+                    if (bairro == -1 || bairro == 0) {
+                      bairro = 1;
+                    } else {
+                      bairro = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   BAIRRO
                 </button>
                 <button
-                  onClick={() => { cidade == 0 ? setcidade(1) : setcidade(0) }}
-                  className={cidade == 1 ? "red-button" : "blue-button"}
+                  id='orient9'
+                  onClick={() => {
+                    setMultiplo("orient9")
+                    if (cidade == -1 || cidade == 0) {
+                      cidade = 1;
+                    } else {
+                      cidade = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   CIDADE
                 </button>
                 <button
-                  onClick={() => { estado == 0 ? setestado(1) : setestado(0) }}
-                  className={estado == 1 ? "red-button" : "blue-button"}
+                  id='orient10'
+                  onClick={() => {
+                    setMultiplo("orient10")
+                    if (estado == -1 || estado == 0) {
+                      estado = 1;
+                    } else {
+                      estado = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   ESTADO
                 </button>
@@ -2588,20 +3016,44 @@ function EscalasAssistenciais() {
               <div className="title2center">MEMÓRIA IMEDIATA</div>
               <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <button
-                  onClick={() => { palavra1 == 0 ? setpalavra1(1) : setpalavra1(0) }}
-                  className={palavra1 == 1 ? "red-button" : "blue-button"}
+                  id='palavra1'
+                  onClick={() => {
+                    setMultiplo("palavra1")
+                    if (palavra1 == -1 || palavra1 == 0) {
+                      palavra1 = 1;
+                    } else {
+                      palavra1 = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   PALAVRA 1
                 </button>
                 <button
-                  onClick={() => { palavra2 == 0 ? setpalavra2(1) : setpalavra2(0) }}
-                  className={palavra2 == 1 ? "red-button" : "blue-button"}
+                  id='palavra2'
+                  onClick={() => {
+                    setMultiplo("palavra2")
+                    if (palavra2 == -1 || palavra2 == 0) {
+                      palavra2 = 1;
+                    } else {
+                      palavra2 = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   PALAVRA 2
                 </button>
                 <button
-                  onClick={() => { palavra3 == 0 ? setpalavra3(1) : setpalavra3(0) }}
-                  className={palavra3 == 1 ? "red-button" : "blue-button"}
+                  id='palavra3'
+                  onClick={() => {
+                    setMultiplo("palavra3")
+                    if (palavra3 == -1 || palavra3 == 0) {
+                      palavra3 = 1;
+                    } else {
+                      palavra3 = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   PALAVRA 3
                 </button>
@@ -2609,32 +3061,72 @@ function EscalasAssistenciais() {
               <div className="title2center">ATENÇÃO E CÁLCULO</div>
               <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <button
-                  onClick={() => { calculo1 == 0 ? setcalculo1(1) : setcalculo1(0) }}
-                  className={calculo1 == 1 ? "red-button" : "blue-button"}
+                  id='calc1'
+                  onClick={() => {
+                    setMultiplo("calc1")
+                    if (calculo1 == -1 || calculo1 == 0) {
+                      calculo1 = 1;
+                    } else {
+                      calculo1 = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   100 - 7 = 93
                 </button>
                 <button
-                  onClick={() => { calculo2 == 0 ? setcalculo2(1) : setcalculo2(0) }}
-                  className={calculo2 == 1 ? "red-button" : "blue-button"}
+                  id='calc2'
+                  onClick={() => {
+                    setMultiplo("calc2")
+                    if (calculo2 == -1 || calculo2 == 0) {
+                      calculo2 = 1;
+                    } else {
+                      calculo2 = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   93 - 7 = 86
                 </button>
                 <button
-                  onClick={() => { calculo3 == 0 ? setcalculo3(1) : setcalculo3(0) }}
-                  className={calculo3 == 1 ? "red-button" : "blue-button"}
+                  id='calc3'
+                  onClick={() => {
+                    setMultiplo("calc3")
+                    if (calculo3 == -1 || calculo3 == 0) {
+                      calculo3 = 1;
+                    } else {
+                      calculo3 = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   86 - 7 = 79
                 </button>
                 <button
-                  onClick={() => { calculo4 == 0 ? setcalculo4(1) : setcalculo4(0) }}
-                  className={calculo4 == 1 ? "red-button" : "blue-button"}
+                  id='calc4'
+                  onClick={() => {
+                    setMultiplo("calc4")
+                    if (calculo4 == -1 || calculo4 == 0) {
+                      calculo4 = 1;
+                    } else {
+                      calculo4 = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   79 - 7 = 72
                 </button>
                 <button
-                  onClick={() => { calculo5 == 0 ? setcalculo5(1) : setcalculo5(0) }}
-                  className={calculo5 == 1 ? "red-button" : "blue-button"}
+                  id='calc5'
+                  onClick={() => {
+                    setMultiplo("calc5")
+                    if (calculo5 == -1 || calculo5 == 0) {
+                      calculo5 = 1;
+                    } else {
+                      calculo5 = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   72 - 7 = 65
                 </button>
@@ -2642,20 +3134,44 @@ function EscalasAssistenciais() {
               <div className="title2center">EVOCAÇÃO</div>
               <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <button
-                  onClick={() => { palavra4 == 0 ? setpalavra4(1) : setpalavra4(0) }}
-                  className={palavra4 == 1 ? "red-button" : "blue-button"}
+                  id='palavra4'
+                  onClick={() => {
+                    setMultiplo("palavra4")
+                    if (palavra4 == -1 || palavra4 == 0) {
+                      palavra4 = 1;
+                    } else {
+                      palavra4 = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   PALAVRA 1
                 </button>
                 <button
-                  onClick={() => { palavra5 == 0 ? setpalavra5(1) : setpalavra5(0) }}
-                  className={palavra5 == 1 ? "red-button" : "blue-button"}
+                  id='palavra5'
+                  onClick={() => {
+                    setMultiplo("palavra5")
+                    if (palavra5 == -1 || palavra5 == 0) {
+                      palavra5 = 1;
+                    } else {
+                      palavra5 = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   PALAVRA 2
                 </button>
                 <button
-                  onClick={() => { palavra6 == 0 ? setpalavra6(1) : setpalavra6(0) }}
-                  className={palavra6 == 1 ? "red-button" : "blue-button"}
+                  id='palavra6'
+                  onClick={() => {
+                    setMultiplo("palavra6")
+                    if (palavra6 == -1 || palavra6 == 0) {
+                      palavra6 = 1;
+                    } else {
+                      palavra6 = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   PALAVRA 3
                 </button>
@@ -2663,44 +3179,100 @@ function EscalasAssistenciais() {
               <div className="title2center">LINGUAGEM</div>
               <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <button
-                  onClick={() => { nomearrelogio == 0 ? setnomearrelogio(1) : setnomearrelogio(0) }}
-                  className={nomearrelogio == 1 ? "red-button" : "blue-button"}
+                  id='relogio'
+                  onClick={() => {
+                    setMultiplo("relogio")
+                    if (nomearrelogio == -1 || nomearrelogio == 0) {
+                      nomearrelogio = 1;
+                    } else {
+                      nomearrelogio = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   RELÓGIO
                 </button>
                 <button
-                  onClick={() => { nomearcaneta == 0 ? setnomearcaneta(1) : setnomearcaneta(0) }}
-                  className={nomearcaneta == 1 ? "red-button" : "blue-button"}
+                  id='caneta'
+                  onClick={() => {
+                    setMultiplo("caneta")
+                    if (nomearcaneta == -1 || nomearcaneta == 0) {
+                      nomearcaneta = 1;
+                    } else {
+                      nomearcaneta = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   CANETA
                 </button>
                 <button
-                  onClick={() => { nemaqui == 0 ? setnemaqui(1) : setnemaqui(0) }}
-                  className={nemaqui == 1 ? "red-button" : "blue-button"}
+                  id='nemaqui'
+                  onClick={() => {
+                    setMultiplo("nemaqui")
+                    if (nemaqui == -1 || nemaqui == 0) {
+                      nemaqui = 1;
+                    } else {
+                      nemaqui = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   NEM AQUI, NEM ALI, NEM LÁ
                 </button>
                 <button
-                  onClick={() => { peguepapel == 0 ? setpeguepapel(1) : setpeguepapel(0) }}
-                  className={peguepapel == 1 ? "red-button" : "blue-button"}
+                  id='papel'
+                  onClick={() => {
+                    setMultiplo("papel")
+                    if (peguepapel == -1 || peguepapel == 0) {
+                      peguepapel = 1;
+                    } else {
+                      peguepapel = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   PEGAR E DOBRAR PAPEL
                 </button>
                 <button
-                  onClick={() => { fecheolhos == 0 ? setfecheolhos(1) : setfecheolhos(0) }}
-                  className={fecheolhos == 1 ? "red-button" : "blue-button"}
+                  id='olhos'
+                  onClick={() => {
+                    setMultiplo("olhos")
+                    if (fecheolhos == -1 || fecheolhos == 0) {
+                      fecheolhos = 1;
+                    } else {
+                      fecheolhos = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   LER E FECHAR OLHOS
                 </button>
                 <button
-                  onClick={() => { escrevafrase == 0 ? setescrevafrase(1) : setescrevafrase(0) }}
-                  className={escrevafrase == 1 ? "red-button" : "blue-button"}
+                  id='frase'
+                  onClick={() => {
+                    setMultiplo("frase")
+                    if (escrevafrase == -1 || escrevafrase == 0) {
+                      escrevafrase = 1;
+                    } else {
+                      escrevafrase = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   ESCREVA FRASE
                 </button>
                 <button
-                  onClick={() => { copiedesenho == 0 ? setcopiedesenho(1) : setcopiedesenho(0) }}
-                  className={copiedesenho == 1 ? "red-button" : "blue-button"}
+                  id='desenho'
+                  onClick={() => {
+                    setMultiplo("desenho")
+                    if (copiedesenho == -1 || copiedesenho == 0) {
+                      copiedesenho = 1;
+                    } else {
+                      copiedesenho = 0;
+                    }
+                  }}
+                  className="blue-button"
                   style={{ padding: 10, width: 200, minWidth: 200 }}>
                   COPIE DESENHO
                 </button>
@@ -2710,7 +3282,7 @@ function EscalasAssistenciais() {
         </div>
       </div>
     );
-  }
+  }, [showescala]);
 
   return (
     <div>
@@ -2724,7 +3296,9 @@ function EscalasAssistenciais() {
       <RiscoAspirativo></RiscoAspirativo>
       <Gijon></Gijon>
       <Asia></Asia>
-
+      <RiscoFarmaceutico></RiscoFarmaceutico>
+      <Ecog></Ecog>
+      <MEEM></MEEM>
       <div
         className="menucover"
         style={{
