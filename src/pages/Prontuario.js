@@ -599,7 +599,8 @@ function Prontuario() {
                                                       item.cd_escala == 11 ? 10 :
                                                         item.cd_escala == 12 ? 5 :
                                                           item.cd_escala == 13 ? 25 :
-                                                            100,
+                                                            item.cd_escala == 14 ? 5 :
+                                                              100,
                                 fontColor: '#61636e',
                                 fontWeight: 'bold',
                               },
@@ -650,7 +651,7 @@ function Prontuario() {
                     style={{
                       display: arraylistescalas.filter(value => value.cd_escala == item.cd_escala).length > 0 ? 'flex' : 'none',
                       overflowX: 'scroll', overflowY: 'hidden', flexDirection: 'row', justifyContent: 'flex-start',
-                      width: '100%',
+                      width: '80vw',
                       backgroundColor: "#F2F2F2", borderColor: '#F2F2F2', padding: 10, paddingLeft: 5,
                     }}>
                     {arraylistescalas.filter(value => value.cd_escala == item.cd_escala)
@@ -807,13 +808,14 @@ function Prontuario() {
       >
         <div id="IDENTIFICAÇÃO" style={{
           display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100vw',
-
+          marginTop: 10, marginLeft: 2.5,
         }}>
           <img
             alt=""
             src={foto}
             style={{
-              height: window.innerWidth < 426 ? 100 : '80%',
+              display: 'none',
+              height: window.innerWidth < 426 ? 100 : 'calc(100% - 10px)',
               padding: 0,
               margin: 5,
               marginLeft: 10,
@@ -1043,8 +1045,8 @@ function Prontuario() {
                 style={{
                   display: 'flex',
                   margin: 10,
-                  height: 30,
-                  width: 30,
+                  height: 20,
+                  width: 20,
                 }}
               ></img>
             </div>

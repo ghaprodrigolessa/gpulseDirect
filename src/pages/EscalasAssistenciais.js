@@ -55,7 +55,16 @@ function EscalasAssistenciais() {
 
   const checkEscala = (elementos, funcao) => {
     console.log(elementos);
-    if (elementos.filter(item => item < 0).length == 0) {
+    if (elementos.filter(item => parseInt(item) < 0).length == 0) {
+      funcao();
+    } else {
+      toast(1, '#ec7063', 'PREENCHIMENTO INCOMPLETO', 2000);
+    }
+  }
+
+  const checkEscalaMultipla = (elementos, funcao) => {
+    console.log(elementos);
+    if (elementos.filter(item => parseInt(item) > 0).length > 0) {
       funcao();
     } else {
       toast(1, '#ec7063', 'PREENCHIMENTO INCOMPLETO', 2000);
@@ -3284,6 +3293,169 @@ function EscalasAssistenciais() {
     );
   }, [showescala]);
 
+  // ESCALA GLIM (showescala = 14).
+  // etiológico.
+  let ingestao = 0
+  let gravidade = 0
+  // fenotípico.
+  let perdaponderal = 0
+  let baixoimc = 0
+  let massamuscular = 0
+
+  let desnutrido = 0
+
+  const insertGlim = () => {
+    var score =
+      ingestao + gravidade + perdaponderal + baixoimc + massamuscular;
+
+    var significado = '';
+    if (ingestao == 1 || gravidade == 1 || perdaponderal == 1 || baixoimc == 1 || massamuscular == 1) {
+      significado = 'DESNUTRIDO';
+    } else {
+      significado = 'NÃO DESNUTRIDO';
+    }
+
+    var obj = {
+      idpct: idpaciente,
+      idatendimento: idatendimento,
+      data: moment(),
+      cd_escala: 14,
+      ds_escala: 'GLIM',
+      valor_resultado: score,
+      ds_resultado: significado,
+      idprofissional: 0,
+      status: 1,
+    }
+    axios.post(htmlghapinsertescala, obj).then(() => {
+      loadEscalas();
+    })
+  }
+  const Glim = useCallback(() => {
+    return (
+      <div className="menucover"
+        style={{
+          zIndex: 9, display: showescala == 14 ? 'flex' : 'none', flexDirection: 'column',
+          justifyContent: 'center', alignItems: 'center'
+        }}>
+        <div className="menucontainer">
+          <div id="cabeçalho" className="cabecalho">
+            <div className="title5">{'GLIM'}</div>
+            <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+              <button className="red-button" onClick={() => setshowescala(0)}>
+                <img
+                  alt=""
+                  src={deletar}
+                  style={{
+                    margin: 10,
+                    height: 30,
+                    width: 30,
+                  }}
+                ></img>
+              </button>
+              <button className="green-button"
+                onClick={() => checkEscalaMultipla([ingestao, gravidade, perdaponderal, baixoimc, massamuscular], insertGlim)}
+              >
+                <img
+                  alt=""
+                  src={salvar}
+                  style={{
+                    margin: 10,
+                    height: 30,
+                    width: 30,
+                  }}
+                ></img>
+              </button>
+            </div>
+          </div>
+          <div
+            className="corpo">
+            <div className="title2center">ETIOLÓGICO</div>
+            <div id="ETIOLOGICO" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <button
+                id='etio1'
+                onClick={() => {
+                  setMultiplo("etio1")
+                  if (ingestao == -1 || ingestao == 0) {
+                    ingestao = 1;
+                  } else {
+                    ingestao = 0;
+                  }
+                }}
+                className="blue-button"
+                title="< 50% DAS NECESSIDADES POR MAIS DE UMA SEMANA OU QUALQUER REDUÇÃO ALIMENTAR POR MAIS DE DUAS SEMANAS OU CONDIÇÃO GASTRINTESTINAL QUE ALTERA A ABSORÇÃO DOS NUTRIENTES."
+                style={{ padding: 10, width: 200, minWidth: 200 }}>
+                INGESTÃO OU ABSORÇÃO ALIMENTAR
+              </button>
+              <button
+                id='etio2'
+                onClick={() => {
+                  setMultiplo("etio2")
+                  if (gravidade == -1 || gravidade == 0) {
+                    gravidade = 1;
+                  } else {
+                    gravidade = 0;
+                  }
+                }}
+                className="blue-button"
+                title="SEGUIR CRITÉRIOS ESTABELECIDOS NAS FERRAMENTAS DE TRIAGEM NUTRICIONAL. INDICADORES DE INFLAMAÇÃO: FEBRE, BALANÇO NITROGENADO NEGATIVO, GASTO ENERGÉTICO DE REPOUSO ELEVADO, ALTERAÇÃO EM PCR, ALBUMINA E PRÉ-ALBUMINA. AVALIAR DOENÇA CRÔNICA OU AGUDA."
+                style={{ padding: 10, width: 200, minWidth: 200 }}>
+                GRAVIDADE DA DOENÇA/INFLAMAÇÃO
+              </button>
+            </div>
+            <div className="title2center">FENOTÍPICO</div>
+            <div id="FENOTÍPICO" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <button
+                id='feno1'
+                onClick={() => {
+                  setMultiplo("feno1")
+                  if (perdaponderal == -1 || perdaponderal == 0) {
+                    perdaponderal = 1;
+                  } else {
+                    perdaponderal = 0;
+                  }
+                }}
+                className="blue-button"
+                title="> 5% NOS ÚLTIMOS 6 MESES, > 10% ALÉM DOS 6 MESES."
+                style={{ padding: 10, width: 200, minWidth: 200 }}>
+                PERDA DE PESO NÃO INTENCIONAL
+              </button>
+              <button
+                id='feno2'
+                onClick={() => {
+                  setMultiplo("feno2")
+                  if (baixoimc == -1 || baixoimc == 0) {
+                    baixoimc = 1;
+                  } else {
+                    baixoimc = 0;
+                  }
+                }}
+                className="blue-button"
+                title="< 20kg/m2 SE < 70 ANOS, < 22kg/m2 SE > 70 ANOS, ASIA: < 18.5kg/m2 SE < 70 ANOS, < 20kg/m2 SE > 70 ANOS"
+                style={{ padding: 10, width: 200, minWidth: 200 }}>
+                INGESTÃO OU ABSORÇÃO ALIMENTAR
+              </button>
+              <button
+                id='feno3'
+                onClick={() => {
+                  setMultiplo("feno3")
+                  if (massamuscular == -1 || massamuscular == 0) {
+                    massamuscular = 1;
+                  } else {
+                    massamuscular = 0;
+                  }
+                }}
+                className="blue-button"
+                title="REDUÇÃO VALIDADA POR MÉTODOS DE COMPOSIÇÃO CORPORAL"
+                style={{ padding: 10, width: 200, minWidth: 200 }}>
+                REDUÇÃO DA MASSA MUSCULAR
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }, [showescala]);
+
   return (
     <div>
       <Braden></Braden>
@@ -3299,6 +3471,7 @@ function EscalasAssistenciais() {
       <RiscoFarmaceutico></RiscoFarmaceutico>
       <Ecog></Ecog>
       <MEEM></MEEM>
+      <Glim></Glim>
       <div
         className="menucover"
         style={{

@@ -1628,7 +1628,8 @@ function AptPlanoTerapeutico() {
       objetivos.filter(item => item.idplanoterapeutico == idplanoterapeutico && (item.statusobjetivo == 1 || item.statusobjetivo == 2) && item.tipoobjetivo == 2).length < 1 ||
       metas.filter(item => item.idplanoterapeutico == idplanoterapeutico && (item.idespecialidade == tipousuario || boss_planoterapeutico_usuario == 1) && (item.status == 1 || item.status == 2)).length < 1 ||
       metas.filter(item => item.idplanoterapeutico == idplanoterapeutico && (item.idespecialidade == tipousuario || boss_planoterapeutico_usuario == 1) && item.status == 0).length > 0 ||
-      metas.filter(item => item.idplanoterapeutico == idplanoterapeutico && (item.idespecialidade == tipousuario || boss_planoterapeutico_usuario == 1) && item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -1).length > 0) {
+      metas.filter(item => item.idplanoterapeutico == idplanoterapeutico && (item.idespecialidade == tipousuario || boss_planoterapeutico_usuario == 1) && item.status == 1 &&
+        moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > 0).length > 0) {
 
       return (
         <div
@@ -1777,14 +1778,14 @@ function AptPlanoTerapeutico() {
                       item.status == 1 &&
                       (item.idespecialidade == tipousuario || boss_planoterapeutico_usuario == 1) &&
                       moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -3 &&
-                      moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 0).length > 0 ? 'flex' : 'none',
+                      moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 1).length > 0 ? 'flex' : 'none',
                   margin: 5, alignSelf: 'center',
                 }}>
                 {'METAS A VENCER: ' + metas.filter(item => item.idplanoterapeutico == idplanoterapeutico &&
                   item.status == 1 &&
                   (item.idespecialidade == tipousuario || boss_planoterapeutico_usuario == 1) &&
                   moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -3 &&
-                  moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 0).length}
+                  moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 1).length}
               </div>
               <div
                 style={{
@@ -1793,7 +1794,7 @@ function AptPlanoTerapeutico() {
                       item.status == 1 &&
                       (item.idespecialidade == tipousuario || boss_planoterapeutico_usuario == 1) &&
                       moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -3 &&
-                      moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 0).length > 0 ? 'flex' : 'none',
+                      moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 1).length > 0 ? 'flex' : 'none',
                   flexDirection: 'column',
                   justifyContent: 'center',
                   margin: 5,
@@ -1806,13 +1807,15 @@ function AptPlanoTerapeutico() {
                 {metas.filter(item => item.idplanoterapeutico == idplanoterapeutico &&
                   (item.idespecialidade == tipousuario || boss_planoterapeutico_usuario == 1) &&
                   item.status == 1 &&
-                  moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -3).map(item => (
-                    <div style={{ borderRadius: 5, backgroundColor: '#ec7063', padding: 5, margin: 2.5 }}
-                      onClick={() => selecaoAlerta(item)}
-                    >
-                      {listcategoriaprofissional.filter(valor => valor.id == item.idespecialidade).map(valor => valor.nome) + ' - ' + item.meta}
-                    </div>
-                  ))}
+                  moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -3 &&
+                  moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 1)
+                    .map(item => (
+                      <div style={{ borderRadius: 5, backgroundColor: '#ec7063', padding: 5, margin: 2.5 }}
+                        onClick={() => selecaoAlerta(item)}
+                      >
+                        {listcategoriaprofissional.filter(valor => valor.id == item.idespecialidade).map(valor => valor.nome) + ' - ' + item.meta}
+                      </div>
+                    ))}
               </div>
             </div>
             <div id="## METAS VENCIDAS ##" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -1822,13 +1825,13 @@ function AptPlanoTerapeutico() {
                   display: metas.filter(item => item.idplanoterapeutico == idplanoterapeutico &&
                     item.status == 1 &&
                     (item.idespecialidade == tipousuario || boss_planoterapeutico_usuario == 1) &&
-                    moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -1).length > 0 ? 'flex' : 'none'
+                    moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > 0).length > 0 ? 'flex' : 'none'
                 }}>
                 {
                   'METAS VENCIDAS: ' + metas.filter(item => item.idplanoterapeutico == idplanoterapeutico &&
                     item.status == 1 &&
                     (item.idespecialidade == tipousuario || boss_planoterapeutico_usuario == 1) &&
-                    moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -1).length // ATENÇÃO: PONTO CRÍTICO!
+                    moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > 0).length // ATENÇÃO: PONTO CRÍTICO!
                 }
               </div>
               <div
@@ -1836,7 +1839,7 @@ function AptPlanoTerapeutico() {
                   display: metas.filter(item => item.idplanoterapeutico == idplanoterapeutico &&
                     item.status == 1 &&
                     (item.idespecialidade == tipousuario || boss_planoterapeutico_usuario == 1) &&
-                    moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -1).length > 0 ? 'flex' : 'none',
+                    moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > 0).length > 0 ? 'flex' : 'none',
                   flexDirection: 'column',
                   justifyContent: 'center',
                   margin: 5,
@@ -1849,7 +1852,7 @@ function AptPlanoTerapeutico() {
                 {metas.filter(item => item.idplanoterapeutico == idplanoterapeutico &&
                   item.status == 1 &&
                   (item.idespecialidade == tipousuario || boss_planoterapeutico_usuario == 1) &&
-                  moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -1).map(item => (
+                  moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > 0).map(item => (
                     <div style={{ borderRadius: 5, backgroundColor: '#ec7063', padding: 5, margin: 2.5 }}
                       onClick={() => selecaoAlerta(item)}
                     >
@@ -1974,7 +1977,7 @@ function AptPlanoTerapeutico() {
                   metas.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.status == 1 &&
                     (item.idespecialidade == tipousuario || boss_planoterapeutico_usuario == 1) &&
                     moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -3 &&
-                    moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 0).length > 0 ? 'flex' : 'none',
+                    moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 1).length > 0 ? 'flex' : 'none',
                 margin: 5, alignSelf: 'center',
                 flexDirection: 'column', justifyContent: 'center'
               }}>
@@ -1983,7 +1986,7 @@ function AptPlanoTerapeutico() {
                   item.status == 1 &&
                   (item.idespecialidade == tipousuario || boss_planoterapeutico_usuario == 1) &&
                   moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -3 &&
-                  moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 0).length}
+                  moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 1).length}
               </div>
               <div
                 style={{
@@ -2000,7 +2003,7 @@ function AptPlanoTerapeutico() {
                 {metas.filter(item => item.idplanoterapeutico == idplanoterapeutico && item.status == 1 &&
                   (item.idespecialidade == tipousuario || boss_planoterapeutico_usuario == 1) &&
                   moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -3 &&
-                  moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 0).map(item => (
+                  moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 1).map(item => (
                     <div style={{ borderRadius: 5, backgroundColor: '#52be80', padding: 5, margin: 2.5 }}
                       onClick={() => selecaoAlerta(item)}
                     >
@@ -3603,6 +3606,9 @@ function AptPlanoTerapeutico() {
   const getMetas = useCallback((item) => {
     var prazo = moment(item.dataestimada).startOf('day').diff(moment(item.datainicio).startOf('day'), 'days');
     var feito = moment().startOf('day').diff(moment(item.datainicio).startOf('day'), 'days');
+    if (prazo == 0){
+      prazo = 1;
+    }
     if (feito > prazo) {
       feito = prazo;
     }
@@ -3768,7 +3774,7 @@ function AptPlanoTerapeutico() {
                 onBlur={(e) => (e.target.placeholder = 'JUSTIFICAR AQUI POR QUE A META NÃO FOI ATINGIDA.')}
                 title="JUSTIFICAR AQUI POR QUE A META NÃO FOI ATINGIDA."
                 style={{
-                  display: moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -1 && item.status == 1 ? 'flex' : 'none', // exibido apenas para metas não alcançadas no prazo definido.
+                  display: moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > 0 && item.status == 1 ? 'flex' : 'none', // exibido apenas para metas não alcançadas no prazo definido.
                   width: '100%',
                   height: 100,
                   margin: 2.5,
@@ -3788,7 +3794,7 @@ function AptPlanoTerapeutico() {
                 onClick={() => updateMeta(item, moment(item.dataestimada).startOf('day').diff(moment(item.datainicio).startOf('day'), 'days'), item.nota, 4, item.idprofissional, document.getElementById("inputJustificativa" + item.id).value.toUpperCase(), item.checagem)}
                 style={{
                   width: 50, maxWidth: 50,
-                  display: moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -1 && item.status == 1 ? 'flex' : 'none', // exibido apenas para metas não alcançadas no prazo definido.
+                  display: moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > 0 && item.status == 1 ? 'flex' : 'none', // exibido apenas para metas não alcançadas no prazo definido.
                 }}
               >
                 <img
@@ -3890,16 +3896,15 @@ function AptPlanoTerapeutico() {
               <div id="imagens de ação"
                 title={
                   item.status == 0 ? 'INATIVA' :
-                    item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 0 && moment().startOf('day').diff(moment(item.dataestimada), 'days') < 0 ? 'ATIVA' :
-                      // item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada), 'days') < 0 && moment().startOf('day').diff(moment(item.datachecagem), 'days') > 0 ? 'PAUSADA PARA CHECAGEM' :
-                      item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -1 ? 'VENCIDA' :
+                    item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 1 ? 'ATIVA' :
+                      item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > 0 ? 'VENCIDA' :
                         item.status == 3 ? 'CANCELADA' : item.status == 4 ? 'META NÃO CUMPRIDA.' : ''}>
                 <img
                   className={item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 1 ? "pulsarplanoterapeutico" : ''}
                   src={
                     item.status == 0 ? plano_validar : item.status == 2 ? emojihappy : item.status == 3 ? plano_cancelado : item.status == 4 ? emojisad : item.status == 5 ? emojineutral :
-                      item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 0 && moment().startOf('day').diff(moment(item.dataestimada), 'days') < 0 ? plano_ativo :
-                        item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -1 ? plano_fracassado :
+                      item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 1 ? plano_ativo :
+                        item.status == 1 && moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > 0 ? plano_fracassado :
                           ''}
                   style={{
                     display: 'flex',
