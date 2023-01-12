@@ -565,7 +565,7 @@ function AptPlanoTerapeutico() {
       status: 4, // 0 = a validar. 1 = ativa. 2 = concluída. 3 = não alcançada. 4 = cancelada.
       nota: 10,
       idespecialidade: parseInt(item.idespecialidade),
-      justificativa: document.getElementById("inputJustificativaRestart" + item.id).value.toUpperCase(),
+      justificativa: 'META REINICIADA: ' + document.getElementById("inputJustificativaRestart" + item.id).value.toUpperCase(),
       datachecagem: moment(item.datachecagem).startOf('day').add(parseInt(item.checagem), 'days'),
       checagem: item.checagem,
       idmeta: item.idmeta,
@@ -1809,13 +1809,13 @@ function AptPlanoTerapeutico() {
                   item.status == 1 &&
                   moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > -3 &&
                   moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') < 1)
-                    .map(item => (
-                      <div style={{ borderRadius: 5, backgroundColor: '#ec7063', padding: 5, margin: 2.5 }}
-                        onClick={() => selecaoAlerta(item)}
-                      >
-                        {listcategoriaprofissional.filter(valor => valor.id == item.idespecialidade).map(valor => valor.nome) + ' - ' + item.meta}
-                      </div>
-                    ))}
+                  .map(item => (
+                    <div style={{ borderRadius: 5, backgroundColor: '#ec7063', padding: 5, margin: 2.5 }}
+                      onClick={() => selecaoAlerta(item)}
+                    >
+                      {listcategoriaprofissional.filter(valor => valor.id == item.idespecialidade).map(valor => valor.nome) + ' - ' + item.meta}
+                    </div>
+                  ))}
               </div>
             </div>
             <div id="## METAS VENCIDAS ##" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -2933,9 +2933,8 @@ function AptPlanoTerapeutico() {
                     x = response.data.rows;
                     var check1 = x.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.idobjetivo == item.idobjetivo).length;
                     var check2 = x.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.idobjetivo == item.idobjetivo && valor.status < 2).length;
-                    if (check1 == 0) {
-                      toast(1, '#ec7063', 'NÃO É POSSÍVEL FINALIZAR UM OBJETIVO SEM METAS.', 3000);
-                    } else if (check2 > 0) {
+                    var check3 = objetivos.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.idobjetivo == item.idobjetivo).length; // objetivos repetidos.
+                    if (check2 > 0 && check3 < 2) {
                       toast(1, '#ec7063', 'NÃO É POSSÍVEL FINALIZAR UM OBJETIVO COM METAS ATIVAS.', 3000);
                     } else {
                       setselectedobjetivosecundario(item);
@@ -3139,9 +3138,8 @@ function AptPlanoTerapeutico() {
                     x = response.data.rows;
                     var check1 = x.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.idobjetivo == item.idobjetivo).length;
                     var check2 = x.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.idobjetivo == item.idobjetivo && valor.status < 2).length;
-                    if (check1 == 0) {
-                      toast(1, '#ec7063', 'NÃO É POSSÍVEL FINALIZAR UM OBJETIVO SEM METAS.', 3000);
-                    } else if (check2 > 0) {
+                    var check3 = objetivos.filter(valor => valor.idplanoterapeutico == item.idplanoterapeutico && valor.idobjetivo == item.idobjetivo).length; // objetivos repetidos.
+                    if (check2 > 0 && check3 < 2) {
                       toast(1, '#ec7063', 'NÃO É POSSÍVEL FINALIZAR UM OBJETIVO COM METAS ATIVAS.', 3000);
                     } else {
                       setselectedobjetivosecundario(item);
@@ -3417,6 +3415,7 @@ function AptPlanoTerapeutico() {
               ></img>
             </div>
             <div>{item.objetivo}</div>
+            <div style={{display: 'none', color: 'red'}}>{"OBJETIVO NÃO ATINGIDO: " + item.justificativa}</div>
           </div>
         ))}
         <button id="botão novo objetivo secundário"
@@ -3606,7 +3605,7 @@ function AptPlanoTerapeutico() {
   const getMetas = useCallback((item) => {
     var prazo = moment(item.dataestimada).startOf('day').diff(moment(item.datainicio).startOf('day'), 'days');
     var feito = moment().startOf('day').diff(moment(item.datainicio).startOf('day'), 'days');
-    if (prazo == 0){
+    if (prazo == 0) {
       prazo = 1;
     }
     if (feito > prazo) {
@@ -3791,7 +3790,7 @@ function AptPlanoTerapeutico() {
                 maxLength={200}>
               </textarea>
               <div className="red-button"
-                onClick={() => updateMeta(item, moment(item.dataestimada).startOf('day').diff(moment(item.datainicio).startOf('day'), 'days'), item.nota, 4, item.idprofissional, document.getElementById("inputJustificativa" + item.id).value.toUpperCase(), item.checagem)}
+                onClick={() => updateMeta(item, moment(item.dataestimada).startOf('day').diff(moment(item.datainicio).startOf('day'), 'days'), item.nota, 4, item.idprofissional, 'META NÃO ATINGIDA: ' + document.getElementById("inputJustificativa" + item.id).value.toUpperCase(), item.checagem)}
                 style={{
                   width: 50, maxWidth: 50,
                   display: moment().startOf('day').diff(moment(item.dataestimada).startOf('day'), 'days') > 0 && item.status == 1 ? 'flex' : 'none', // exibido apenas para metas não alcançadas no prazo definido.
@@ -3849,7 +3848,7 @@ function AptPlanoTerapeutico() {
                 }}>
                 MÉTODOS DE AVALIAÇÃO
               </div>
-              <div style={{ display: item.status == 3 || item.status == 4 ? 'flex' : 'none', color: '#ec7063', fontWeight: 'bold' }}>{'JUSTIFICATIVA: ' + item.justificativa}</div>
+              <div style={{ display: item.status == 3 || item.status == 4 ? 'flex' : 'none', color: '#ec7063', fontWeight: 'bold' }}>{'JUSTIFICATIVA - ' + item.justificativa}</div>
             </div>
           </div>
 
@@ -4085,7 +4084,7 @@ function AptPlanoTerapeutico() {
               className={window.innerWidth < 426 ? 'green-button' : "animated-green-button"}
               onClick={(e) => {
                 // alert(document.getElementById("inputJustificativaSuspender" + item.id).value);
-                updateMeta(item, moment(item.dataestimada).startOf('day').diff(moment(item.datainicio).startOf('day'), 'days'), item.nota, 3, item.idprofissional, document.getElementById("inputJustificativaSuspender" + item.id).value.toUpperCase(), item.checagem);
+                updateMeta(item, moment(item.dataestimada).startOf('day').diff(moment(item.datainicio).startOf('day'), 'days'), item.nota, 3, item.idprofissional, 'META CANCELADA: ' + document.getElementById("inputJustificativaSuspender" + item.id).value.toUpperCase(), item.checagem);
                 document.getElementById("divJustificativaSuspender" + item.id).style.display = 'none';
                 e.stopPropagation()
               }} // atualiza a meta como cancelada, com a justificativa.

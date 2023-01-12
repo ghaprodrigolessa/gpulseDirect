@@ -565,6 +565,13 @@ function Login() {
               marginBottom: window.innerWidth > 800 ? 20 : 60,
             }}
           ></img>
+          <button
+            className='blue-button'
+            style={{ padding: 10, width: 200 }}
+            onClick={() => settestpersona(1)}
+          >
+            LOGIN
+          </button>
           <input id="inputUsuario"
             autoComplete="off"
             placeholder="LOGIN"
@@ -574,6 +581,7 @@ function Login() {
             onBlur={(e) => (e.target.placeholder = 'LOGIN')}
             onChange={() => setLogin()}
             style={{
+              display: 'none', // substituído por um botão de login...
               alignSelf: 'center',
               marginTop: 10,
               marginBottom: 10,
@@ -640,7 +648,6 @@ function Login() {
           </div>
           <div id="créditos"
             className={window.innerWidth < 400 ? "title5" : "title4"}
-            // onClick={() => { setnomeusuario('RODRIGO LESSA'); settipousuario(5); setcategoriausuario('CREFITO'); setiduser(1); setconselhousuario('CREFITO'); setboss_planoterapeutico_usuario(1); history.push('/hospitais') }}
             onClick={() => settestpersona(1)}
             style={{
               position: 'absolute',
@@ -648,7 +655,6 @@ function Login() {
               left: 0, right: 0,
               margin: 10,
               fontSize: 12,
-              zIndex: 90,
             }}
           >
             Powered By GHAP Tecnologia
