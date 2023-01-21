@@ -27,6 +27,14 @@ function TodosPacientes() {
   // history (react-router-dom).
   let history = useHistory()
 
+  var htmltodaslinhasdecuidados = process.env.REACT_APP_API_CLONE_TODASLINHASDECUIDADO;
+  const [todaslinhasdecuidado, settodaslinhasdecuidado] = useState([]);
+  const loadAllLinhasDeCuidado = () => {
+    axios.get(htmltodaslinhasdecuidados).then((response) => {
+      settodaslinhasdecuidado(response.data.rows);
+    })
+  }
+
   var htmlallplanosterapeuticos = process.env.REACT_APP_API_CLONE_ALLPLANOSTERAPEUTICOS;
   const [allplanosterapeuticos, setallplanosterapeuticos] = useState([]);
   const loadAllPlanosTerapeuticos = () => {
@@ -47,6 +55,7 @@ function TodosPacientes() {
   }
 
   useEffect(() => {
+    loadAllLinhasDeCuidado();
     loadOpcoesLinhasDeCuidado();
     // eslint-disable-next-line
   }, []);
@@ -284,22 +293,22 @@ function TodosPacientes() {
                     <div id="tag linha de cuidado."
                       className='blue-button'
                       style={{
-                        display: allplanosterapeuticos.filter(valor => valor.idpct == item.cd_paciente).length > 0 ? 'flex' : 'none',
+                        display: todaslinhasdecuidado.filter(valor => valor.idpct == item.cd_paciente).length > 0 ? 'flex' : 'none',
                         minHeight: 45, height: 45, alignSelf: 'flex-end', paddingLeft: 10, paddingRight: 10,
                         backgroundColor:
-                          allplanosterapeuticos.filter(valor => valor.idpct == item.cd_paciente).map(valor => valor.linhadecuidados) == 1 ? '#52be80' :
-                            allplanosterapeuticos.filter(valor => valor.idpct == item.cd_paciente).map(valor => valor.linhadecuidados) == 2 ? '#f5b041' :
+                          todaslinhasdecuidado.filter(valor => valor.idpct == item.cd_paciente).slice(-1).map(valor => valor.id_linhadecuidado) == 1 ? '#52be80' :
+                            todaslinhasdecuidado.filter(valor => valor.idpct == item.cd_paciente).slice(-1).map(valor => valor.id_linhadecuidado) == 2 ? '#f5b041' :
                               '#52dade'
                       }}>
                       {
-                        allplanosterapeuticos.filter(valor => valor.idpct == item.cd_paciente).map(valor => opcoeslinhasdecuidado.filter(item => item.id == valor.linhadecuidados).map(item => item.linhadecuidado))
+                        todaslinhasdecuidado.filter(valor => valor.idpct == item.cd_paciente).slice(-1).map(valor => valor.var_linhadecuidado)
                       }
                     </div>
                     <div id="tag plano terapêutico ativo."
                       className='pulsarplanoterapeutico'
                       title="PLANO TERAPÊUTICO ATIVO."
                       style={{
-                        display: allplanosterapeuticos.filter(valor => valor.idpct == item.cd_paciente && item.datatermino == null).length > 0 ? 'flex' : 'none',
+                        display: allplanosterapeuticos.filter(valor => valor.idpct == item.cd_paciente && valor.datatermino == null).length > 0 ? 'flex' : 'none',
                       }}>
                       <img
                         alt=""

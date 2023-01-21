@@ -2883,7 +2883,7 @@ function AptPlanoTerapeutico() {
           <div id={"objetivo" + item.id}
             className={item.statusobjetivo == 1 ? "green-button" : "blue-button-objetivos animationobjetivos"}
             style={{
-              display: opcoesmetas.filter(valor => valor.id_objetivo == item.idobjetivo && valor.idespecialidade == tipousuario).length > 0 ? 'flex' : 'none',
+              display: opcoesmetas.filter(valor => valor.id_objetivo == item.idobjetivo && (valor.idespecialidade == tipousuario || boss_planoterapeutico_usuario == 1)).length > 0 ? 'flex' : 'none',
               flexDirection: 'column', justifyContent: 'center',
               width: '100%', minWidth: '100%', padding: 10,
               paddingBottom: 15,
