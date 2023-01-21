@@ -42,6 +42,7 @@ function Prontuario() {
     iduser, // id numérica na tabela personas, do GPulse (postgres). Ex.: 1
     personas,
     nomeusuario,
+    categoriausuario,
     nomeunidade,
     tipounidade,
     setlistescalas,
@@ -300,6 +301,8 @@ function Prontuario() {
       setarraylistescalas(x.rows.filter(item => item.idatendimento == idatendimento));
       setloadprincipal(0);
       setarrayopcoesescalas(filterescala);
+      // console.log(arraylistescalas.filter(valor => valor.cd_escala == 15).sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).slice(-5).map(item => Array.from(parseInt(item.valor_resultado)).slice(0, 1)))
+      console.log(arraylistescalas.filter(valor => valor.cd_escala == 15).sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).slice(-5).map(item => JSON.parse(item.valor_resultado).slice(0, 1)))
     });
   }
 
@@ -509,9 +512,10 @@ function Prontuario() {
                   display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
                   width: '100%',
                 }}>
-                  <div id="GRÁFICO"
+                  <div id="GRÁFICO SIMPLES"
                     style={{
-                      display: 'flex', flexDirection: 'column', justifyContent: 'center',
+                      display: item.cd_escala != 15 ? 'flex' : 'none',
+                      flexDirection: 'column', justifyContent: 'center',
                       width: '100%',
                       padding: 10
                     }}>
@@ -646,10 +650,139 @@ function Prontuario() {
                       }}
                     />
                   </div>
+
+                  <div id="GRÁFICO PARA MEDIDAS (CIRCUNFERÊNCIAS DE BRAÇO, ABDOME E DINAMOMETRIA"
+                    style={{
+                      display: item.cd_escala == 15 ? 'flex' : 'none',
+                      flexDirection: 'column', justifyContent: 'center',
+                      width: '100%',
+                      padding: 10
+                    }}>
+                    <Line
+                      ref={myChartRef}
+                      data={{
+                        labels:
+                          arraylistescalas.filter(valor => valor.cd_escala == item.cd_escala)
+                            .sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).slice(-5)
+                            .map(item => moment(item.data).format('DD/MM')),
+                        datasets: [
+                          {
+                            label: 'CIRCUNFERÊNCIA DO BRAÇO',
+                            data:
+                              arraylistescalas.filter(valor => valor.cd_escala == 15).sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).slice(-5).map(item => JSON.parse(item.valor_resultado).slice(0, 1).pop()),
+                            borderColor: '#e57e34', // laranja.
+                            pointBackgroundColor: '#e57e34',
+                            fill: 'false'
+                          },
+                          {
+                            label: 'CIRCUNFERÊNCIA DA PANTURRILHA',
+                            data:
+                              arraylistescalas.filter(valor => valor.cd_escala == 15).sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).slice(-5).map(item => JSON.parse(item.valor_resultado).slice(1, 2).pop()),
+                            borderColor: '#2874a6', // azul.
+                            pointBackgroundColor: '#2874a6',
+                            fill: 'false'
+                          },
+                          {
+                            label: 'DINAMOMETRIA',
+                            data:
+                              arraylistescalas.filter(valor => valor.cd_escala == 15).sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).slice(-5).map(item => JSON.parse(item.valor_resultado).slice(2, 3).pop()),
+                            borderColor: '#52be80', // verde.
+                            pointBackgroundColor: '#52be80',
+                            fill: 'false'
+                          },
+                        ],
+                      }}
+                      plugins={ChartDataLabels}
+                      width="400"
+                      height="100"
+                      options={{
+                        layout: {
+                          padding: {
+                            left: 0,
+                            right: 4,
+                            top: 0,
+                            bottom: 0
+                          }
+                        },
+                        scales: {
+                          xAxes: [
+                            {
+                              display: true,
+                              ticks: {
+                                fontSize: 10,
+                                width: 50,
+                                padding: 10,
+                                display: true,
+                                fontColor: '#61636e',
+                                fontWeight: 'bold',
+                              },
+                              gridLines: {
+                                tickMarkLength: false,
+                                zeroLineColor: 'transparent',
+                                lineWidth: 1,
+                                drawOnChartArea: true,
+                              },
+                            },
+                          ],
+                          yAxes: [
+                            {
+                              display: true,
+                              ticks: {
+                                padding: 10,
+                                fontSize: 10,
+                                display: true,
+                                suggestedMin: 0,
+                                suggestedMax: 100,
+                                fontColor: '#61636e',
+                                fontWeight: 'bold',
+                              },
+                              gridLines: {
+                                tickMarkLength: false,
+                                zeroLineColor: 'transparent',
+                                lineWidth: 1,
+                                drawOnChartArea: true,
+                              },
+                            },
+                          ],
+                        },
+                        plugins: {
+                          datalabels: {
+                            display: false,
+                            color: 'red',
+                            font: {
+                              weight: 'bold',
+                              size: 16,
+                            },
+                          },
+                        },
+                        tooltips: {
+                          enabled: true,
+                          displayColors: true,
+                        },
+                        hover: { mode: null },
+                        elements: {},
+                        animation: {
+                          duration: 500,
+                        },
+                        title: {
+                          display: false,
+                          text: 'PPS',
+                        },
+                        legend: {
+                          display: true,
+                          position: 'bottom',
+                          align: 'start'
+                        },
+                        maintainAspectRatio: true,
+                        responsive: true,
+                      }}
+                    />
+                  </div>
+
                   <div id="CARDS COM VALORES"
                     className="scroll"
                     style={{
-                      display: arraylistescalas.filter(value => value.cd_escala == item.cd_escala).length > 0 ? 'flex' : 'none',
+                      display: arraylistescalas.filter(value => value.cd_escala != 15 && value.cd_escala == item.cd_escala).length > 0 ? 'flex' : 'none',
                       overflowX: 'scroll', overflowY: 'hidden', flexDirection: 'row', justifyContent: 'flex-start',
                       width: '80vw',
                       backgroundColor: "#F2F2F2", borderColor: '#F2F2F2', padding: 10, paddingLeft: 5,
@@ -742,8 +875,9 @@ function Prontuario() {
       x = response.data;
       y = x.rows;
       z = y.filter(item => item.datatermino == null);
+      // resgatando último registro de linha de cuidado ativo para o atendimento.
       if (z.length > 0) {
-        // alert('JÁ EXISTE: ' + linhadecuidado);
+        console.log('JÁ EXISTE: ' + z.map(item => item.var_linhadecuidado).pop());
         setlinhasdecuidado(z);
         setlinhadecuidado(z.map(item => item.var_linhadecuidado).pop());
         setidlinhadecuidado(z.map(item => item.id_linhadecuidado).pop());
@@ -752,8 +886,6 @@ function Prontuario() {
         setlinhadecuidado('DEFINIR LINHA DE CUIDADO');
         setlinhadecuidadoatual('DEFINIR LINHA DE CUIDADO');
       }
-      // resgatando último registro de linha de cuidado ativo para o atendimento.
-
     });
   }
 
@@ -1022,7 +1154,7 @@ function Prontuario() {
             title={'ID DO USUÁRIO: ' + iduser}
             style={{ color: '#ffffff', textAlign: 'right', width: '100%', flexDirection: 'row', justifyContent: 'flex-end', alignSelf: 'flex-end' }}
           >
-            {'OLÁ, ' + JSON.stringify(nomeusuario).substring(1, JSON.stringify(nomeusuario).length - 2).split(" ").slice(0, 1)}
+            {categoriausuario}
           </div>
           <div id="botões de ação do cabeçalho."
             style={{

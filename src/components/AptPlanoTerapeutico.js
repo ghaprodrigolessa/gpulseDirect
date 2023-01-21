@@ -144,7 +144,7 @@ function AptPlanoTerapeutico() {
       x = response.data;
       setmetas(x.rows);
       setarraymetas(x.rows);
-      setbusy(0);
+      // setbusy(0);
     });
   }
 
@@ -219,7 +219,7 @@ function AptPlanoTerapeutico() {
       // alert(JSON.stringify(obj));
       axios.post(htmlinsertplanoterapeutico, obj).then(() => {
         // toast(1, '#52be80', 'PREPARANDO PLANO TERAPÊUTICO.', 9000);
-        setbusy(1);
+        // setbusy(1);
         axios.get(htmlplanosterapeuticos + idatendimento).then((response) => {
           var x = [0, 1];
           var y = [0, 1];
@@ -228,14 +228,10 @@ function AptPlanoTerapeutico() {
           // carregando id do plano terapêutico recém-criado (ativo).
           var lastid = y.filter(item => item.datatermino == null).slice(-1).map(item => item.id).pop();
           // inserindo objetivos primários e secundários aplicáveis ao plano terapêutico.
-          setTimeout(() => {
-            insertObjetivosAndMetas(id_linhadecuidado, lastid);
-            setTimeout(() => {
-              loadPlanosTerapeuticos();
-              loadObjetivos();
-              loadMetas();
-            }, 3000);
-          }, 2000);
+          // insertObjetivosAndMetas(id_linhadecuidado, lastid);
+          loadPlanosTerapeuticos();
+          loadObjetivos();
+          loadMetas();
         });
       });
     }
@@ -2287,7 +2283,7 @@ function AptPlanoTerapeutico() {
             <ListaDePlanosTerapeuticos></ListaDePlanosTerapeuticos>
           </div>
         </div>
-        <div className="title4" style={{ margin: 0, marginTop: 5 }}>OBJETIVOS PRIMÁRIOS</div>
+        <div className="title4" style={{ margin: 0, marginTop: 10 }}>OBJETIVOS PRIMÁRIOS</div>
         <div style={{ display: 'flex', width: '100%', padding: 10, paddingBottom: 0 }}>
           <ObjetivosPrimarios></ObjetivosPrimarios>
         </div>
@@ -3415,7 +3411,7 @@ function AptPlanoTerapeutico() {
               ></img>
             </div>
             <div>{item.objetivo}</div>
-            <div style={{display: 'none', color: 'red'}}>{"OBJETIVO NÃO ATINGIDO: " + item.justificativa}</div>
+            <div style={{ display: 'none', color: 'red' }}>{"OBJETIVO NÃO ATINGIDO: " + item.justificativa}</div>
           </div>
         ))}
         <button id="botão novo objetivo secundário"

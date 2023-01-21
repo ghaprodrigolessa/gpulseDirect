@@ -11,7 +11,7 @@ function Header({ link, titulo }) {
   // estados globais.
   // recuperando estados globais.
   const {
-    nomeusuario,
+    categoriausuario
   } = useContext(Context)
 
   // renderização do componente.
@@ -83,13 +83,14 @@ function Header({ link, titulo }) {
         <div
           className="title2"
           style={{
+            display: 'flex',
             position: 'sticky',
             justifyContent: 'flex-end', marginRight: 0,
             verticalAlign: 'center',
             color: '#ffffff', textAlign: 'right',
           }}
         >
-          {'OLÁ, ' + JSON.stringify(nomeusuario).substring(1, JSON.stringify(nomeusuario).length - 2).split(" ").slice(0, 1)}
+          {categoriausuario}
         </div>
         <div
           style={{

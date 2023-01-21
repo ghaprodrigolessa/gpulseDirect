@@ -128,6 +128,18 @@ function Login() {
   // const [token, settoken] = useState("");
   var token = '';
 
+  var listcategoriaprofissional = [
+    { id: 8, nome: 'MÉDICO', cor: '#AED6F1', conselho: 'CRM' },
+    { id: 4, nome: 'ENFERMAGEM', cor: '#76D7C4', conselho: 'COREN' },
+    { id: 32, nome: 'FARMÁCIA', cor: '#AED6F1', conselho: 'CRF' },
+    { id: 5, nome: 'FISIOTERAPIA', cor: '#BB8FCE', conselho: 'CREFITO' },
+    { id: 6, nome: 'FONOAUDIOLOGIA', cor: '#F1948A', conselho: 'CREFONO' },
+    { id: 10, nome: 'PSICOLOGIA', cor: '#EDBB99', conselho: 'CRP' },
+    { id: 1, nome: 'SERVIÇO SOCIAL', cor: '#F7DC6F', conselho: 'CRESS' },
+    { id: 11, nome: 'TERAPIA OCUPACIONAL', cor: '#AEB6BF', conselho: 'CREFITO1' },
+    { id: 9, nome: 'NUTRIÇÃO CLÍNICA', cor: 'grey', conselho: 'CRN' },
+  ]
+
   const getUserData = (token) => {
     usuario = document.getElementById('inputUsuario').value
     axios
@@ -146,17 +158,6 @@ function Login() {
         // alert(JSON.stringify(y));
         settipousuario(y.id); // id da categoria profissional (ex: 8);
         setcategoriausuario(y.name); // nome da categoria profissional (ex: "MÉDICO");
-        var listcategoriaprofissional = [
-          { id: 8, nome: 'MÉDICO', cor: '#AED6F1', conselho: 'CRM' },
-          { id: 4, nome: 'ENFERMAGEM', cor: '#76D7C4', conselho: 'COREN' },
-          { id: 32, nome: 'FARMÁCIA', cor: '#AED6F1', conselho: 'CRF' },
-          { id: 5, nome: 'FISIOTERAPIA', cor: '#BB8FCE', conselho: 'CREFITO' },
-          { id: 6, nome: 'FONOAUDIOLOGIA', cor: '#F1948A', conselho: 'CREFONO' },
-          { id: 10, nome: 'PSICOLOGIA', cor: '#EDBB99', conselho: 'CRP' },
-          { id: 1, nome: 'SERVIÇO SOCIAL', cor: '#F7DC6F', conselho: 'CRESS' },
-          { id: 11, nome: 'TERAPIA OCUPACIONAL', cor: '#AEB6BF', conselho: 'CREFITO1' },
-          { id: 9, nome: 'NUTRIÇÃO CLÍNICA', cor: 'grey', conselho: 'CRN' },
-        ]
         setconselhousuario(listcategoriaprofissional.filter(item => item.id == y.id).map(item => item.conselho).pop());
         // alert(conselhousuario);
         // setespecialidadeusuario(y.???) // especialidade do médico (necessário para as interconsultas).
@@ -250,7 +251,7 @@ function Login() {
           marginTop: 20
         }}
       >
-        <div className="title2center" style={{ color: boss_planoterapeutico_usuario == 1 ? '#52be80' : '#8f9bbc' }}>{'OLÁ, ' + nomeusuario + '!'}</div>
+        <div className="title2center" style={{ display: 'none', color: boss_planoterapeutico_usuario == 1 ? '#52be80' : '#8f9bbc' }}>{'OLÁ, ' + nomeusuario + '!'}</div>
         <button
           /*
             onClick={() => {
@@ -294,81 +295,37 @@ function Login() {
   function TestPersona() {
     return (
       <div className="menucover" style={{ display: testpersona == 1 ? 'flex' : 'none' }}>
-        <div className="menucontainer" style={{ padding: 10 }}>
-          <div className="title2center" style={{ color: 'red' }}>APENAS PARA TESTES</div>
+        <div className="scroll" style={{ padding: 10, width: 300, height: '70vh', paddingRight: 20, alignContent: 'center' }}>
           <button className="blue-button" style={{ padding: 10, width: 250, minWidth: 250 }}
             onClick={() => {
-              setnomeusuario('RODRIGO LESSA');
+              setnomeusuario('GESTOR');
               settipousuario(5);
-              setcategoriausuario('CREFITO');
+              setcategoriausuario('GESTOR');
               setiduser(1);
-              setconselhousuario('CREFITO');
+              setconselhousuario('GESTOR');
               setboss_planoterapeutico_usuario(1);
               setboss_settings_usuario(1);
               history.push('/todospacientes')
             }}
-          > FISIOTERAPEUTA
+          >
+            {'GESTOR'}
           </button>
-          <button className="blue-button" style={{ padding: 10, width: 250, minWidth: 250 }}
-            onClick={() => {
-              setnomeusuario('RODRIGO LESSA');
-              settipousuario(6);
-              setcategoriausuario('CREFONO');
-              setiduser(1);
-              setconselhousuario('CREFONO');
-              setboss_planoterapeutico_usuario(0);
-              history.push('/todospacientes')
-            }}
-          > FONOAUDIOLOGO
-          </button>
-          <button className="blue-button" style={{ padding: 10, width: 250, minWidth: 250 }}
-            onClick={() => {
-              setnomeusuario('RODRIGO LESSA');
-              settipousuario(11);
-              setcategoriausuario('TO');
-              setiduser(1);
-              setconselhousuario('TO');
-              setboss_planoterapeutico_usuario(0);
-              history.push('/todospacientes')
-            }}
-          > TERAPEUTA OCUPACIONAL
-          </button>
-          <button className="blue-button" style={{ padding: 10, width: 250, minWidth: 250 }}
-            onClick={() => {
-              setnomeusuario('RODRIGO LESSA');
-              settipousuario(10);
-              setcategoriausuario('CRP');
-              setiduser(1);
-              setconselhousuario('CRP');
-              setboss_planoterapeutico_usuario(0);
-              history.push('/todospacientes')
-            }}
-          > PSICOLOGO
-          </button>
-          <button className="blue-button" style={{ padding: 10, width: 250, minWidth: 250 }}
-            onClick={() => {
-              setnomeusuario('RODRIGO LESSA');
-              settipousuario(1);
-              setcategoriausuario('CRESS');
-              setiduser(1);
-              setconselhousuario('CRESS');
-              setboss_planoterapeutico_usuario(0);
-              history.push('/todospacientes')
-            }}
-          > ASSISTENTE SOCIAL
-          </button>
-          <button className="blue-button" style={{ padding: 10, width: 250, minWidth: 250 }}
-            onClick={() => {
-              setnomeusuario('RODRIGO LESSA');
-              settipousuario(9);
-              setcategoriausuario('CRN');
-              setiduser(1);
-              setconselhousuario('CRN');
-              setboss_planoterapeutico_usuario(0);
-              history.push('/todospacientes')
-            }}
-          > NUTRICIONISTA
-          </button>
+          {listcategoriaprofissional.map(item => (
+            <button className="blue-button" style={{ padding: 10, width: 250, minWidth: 250 }}
+              onClick={() => {
+                setnomeusuario('USUÁRIO');
+                settipousuario(item.id);
+                setcategoriausuario(item.conselho);
+                setiduser(item.id);
+                setconselhousuario(item.conselho);
+                setboss_planoterapeutico_usuario(0);
+                setboss_settings_usuario(0);
+                history.push('/todospacientes')
+              }}
+            >
+              {item.nome}
+            </button>
+          ))}
         </div>
       </div>
     )

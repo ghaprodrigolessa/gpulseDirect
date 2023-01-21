@@ -6,6 +6,7 @@ import moment from 'moment';
 import Header from '../components/Header';
 import Context from '../Context';
 import { useHistory } from "react-router-dom";
+import plano_ativo from '../images/plano_ativo.svg';
 
 function TodosPacientes() {
   var htmlfiltrapacientenome = process.env.REACT_APP_API_FILTRAPACIENTESNOME;
@@ -283,7 +284,7 @@ function TodosPacientes() {
                     <div id="tag linha de cuidado."
                       className='blue-button'
                       style={{
-                        display: allplanosterapeuticos.filter(valor => valor.idpct == item.cd_paciente).map(valor => opcoeslinhasdecuidado.filter(item => item.id == valor.linhadecuidados)).length > 0 ? 'flex' : 'none',
+                        display: allplanosterapeuticos.filter(valor => valor.idpct == item.cd_paciente).length > 0 ? 'flex' : 'none',
                         minHeight: 45, height: 45, alignSelf: 'flex-end', paddingLeft: 10, paddingRight: 10,
                         backgroundColor:
                           allplanosterapeuticos.filter(valor => valor.idpct == item.cd_paciente).map(valor => valor.linhadecuidados) == 1 ? '#52be80' :
@@ -293,6 +294,23 @@ function TodosPacientes() {
                       {
                         allplanosterapeuticos.filter(valor => valor.idpct == item.cd_paciente).map(valor => opcoeslinhasdecuidado.filter(item => item.id == valor.linhadecuidados).map(item => item.linhadecuidado))
                       }
+                    </div>
+                    <div id="tag plano terapêutico ativo."
+                      className='pulsarplanoterapeutico'
+                      title="PLANO TERAPÊUTICO ATIVO."
+                      style={{
+                        display: allplanosterapeuticos.filter(valor => valor.idpct == item.cd_paciente && item.datatermino == null).length > 0 ? 'flex' : 'none',
+                      }}>
+                      <img
+                        alt=""
+                        src={plano_ativo}
+                        style={{
+                          margin: 0,
+                          marginTop: 2,
+                          height: 50,
+                          width: 50,
+                        }}
+                      ></img>
                     </div>
                   </div>
                 </button>
@@ -534,7 +552,7 @@ function TodosPacientes() {
         // document.getElementById("inputFilterPaciente").value = searchpaciente;
         // document.getElementById("inputFilterPaciente").focus();
       }
-    }, 500);
+    }, 1000);
   }
 
   var htmlhistoricodeatendimentos = process.env.REACT_APP_API_HISTORICODEATENDIMENTOS;

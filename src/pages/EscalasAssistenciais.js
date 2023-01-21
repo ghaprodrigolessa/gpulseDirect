@@ -2612,35 +2612,35 @@ function EscalasAssistenciais() {
             className="corpo">
             <div>
               <div id="ECOG" className="scroll"
-                style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start', marginBottom: 5, height: '60vh', width: 240 }}>
+                style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start', marginBottom: 5, height: '60vh', width: 'calc(50vw + 40px)' }}>
                 <button id="ecog0"
                   className="blue-button"
                   onClick={() => { ecog = 0; setActive("ECOG", "ecog0") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  style={{ padding: 10, width: '50vw', minWidth: '50vw' }}>
                   {'COMPLETAMENTE ATIVO; CAPAZ DE REALIZAR TODAS AS SUAS ATIVIDADES SEM RESTRIÇÃO (KARNOFSKY 90-100%)'}
                 </button>
                 <button id="ecog1"
                   className="blue-button"
                   onClick={() => { ecog = 1; setActive("ECOG", "ecog1") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  style={{ padding: 10, width: '50vw', minWidth: '50vw' }}>
                   {'RESTRIÇÃO A ATIVIDADES FÍSICAS RIGOROSAS; É CAPAZ DE TRABALHOS LEVES E DE NATUREZA SEDENTÁRIA (KARNOFSKY 70-80%).'}
                 </button>
                 <button id="ecog2"
                   className="blue-button"
                   onClick={() => { ecog = 2; setActive("ECOG", "ecog2") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  style={{ padding: 10, width: '50vw', minWidth: '50vw' }}>
                   {'CAPAZ DE REALIZAR TODOS OS AUTO-CUIDADOS, MAS INCAPAZ DE REALIZAR QUALQUER ATIVIDADE DE TRABALHO; EM PÉ APROXIMADAMENTE 50% DAS HORAS EM QUE O PACIENTE ESTÁ ACORDADO (KARNOFSKY 50-60%).'}
                 </button>
                 <button id="ecog3"
                   className="blue-button"
                   onClick={() => { ecog = 3; setActive("ECOG", "ecog3") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  style={{ padding: 10, width: '50vw', minWidth: '50vw' }}>
                   {'CAPAZ DE REALIZAR SOMENTE AUTO-CUIDADOS LIMITADOS, CONFINADO AO LEITO OU CADEIRA MAIS DE 50% DAS HORAS EM QUE O PACIENTE ESTÁ ACORDADO (KARNOFSKY 30-40%).'}
                 </button>
                 <button id="ecog4"
                   className="blue-button"
                   onClick={() => { ecog = 2; setActive("ECOG", "ecog4") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
+                  style={{ padding: 10, width: '50vw', minWidth: '50vw' }}>
                   {'COMPLETAMENTE INCAPAZ DE REALIZAR AUTO-CUIDADOS BÁSICOS; TOTALMENTE CONFINADO AO LEITO OU À CADEIRA (KARNOFSKY < 30%).'}
                 </button>
               </div>
@@ -2775,38 +2775,38 @@ function EscalasAssistenciais() {
 
   // ESCALA MEEM (showescala = 13).
   // orientação.
-  let diasemana = -1
-  let diames = -1
-  let mes = -1
-  let ano = -1
-  let hora = -1
-  let local = -1
-  let instituicao = -1
-  let bairro = -1
-  let cidade = -1
-  let estado = -1
+  let diasemana = 0
+  let diames = 0
+  let mes = 0
+  let ano = 0
+  let hora = 0
+  let local = 0
+  let instituicao = 0
+  let bairro = 0
+  let cidade = 0
+  let estado = 0
   // memória imediata.
-  let palavra1 = -1
-  let palavra2 = -1
-  let palavra3 = -1
+  let palavra1 = 0
+  let palavra2 = 0
+  let palavra3 = 0
   // atenção e cálculo.
-  let calculo1 = -1
-  let calculo2 = -1
-  let calculo3 = -1
-  let calculo4 = -1
-  let calculo5 = -1
+  let calculo1 = 0
+  let calculo2 = 0
+  let calculo3 = 0
+  let calculo4 = 0
+  let calculo5 = 0
   // evocação.
-  let palavra4 = -1
-  let palavra5 = -1
-  let palavra6 = -1
+  let palavra4 = 0
+  let palavra5 = 0
+  let palavra6 = 0
   // linguagem.
-  let nomearrelogio = -1
-  let nomearcaneta = -1
-  let nemaqui = -1
-  let peguepapel = -1
-  let fecheolhos = -1
-  let escrevafrase = -1
-  let copiedesenho = -1
+  let nomearrelogio = 0
+  let nomearcaneta = 0
+  let nemaqui = 0
+  let peguepapel = 0
+  let fecheolhos = 0
+  let escrevafrase = 0
+  let copiedesenho = 0
 
   const insertMeem = () => {
     var score =
@@ -3456,6 +3456,172 @@ function EscalasAssistenciais() {
     );
   }, [showescala]);
 
+  // ESCALA MEDIDAS (showescala = 15).
+  const [medidas, setmedidas] = useState(0);
+  const [braco, setbraco] = useState(-1);
+  const [panturrilha, setpanturrilha] = useState(-1);
+  const [dinamometria, setdinamometria] = useState(-1);
+
+  const insertMedidas = () => {
+    var obj = {
+      idpct: idpaciente,
+      idatendimento: idatendimento,
+      data: moment(),
+      cd_escala: 15,
+      ds_escala: 'MEDIDAS',
+      valor_resultado: '[' + braco + ', ' + panturrilha + ', ' + dinamometria + ']',
+      ds_resultado: null,
+      idprofissional: 0,
+      status: 1,
+    }
+    console.log(JSON.stringify(obj));
+    
+    axios.post(htmlghapinsertescala, obj).then(() => {
+      loadEscalas();
+    })
+    
+  }
+  function Medidas() {
+    var timeout = null;
+    return (
+      <div className="menucover" style={{ zIndex: 9, display: showescala == 15 ? 'flex' : 'none', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+        <div className="menucontainer">
+          <div id="cabeçalho" className="cabecalho">
+            <div className="title5">{'MEDIDAS'}</div>
+            <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+              <button className="red-button" onClick={() => setshowescala(0)}>
+                <img
+                  alt=""
+                  src={deletar}
+                  style={{
+                    margin: 10,
+                    height: 30,
+                    width: 30,
+                  }}
+                ></img>
+              </button>
+              <button className="green-button"
+                onClick={() => {
+                  checkEscala([braco, panturrilha, dinamometria], insertMedidas)
+                }}
+              >
+                <img
+                  alt=""
+                  src={salvar}
+                  style={{
+                    margin: 10,
+                    height: 30,
+                    width: 30,
+                  }}
+                ></img>
+              </button>
+            </div>
+          </div>
+          <div
+            className="corpo"
+            style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            <div className="title2">{'CIRCUNFERÊNCIA DO BRAÇO'}</div>
+            <input id="inputBraco"
+              className="input"
+              autoComplete="off"
+              placeholder="QTDE."
+              onFocus={(e) => (e.target.placeholder = '')}
+              onBlur={(e) => (e.target.placeholder = 'QTDE.')}
+              title="CIRCUNFERÊNCIA DO BRAÇO."
+              style={{
+                display: 'flex',
+                width: 100,
+                margin: 2.5,
+                flexDirection: 'column',
+                textAlign: 'center',
+                alignContent: 'center',
+                boxShadow: '0px 1px 5px 1px rgba(0, 0, 0, 0.1)',
+              }}
+              type="number"
+              defaultValue={braco}
+              onKeyUp={() => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                  var number = parseInt(document.getElementById("inputBraco").value);
+                  if (number < 0) {
+                    setbraco(0);
+                  } else {
+                    setbraco(document.getElementById("inputBraco").value);
+                  }
+                }, 500);
+              }}
+              maxLength={3}>
+            </input>
+            <div className="title2">{'CIRCUNFERÊNCIA DA PANTURRILHA'}</div>
+            <input id="inputPanturrilha"
+              className="input"
+              autoComplete="off"
+              placeholder="QTDE."
+              onFocus={(e) => (e.target.placeholder = '')}
+              onBlur={(e) => (e.target.placeholder = 'QTDE.')}
+              title="CIRCUNFERÊNCIA DA PANTURRILHA."
+              style={{
+                display: 'flex',
+                width: 100,
+                margin: 2.5,
+                flexDirection: 'column',
+                textAlign: 'center',
+                alignContent: 'center',
+                boxShadow: '0px 1px 5px 1px rgba(0, 0, 0, 0.1)',
+              }}
+              type="number"
+              defaultValue={panturrilha}
+              onKeyUp={() => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                  var number = parseInt(document.getElementById("inputPanturrilha").value);
+                  if (number < 0) {
+                    setpanturrilha(0);
+                  } else {
+                    setpanturrilha(document.getElementById("inputPanturrilha").value);
+                  }
+                }, 500);
+              }}
+              maxLength={3}>
+            </input>
+            <div className="title2">{'DINAMOMETRIA'}</div>
+            <input id="inputDinamometria"
+              className="input"
+              autoComplete="off"
+              placeholder="QTDE."
+              onFocus={(e) => (e.target.placeholder = '')}
+              onBlur={(e) => (e.target.placeholder = 'QTDE.')}
+              title="DINAMOMETRIA."
+              style={{
+                display: 'flex',
+                width: 100,
+                margin: 2.5,
+                flexDirection: 'column',
+                textAlign: 'center',
+                alignContent: 'center',
+                boxShadow: '0px 1px 5px 1px rgba(0, 0, 0, 0.1)',
+              }}
+              type="number"
+              defaultValue={dinamometria}
+              onKeyUp={() => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                  var number = parseInt(document.getElementById("inputDinamometria").value);
+                  if (number < 0) {
+                    setdinamometria(0);
+                  } else {
+                    setdinamometria(document.getElementById("inputDinamometria").value);
+                  }
+                }, 500);
+              }}
+              maxLength={3}>
+            </input>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <Braden></Braden>
@@ -3472,6 +3638,7 @@ function EscalasAssistenciais() {
       <Ecog></Ecog>
       <MEEM></MEEM>
       <Glim></Glim>
+      <Medidas></Medidas>
       <div
         className="menucover"
         style={{
