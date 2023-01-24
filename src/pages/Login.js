@@ -26,7 +26,7 @@ function Login() {
     settipousuario, // 8 = médico, etc...
     setboss_settings_usuario,
     boss_planoterapeutico_usuario, setboss_planoterapeutico_usuario,
-    setcategoriausuario,
+    setcategoriausuario, setalias,
     setespecialidadeusuario,
     setconselhousuario,
     settodosatendimentos,
@@ -129,15 +129,15 @@ function Login() {
   var token = '';
 
   var listcategoriaprofissional = [
-    { id: 8, nome: 'MÉDICO', cor: '#AED6F1', conselho: 'CRM' },
-    { id: 4, nome: 'ENFERMAGEM', cor: '#76D7C4', conselho: 'COREN' },
-    { id: 32, nome: 'FARMÁCIA', cor: '#AED6F1', conselho: 'CRF' },
-    { id: 5, nome: 'FISIOTERAPIA', cor: '#BB8FCE', conselho: 'CREFITO' },
-    { id: 6, nome: 'FONOAUDIOLOGIA', cor: '#F1948A', conselho: 'CREFONO' },
-    { id: 10, nome: 'PSICOLOGIA', cor: '#EDBB99', conselho: 'CRP' },
-    { id: 1, nome: 'SERVIÇO SOCIAL', cor: '#F7DC6F', conselho: 'CRESS' },
-    { id: 11, nome: 'TERAPIA OCUPACIONAL', cor: '#AEB6BF', conselho: 'CREFITO1' },
-    { id: 9, nome: 'NUTRIÇÃO CLÍNICA', cor: 'grey', conselho: 'CRN' },
+    { id: 8, nome: 'MÉDICO', cor: '#AED6F1', conselho: 'CRM', alias: 'MÉDICO(A)' },
+    { id: 4, nome: 'ENFERMAGEM', cor: '#76D7C4', conselho: 'COREN', alias: 'ENFERMEIRO(A)' },
+    { id: 32, nome: 'FARMÁCIA', cor: '#AED6F1', conselho: 'CRF', alias: 'FARMACÊUTICO(A)' },
+    { id: 5, nome: 'FISIOTERAPIA', cor: '#BB8FCE', conselho: 'CREFITO', alias: 'FISIOTERAPEUTA' },
+    { id: 6, nome: 'FONOAUDIOLOGIA', cor: '#F1948A', conselho: 'CREFONO', alias: 'FONOAUDIÓLOGO(A)' },
+    { id: 10, nome: 'PSICOLOGIA', cor: '#EDBB99', conselho: 'CRP', alias: 'PSICÓLOGO(A)' },
+    { id: 1, nome: 'SERVIÇO SOCIAL', cor: '#F7DC6F', conselho: 'CRESS', alias: 'ASSISTENTE SOCIAL' },
+    { id: 11, nome: 'TERAPIA OCUPACIONAL', cor: '#AEB6BF', conselho: 'CREFITO1', alias: 'TERAPIA OCUPACIONAL' },
+    { id: 9, nome: 'NUTRIÇÃO CLÍNICA', cor: 'grey', conselho: 'CRN', alias: 'NUTRICIONISTA' },
   ]
 
   const getUserData = (token) => {
@@ -301,6 +301,7 @@ function Login() {
               setnomeusuario('GESTOR');
               settipousuario(5);
               setcategoriausuario('GESTOR');
+              setalias('GESTOR');
               setiduser(1);
               setconselhousuario('GESTOR');
               setboss_planoterapeutico_usuario(1);
@@ -311,11 +312,16 @@ function Login() {
             {'GESTOR'}
           </button>
           {listcategoriaprofissional.map(item => (
-            <button className="blue-button" style={{ padding: 10, width: 250, minWidth: 250 }}
+            <button className="blue-button"
+              style={{
+                display: item.nome == 'MÉDICO' ? 'none' : 'flex',
+                padding: 10, width: 250, minWidth: 250
+              }}
               onClick={() => {
                 setnomeusuario('USUÁRIO');
                 settipousuario(item.id);
                 setcategoriausuario(item.conselho);
+                setalias(item.alias);
                 setiduser(item.id);
                 setconselhousuario(item.conselho);
                 setboss_planoterapeutico_usuario(0);

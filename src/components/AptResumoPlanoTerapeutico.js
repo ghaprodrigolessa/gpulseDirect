@@ -164,10 +164,10 @@ function ResumoAptPlanoTerapeutico() {
     return (
       <div className="scroll" id="OBJETIVOS PRIMÁRIOS"
         style={{
-          width: '100%',
+          width: '100%', minWidth: '100%',
           height: 300,
           minHeight: 50,
-          paddingRight: 5, paddingLeft: 10,
+          paddingRight: 12.5, paddingLeft: 10,
           backgroundColor: '#f2f2f2', borderColor: '#f2f2f2',
         }}
       >
@@ -176,7 +176,7 @@ function ResumoAptPlanoTerapeutico() {
             disabled={statusplanoterapeutico == 1 ? false : true}
             style={{
               display: 'flex', flexDirection: 'column', justifyContent: 'center', alignSelf: 'center',
-              width: window.innerWidth < 400 ? '80vw' : window.innerWidth > 400 && window.innerWidth < 1025 ? '70vw' : '100%',
+              width: window.innerWidth < 400 ? '80vw' : '100%',
             }}>
             <div
               style={{
@@ -210,7 +210,7 @@ function ResumoAptPlanoTerapeutico() {
     return (
       <div id="scrollobjetivos" className="scroll"
         style={{
-          height: '30vh', width: '100%', minWidth: '100%', maxWidth: '100%',
+          height: 300, width: '100%', minWidth: '100%', maxWidth: '100%',
           margin: 0, marginBottom: 5, padding: 0, paddingLeft: 0, paddingRight: 15,
           backgroundColor: '#f2f2f2', borderColor: '#f2f2f2',
         }}>
@@ -362,7 +362,7 @@ function ResumoAptPlanoTerapeutico() {
     return (
       <div
         style={{
-          height: '30vh', width: '100%', minWidth: '100%', maxWidth: '100%',
+          height: 300, width: '100%', minWidth: '100%', maxWidth: '100%',
           margin: 0, marginBottom: 5, padding: 0, paddingLeft: 0,
         }}>
         <div id="scroll das metas."

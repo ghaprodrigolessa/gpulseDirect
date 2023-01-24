@@ -43,6 +43,7 @@ function Prontuario() {
     personas,
     nomeusuario,
     categoriausuario,
+    alias,
     nomeunidade,
     tipounidade,
     setlistescalas,
@@ -222,7 +223,7 @@ function Prontuario() {
           alignSelf: 'center',
           scrollBehavior: 'smooth', flexDirection: 'row', justifyContent: 'flex-start',
           overflowY: 'hidden', overflowX: 'scroll',
-          width: 'calc(80vw)', margin: 0, marginTop: 10, marginBottom: 0, padding: 0, height: 90, minHeight: 90, maxHeight: 90,
+          width: '100%', margin: 0, marginTop: 10, marginBottom: 0, padding: 0, height: 90, minHeight: 90, maxHeight: 90,
           backgroundColor: '#ffffff', borderColor: '#ffffff',
         }}>
         {arraycategoriaprofissional.map(item => (
@@ -437,7 +438,7 @@ function Prontuario() {
         onBlur={(e) => (e.target.placeholder = 'BUSCAR...')}
         onChange={() => filterEscalas()}
         style={{
-          width: '60vw',
+          width: '100%',
           padding: 20,
           margin: 20,
           alignSelf: 'center',
@@ -481,7 +482,7 @@ function Prontuario() {
       return (
         <div style={{
           display: 'flex', flexDirection: 'column', justifyContent: 'center',
-          width: '100vw',
+          width: '100%',
         }}>
           <FilterEscalas></FilterEscalas>
           <div className="scroll"
@@ -510,7 +511,7 @@ function Prontuario() {
                 </div>
                 <div style={{
                   display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
-                  width: '100%',
+                  width: '80%',
                 }}>
                   <div id="GRÁFICO SIMPLES"
                     style={{
@@ -656,6 +657,7 @@ function Prontuario() {
                       display: item.cd_escala == 15 ? 'flex' : 'none',
                       flexDirection: 'column', justifyContent: 'center',
                       width: '100%',
+                      height: 250,
                       padding: 10
                     }}>
                     <Line
@@ -694,7 +696,7 @@ function Prontuario() {
                       }}
                       plugins={ChartDataLabels}
                       width="400"
-                      height="100"
+                      height="200"
                       options={{
                         layout: {
                           padding: {
@@ -784,7 +786,7 @@ function Prontuario() {
                     style={{
                       display: arraylistescalas.filter(value => value.cd_escala != 15 && value.cd_escala == item.cd_escala).length > 0 ? 'flex' : 'none',
                       overflowX: 'scroll', overflowY: 'hidden', flexDirection: 'row', justifyContent: 'flex-start',
-                      width: '80vw',
+                      width: '100%',
                       backgroundColor: "#F2F2F2", borderColor: '#F2F2F2', padding: 10, paddingLeft: 5,
                     }}>
                     {arraylistescalas.filter(value => value.cd_escala == item.cd_escala)
@@ -939,7 +941,7 @@ function Prontuario() {
         }}
       >
         <div id="IDENTIFICAÇÃO" style={{
-          display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100vw',
+          display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%',
           marginTop: 10, marginLeft: 2.5,
         }}>
           <img
@@ -1154,7 +1156,7 @@ function Prontuario() {
             title={'ID DO USUÁRIO: ' + iduser}
             style={{ color: '#ffffff', textAlign: 'right', width: '100%', flexDirection: 'row', justifyContent: 'flex-end', alignSelf: 'flex-end' }}
           >
-            {categoriausuario}
+            {alias}
           </div>
           <div id="botões de ação do cabeçalho."
             style={{
@@ -1310,8 +1312,8 @@ function Prontuario() {
         onMouseOut={() => document.getElementById("sidebar").className = "pacientes-menu-out"}
         style={{
           display: idunidade != 0 && window.innerWidth > 800 ? 'flex' : 'none',
-          width: window.innerWidth > 1000 ? '35vw' : '50vw',
-          minWidth: window.innerWidth > 1000 ? '35vw' : '50vw',
+          width: window.innerWidth > 1000 ? '35%' : '50vw',
+          minWidth: window.innerWidth > 1000 ? '35%' : '50vw',
           position: 'absolute',
           padding: 10, paddingLeft: 0,
           zIndex: 50,
@@ -1388,14 +1390,16 @@ function Prontuario() {
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
-          height: window.innerHeight,
-          width: window.innerWidth,
+          height: '100%',
+          width: '100%',
         }}>
         <div id="LISTAS"
           className="prontuario"
           style={{
-            display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center',
-            height: window.innerHeight,
+            display: 'flex', flexDirection: 'column',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            height: '100%',
             padding: 0,
             margin: 0,
           }}>

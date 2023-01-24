@@ -1550,7 +1550,7 @@ function AptPlanoTerapeutico() {
             }}>
             <div style={{ display: 'flex', padding: 10 }}>{item.objetivo}</div>
             <div id="botões de carinhas"
-              style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+              style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
               <button id='objetivo não atingido'
                 title='OBJETIVO SECUNDÁRIO NÃO ATINGIDO.'
                 className="red-button"
@@ -2688,7 +2688,7 @@ function AptPlanoTerapeutico() {
           height: 300,
           backgroundColor: "#f2f2f2", borderColor: "#f2f2f2",
           minHeight: 50,
-          paddingRight: 5,
+          paddingRight: 12.5,
           paddingLeft: window.innerWidth < 426 ? 5 : 10,
         }}
       >
@@ -2697,7 +2697,7 @@ function AptPlanoTerapeutico() {
             disabled={statusplanoterapeutico == 1 ? false : true}
             style={{
               display: item.statusobjetivo != 4 ? 'flex' : 'none', flexDirection: 'column', justifyContent: 'center', alignSelf: 'center',
-              width: window.innerWidth < 400 ? '80vw' : window.innerWidth > 400 && window.innerWidth < 1025 ? '70vw' : '100%',
+              width: window.innerWidth < 400 ? '80vw' : '100%'
             }}>
             <div
               style={{
@@ -2902,7 +2902,11 @@ function AptPlanoTerapeutico() {
             }}
           >
             <div id="botoes" // 0 = a validar, 1 = ativo. 2 = concluído. 3 = não alcançado. 4 = cancelado. 5 = parcialmente atingido.
-              style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', margin: 5 }}>
+              style={{
+                display: 'flex', flexDirection: 'row', justifyContent: 'center',
+                flexWrap: 'wrap',
+                margin: 5
+              }}>
               <button id="btn excluir (oculto)"
                 title="EXCLUIR OBJETIVO SECUNDÁRIO."
                 style={{ display: item.statusobjetivo == 0 ? 'flex' : 'none' }}
@@ -3107,7 +3111,7 @@ function AptPlanoTerapeutico() {
           >
             <div className="yellow-button" style={{ width: 150 }}>ATIVO</div>
             <div id="botoes" // 0 = a validar, 1 = ativo. 2 = concluído. 3 = não alcançado. 4 = cancelado. 5 = parcialmente atingido.
-              style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+              style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', marginTop: 10 }}>
               <button id="btn excluir"
                 title="EXCLUIR OBJETIVO SECUNDÁRIO."
                 style={{ display: item.statusobjetivo == 0 ? 'flex' : 'none' }}
@@ -4306,7 +4310,7 @@ function AptPlanoTerapeutico() {
           <div id="view dos métodos de mensuração e das intervenções terapêuticas">
             <div id="título métodos de avaliação"
               className="title4"
-              style={{ marginTop: window.innerWidth < 426 ? 40 : 10 }}>
+              style={{ marginTop: 40 }}>
               {'MÉTODOS DE AVALIAÇÃO'}
             </div>
             <div id={"scroll dos métodos de avaliação" + item.id}
@@ -4324,7 +4328,7 @@ function AptPlanoTerapeutico() {
                   <div id="escala cadastrada para o atendimento."
                     style={{ display: listescalas.filter(valor => valor.ds_escala == item.metodo && valor.idatendimento == idatendimento && valor.status == 1).slice(-1).length > 0 ? 'flex' : 'none' }}>
                     {listescalas.filter(valor => valor.ds_escala == item.metodo && valor.idatendimento == idatendimento && valor.status == 1).slice(-5).map(value => (
-                      <div className="blue-button"
+                      <div className="blue-button" title={value.ds_resultado}
                         onClick={() => setshowescala(value.cd_escala)}
                         style={{
                           flexDirection: 'column', width: 120, minWidth: 120, height: 120, minHeight: 120,
@@ -5227,8 +5231,7 @@ function AptPlanoTerapeutico() {
       position: 'relative',
       display: 'flex', flexDirection: 'column',
       justifyContent: 'center', height: '100%',
-      // width: window.innerWidth < 1024 ? '65vw' : window.innerWidth < 400 ? '100vw' : '82vw',
-      width: '100vw', opacity: 1,
+      width: '100%', opacity: 1,
     }}>
       <Busy></Busy>
       <ViewObjetivo></ViewObjetivo>

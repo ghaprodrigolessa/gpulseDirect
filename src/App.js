@@ -154,6 +154,7 @@ function App() {
   const [nomeusuario, setnomeusuario] = useState('')
   const [tipousuario, settipousuario] = useState(0)
   const [categoriausuario, setcategoriausuario] = useState('') // enfermeiro, médico, etc...
+  const [alias, setalias] = useState('')
   const [especialidadeusuario, setespecialidadeusuario] = useState('') // especialidade do profissional (anestesista, etc).
   const [conselhousuario, setconselhousuario] = useState('')
   const [boss_settings_usuario, setboss_settings_usuario] = useState(0)
@@ -341,6 +342,7 @@ function App() {
         nomeusuario, setnomeusuario,
         tipousuario, settipousuario,
         categoriausuario, setcategoriausuario,
+        alias, setalias, // categoria do profissional (ex.: médico, não CRM).
         especialidadeusuario, setespecialidadeusuario,
         conselhousuario, setconselhousuario, // REGISTRO PROFISSIONAL.
         boss_settings_usuario, setboss_settings_usuario,

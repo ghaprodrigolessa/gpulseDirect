@@ -11,7 +11,7 @@ function Header({ link, titulo }) {
   // estados globais.
   // recuperando estados globais.
   const {
-    categoriausuario
+    categoriausuario, alias
   } = useContext(Context)
 
   // renderização do componente.
@@ -26,8 +26,8 @@ function Header({ link, titulo }) {
         alignItems: 'center',
         margin: 0,
         padding: 0,
-        width: '100vw',
-        height: '18vh',
+        width: '100%',
+        height: '18%',
         minHeight: 120,
         boxShadow: '0px 1px 5px 1px rgba(0, 0, 0, 0.3)',
       }}
@@ -40,7 +40,7 @@ function Header({ link, titulo }) {
         width: '100%'
       }}>
         <div style={{ margin: 10, marginRight: 0, display: window.innerWidth > 400 ? 'flex' : 'none' }}>
-          <Logo height={100} width={100}></Logo>
+          <Logo height={80} width={80}></Logo>
         </div>
         <img
           alt=""
@@ -66,6 +66,7 @@ function Header({ link, titulo }) {
             textAlign: window.innerWidth < 426 ? 'center' : 'left',
             color: '#ffffff',
             padding: 5,
+            marginTop: 20,
           }}
         >
           {titulo}
@@ -90,7 +91,7 @@ function Header({ link, titulo }) {
             color: '#ffffff', textAlign: 'right',
           }}
         >
-          {categoriausuario}
+          {alias}
         </div>
         <div
           style={{

@@ -99,7 +99,7 @@ function TodosPacientes() {
             style={{
               backgroundColor: 'transparent',
               color: classificaunidade == 0 ? '' : 'red',
-              minWidth: 100, width: 100,
+              minWidth: 80, width: 80,
             }}
             title="UNIDADE"
           >
@@ -228,7 +228,7 @@ function TodosPacientes() {
         <div
           id="LISTA DE PACIENTES"
           className="scroll"
-          style={{ height: '100%', alignContent: 'center' }}
+          style={{ height: '62.5%', alignContent: 'center' }}
         >
           {arrayatendimentosclassified.map((item) => (
             <div style={{
@@ -248,8 +248,8 @@ function TodosPacientes() {
                 <button
                   className="grey-button"
                   style={{
-                    width: window.innerWidth < 426 ? 'calc(40vw - 2.5px)' : 100,
-                    minWidth: window.innerWidth < 426 ? 'calc(40vw - 2.5px)' : 100,
+                    width: window.innerWidth < 426 ? 'calc(40vw - 2.5px)' : 80,
+                    minWidth: window.innerWidth < 426 ? 'calc(40vw - 2.5px)' : 80,
                     margin: 2.5, color: '#ffffff', backgroundColor: 'grey'
                   }}
                   title="UNIDADE"
@@ -282,6 +282,7 @@ function TodosPacientes() {
                 >
                   <div style={{
                     display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', textAlign: 'left',
+                    // flexWrap: 'wrap',
                     width: window.innerWidth < 426 ? '80vw' : '100%',
                     height: 50
                   }}>
@@ -290,36 +291,40 @@ function TodosPacientes() {
                     }}>
                       {item.nm_paciente}
                     </div>
-                    <div id="tag linha de cuidado."
-                      className='blue-button'
-                      style={{
-                        display: todaslinhasdecuidado.filter(valor => valor.idpct == item.cd_paciente).length > 0 ? 'flex' : 'none',
-                        minHeight: 45, height: 45, alignSelf: 'flex-end', paddingLeft: 10, paddingRight: 10,
-                        backgroundColor:
-                          todaslinhasdecuidado.filter(valor => valor.idpct == item.cd_paciente).slice(-1).map(valor => valor.id_linhadecuidado) == 1 ? '#52be80' :
-                            todaslinhasdecuidado.filter(valor => valor.idpct == item.cd_paciente).slice(-1).map(valor => valor.id_linhadecuidado) == 2 ? '#f5b041' :
-                              '#52dade'
-                      }}>
-                      {
-                        todaslinhasdecuidado.filter(valor => valor.idpct == item.cd_paciente).slice(-1).map(valor => valor.var_linhadecuidado)
-                      }
-                    </div>
-                    <div id="tag plano terapêutico ativo."
-                      className='pulsarplanoterapeutico'
-                      title="PLANO TERAPÊUTICO ATIVO."
-                      style={{
-                        display: allplanosterapeuticos.filter(valor => valor.idpct == item.cd_paciente && valor.datatermino == null).length > 0 ? 'flex' : 'none',
-                      }}>
-                      <img
-                        alt=""
-                        src={plano_ativo}
+                    <div id="tags das linhas e planos ativos" style={{ display: window.innerWidth < 768 ? 'none' : 'flex' }}>
+                      <div id="tag linha de cuidado."
+                        className='blue-button'
                         style={{
-                          margin: 0,
-                          marginTop: 2,
-                          height: 50,
-                          width: 50,
-                        }}
-                      ></img>
+                          display: todaslinhasdecuidado.filter(valor => valor.idpct == item.cd_paciente).length > 0 ? 'flex' : 'none',
+                          minWidth: '', maxWidth: 200, width: 200,
+                          minHeight: 45, height: 45,
+                          alignSelf: 'flex-end', paddingLeft: 10, paddingRight: 10,
+                          backgroundColor:
+                            todaslinhasdecuidado.filter(valor => valor.idpct == item.cd_paciente).slice(-1).map(valor => valor.id_linhadecuidado) == 1 ? '#52be80' :
+                              todaslinhasdecuidado.filter(valor => valor.idpct == item.cd_paciente).slice(-1).map(valor => valor.id_linhadecuidado) == 2 ? '#f5b041' :
+                                '#52dade'
+                        }}>
+                        {
+                          todaslinhasdecuidado.filter(valor => valor.idpct == item.cd_paciente).slice(-1).map(valor => valor.var_linhadecuidado)
+                        }
+                      </div>
+                      <div id="tag plano terapêutico ativo."
+                        className='pulsarplanoterapeutico'
+                        title="PLANO TERAPÊUTICO ATIVO."
+                        style={{
+                          display: allplanosterapeuticos.filter(valor => valor.idpct == item.cd_paciente && valor.datatermino == null).length > 0 ? 'flex' : 'none',
+                        }}>
+                        <img
+                          alt=""
+                          src={plano_ativo}
+                          style={{
+                            margin: 0,
+                            marginTop: 2,
+                            height: 50,
+                            width: 50,
+                          }}
+                        ></img>
+                      </div>
                     </div>
                   </div>
                 </button>
@@ -500,8 +505,8 @@ function TodosPacientes() {
         onChange={() => filterPaciente()}
         style={{
           width: '60vw',
-          padding: 20,
-          margin: 20,
+          padding: 10,
+          margin: 10,
           alignSelf: 'center',
           textAlign: 'center'
         }}
@@ -614,6 +619,7 @@ function TodosPacientes() {
             justifyContent: 'center',
             alignItems: 'center',
             width: '100vw',
+            height: '100%',
             padding: 5,
           }}>
           <FilterPacientes></FilterPacientes>

@@ -107,7 +107,7 @@ function EscalasAssistenciais() {
   const Braden = useCallback(() => {
     return (
       <div className="menucover" style={{ zIndex: 9, display: showescala == 1 ? 'flex' : 'none', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-        <div className="menucontainer">
+        <div className="menucontainer" style={{ width: '95%', height: '80%' }}>
           <div id="cabeçalho" className="cabecalho">
             <div className="title5">{'ESCALA DE BRADEN'}</div>
             <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
@@ -138,12 +138,14 @@ function EscalasAssistenciais() {
             </div>
           </div>
           <div
-            className="corpo" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'left', alignItems: 'flex-start' }}>
+            className="corpo" style={{
+              display: 'flex', flexDirection: 'column', justifyContent: 'left', alignItems: 'flex-start',
+            }}>
             <div id="master" className="scroll">
               <div
                 id="BRADEN1"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center' }}>PERCEPÇÃO SENSORIAL:</div>
+                <div className="title2" style={{ width: 150, textAlign: 'center' }}>PERCEPÇÃO SENSORIAL:</div>
                 <button
                   id="btnBraden11"
                   // eslint-disable-next-line
@@ -180,7 +182,7 @@ function EscalasAssistenciais() {
               <div
                 id="BRADEN2"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>UMIDADE:</div>
+                <div className="title2" style={{ width: 150, textAlign: 'center', alignSelf: 'center' }}>UMIDADE:</div>
                 <button
                   id="btnBraden21"
                   // eslint-disable-next-line
@@ -217,7 +219,7 @@ function EscalasAssistenciais() {
               <div
                 id="BRADEN3"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>ATIVIDADE:</div>
+                <div className="title2" style={{ width: 150, textAlign: 'center', alignSelf: 'center' }}>ATIVIDADE:</div>
                 <button
                   id="btnBraden31"
                   // eslint-disable-next-line
@@ -254,7 +256,7 @@ function EscalasAssistenciais() {
               <div
                 id="BRADEN4"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>MOBILIDADE:</div>
+                <div className="title2" style={{ width: 150, textAlign: 'center', alignSelf: 'center' }}>MOBILIDADE:</div>
                 <button
                   id="btnBraden41"
                   // eslint-disable-next-line
@@ -291,7 +293,7 @@ function EscalasAssistenciais() {
               <div
                 id="BRADEN5"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>NUTRIÇÃO:</div>
+                <div className="title2" style={{ width: 150, textAlign: 'center', alignSelf: 'center' }}>NUTRIÇÃO:</div>
                 <button
                   id="btnBraden51"
                   // eslint-disable-next-line
@@ -328,7 +330,9 @@ function EscalasAssistenciais() {
               <div
                 id="BRADEN6"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>FRICÇÃO E CISALHAMENTO:</div>
+                <div className="title2" style={{ width: 150, textAlign: 'center', alignSelf: 'center' }}>
+                  FRICÇÃO E CISALHAMENTO:
+                </div>
                 <button
                   id="btnBraden61"
                   // eslint-disable-next-line
@@ -350,7 +354,7 @@ function EscalasAssistenciais() {
                   // eslint-disable-next-line
                   onClick={() => { friccao = 3; setActive("BRADEN6", "btnBraden63") }}
                   className="blue-button"
-                  style={{ width: 150, padding: 10 }}>
+                  style={{ width: 150, padding: 10, marginRight: 145 }}>
                   NENHUM PROBLEMA
                 </button>
               </div>
@@ -432,7 +436,7 @@ function EscalasAssistenciais() {
               <div
                 id="MORSE1"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>HISTÓRICO DE QUEDAS:</div>
+                <div className="title2" style={{ width: 150, textAlign: 'center', alignSelf: 'center' }}>HISTÓRICO DE QUEDAS:</div>
                 <button
                   id="btnMorse11"
                   onClick={() => { quedas = 0; setActive("MORSE1", "btnMorse11") }}
@@ -451,7 +455,7 @@ function EscalasAssistenciais() {
               <div
                 id="MORSE2"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>DIAGNÓSTICO SECUNDÁRIO:</div>
+                <div className="title2" style={{ width: 150, textAlign: 'center', alignSelf: 'center' }}>DIAGNÓSTICO SECUNDÁRIO:</div>
                 <button
                   id="btnMorse21"
                   onClick={() => { diagsec = 0; setActive("MORSE2", "btnMorse21") }}
@@ -470,7 +474,7 @@ function EscalasAssistenciais() {
               <div
                 id="MORSE3"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>AUXÍLIO NA DEAMBULAÇÃO:</div>
+                <div className="title2" style={{ width: 150, textAlign: 'center', alignSelf: 'center' }}>AUXÍLIO NA DEAMBULAÇÃO:</div>
                 <button
                   id="btnMorse31"
                   onClick={() => { auxilio = 0; setActive("MORSE3", "btnMorse31") }}
@@ -496,7 +500,7 @@ function EscalasAssistenciais() {
               <div
                 id="MORSE4"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>TERAPIA ENDOVENOSA OU CATETER VENOSO:</div>
+                <div className="title2" style={{ width: 150, textAlign: 'center', alignSelf: 'center' }}>TERAPIA ENDOVENOSA OU CATETER VENOSO:</div>
                 <button
                   id="btnMorse41"
                   onClick={() => { endovenosa = 0; setActive("MORSE4", "btnMorse41") }}
@@ -515,7 +519,7 @@ function EscalasAssistenciais() {
               <div
                 id="MORSE5"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>MARCHA:</div>
+                <div className="title2" style={{ width: 150, textAlign: 'center', alignSelf: 'center' }}>MARCHA:</div>
                 <button
                   id="btnMorse51"
                   onClick={() => { marcha = 0; setActive("MORSE5", "btnMorse51") }}
@@ -541,7 +545,7 @@ function EscalasAssistenciais() {
               <div
                 id="MORSE6"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>ESTADO MENTAL:</div>
+                <div className="title2" style={{ width: 150, textAlign: 'center', alignSelf: 'center' }}>ESTADO MENTAL:</div>
                 <button
                   id="btnMorse61"
                   onClick={() => { mental = 0; setActive("MORSE6", "btnMorse61") }}
@@ -631,7 +635,7 @@ function EscalasAssistenciais() {
           </div>
           <div
             className="corpo">
-            <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>FORÇA MUSCULAR:</div>
+            <div className="title2" style={{ width: 150, textAlign: 'center', alignSelf: 'center' }}>FORÇA MUSCULAR:</div>
             <div className="scroll" style={{ height: '60vh', paddingRight: 10 }}>
               <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', marginBottom: 5 }}>
                 <button
@@ -845,7 +849,7 @@ function EscalasAssistenciais() {
   const Fugulin = useCallback(() => {
     return (
       <div className="menucover" style={{ zIndex: 9, display: showescala == 5 ? 'flex' : 'none', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-        <div className="menucontainer">
+        <div className="menucontainer" style={{width: '90vw', height: '80vh'}}>
           <div id="cabeçalho" className="cabecalho">
             <div className="title5">{'ESCALA DE FUGULIN'}</div>
             <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
@@ -881,7 +885,7 @@ function EscalasAssistenciais() {
               <div
                 id="FUGULIN1"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>ESTADO MENTAL:</div>
+                <div className="title2" style={{ width: 150, textAlign: 'center', alignSelf: 'center' }}>ESTADO MENTAL:</div>
                 <button
                   id="btnFugulin11"
                   onClick={() => { estadomental = 4; setActive("FUGULIN1", "btnFugulin11") }}
@@ -914,7 +918,7 @@ function EscalasAssistenciais() {
               <div
                 id="FUGULIN2"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>OXIGENAÇÃO:</div>
+                <div className="title2" style={{ width: 150, textAlign: 'center', alignSelf: 'center' }}>OXIGENAÇÃO:</div>
                 <button
                   id="btnFugulin21"
                   onClick={() => { oxigenacao = 4; setActive("FUGULIN2", "btnFugulin21") }}
@@ -947,7 +951,7 @@ function EscalasAssistenciais() {
               <div
                 id="FUGULIN3"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>SINAIS VITAIS:</div>
+                <div className="title2" style={{ width: 150, textAlign: 'center', alignSelf: 'center' }}>SINAIS VITAIS:</div>
                 <button
                   id="btnFugulin31"
                   onClick={() => { sinaisvitais = 4; setActive("FUGULIN3", "btnFugulin31") }}
@@ -980,7 +984,7 @@ function EscalasAssistenciais() {
               <div
                 id="FUGULIN4"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>MOTILIDADE:</div>
+                <div className="title2" style={{ width: 150, textAlign: 'center', alignSelf: 'center' }}>MOTILIDADE:</div>
                 <button
                   id="btnFugulin41"
                   onClick={() => { motilidade = 4; setActive("FUGULIN4", "btnFugulin41") }}
@@ -1015,7 +1019,7 @@ function EscalasAssistenciais() {
               <div
                 id="FUGULIN5"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>DEAMBULAÇÃO:</div>
+                <div className="title2" style={{ width: 150, textAlign: 'center', alignSelf: 'center' }}>DEAMBULAÇÃO:</div>
                 <button
                   id="btnFugulin51"
                   onClick={() => { deambulacaofugulin = 4; setActive("FUGULIN5", "btnFugulin51") }}
@@ -1048,7 +1052,7 @@ function EscalasAssistenciais() {
               <div
                 id="FUGULIN6"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>ALIMENTAÇÃO:</div>
+                <div className="title2" style={{ width: 150, textAlign: 'center', alignSelf: 'center' }}>ALIMENTAÇÃO:</div>
                 <button
                   id="btnFugulin61"
                   onClick={() => { alimentacao = 4; setActive("FUGULIN6", "btnFugulin61") }}
@@ -1081,7 +1085,7 @@ function EscalasAssistenciais() {
               <div
                 id="FUGULIN7"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>CUIDADO CORPORAL:</div>
+                <div className="title2" style={{ width: 150, textAlign: 'center', alignSelf: 'center' }}>CUIDADO CORPORAL:</div>
                 <button
                   id="btnFugulin71"
                   onClick={() => { cuidadocorporal = 4; setActive("FUGULIN7", "btnFugulin71") }}
@@ -1114,7 +1118,7 @@ function EscalasAssistenciais() {
               <div
                 id="FUGULIN8"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>ELIMINAÇÃO:</div>
+                <div className="title2" style={{ width: 150, textAlign: 'center', alignSelf: 'center' }}>ELIMINAÇÃO:</div>
                 <button
                   id="btnFugulin81"
                   onClick={() => { eliminacao = 4; setActive("FUGULIN8", "btnFugulin81") }}
@@ -1147,7 +1151,7 @@ function EscalasAssistenciais() {
               <div
                 id="FUGULIN9"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>TERAPÊUTICA:</div>
+                <div className="title2" style={{ width: 150, textAlign: 'center', alignSelf: 'center' }}>TERAPÊUTICA:</div>
                 <button
                   id="btnFugulin91"
                   onClick={() => { terapeutica = 4; setActive("FUGULIN9", "btnFugulin91") }}
@@ -1230,8 +1234,12 @@ function EscalasAssistenciais() {
 
   const Barthel = useCallback(() => {
     return (
-      <div className="menucover" style={{ zIndex: 9, display: showescala == 6 ? 'flex' : 'none', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-        <div className="menucontainer">
+      <div className="menucover"
+        style={{
+          zIndex: 9, display: showescala == 6 ? 'flex' : 'none',
+          flexDirection: 'column', justifyContent: 'center', alignItems: 'center'
+        }}>
+        <div className="menucontainer" style={{ height: '80%', width: '95%' }}>
           <div id="cabeçalho" className="cabecalho">
             <div className="title5">{'ÍNDICE DE BARTHEL'}</div>
             <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
@@ -1263,11 +1271,11 @@ function EscalasAssistenciais() {
           </div>
           <div
             className="corpo">
-            <div className="scroll" style={{ height: '80vh', justifyContent: 'flex-start' }}>
+            <div className="scroll" style={{ height: '100%', width: '100%', justifyContent: 'flex-start' }}>
               <div
                 id="BARTHEL1"
-                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, flexWrap: 'wrap', width: 150, textAlign: 'center', alignSelf: 'center' }}>HIGIENE PESSOAL:</div>
+                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginBottom: 5 }}>
+                <div className="title2" style={{ width: 150, minWidth: 150,  textAlign: 'center', alignSelf: 'center' }}>HIGIENE PESSOAL:</div>
                 <button
                   id="btnBarthel11"
                   onClick={() => { higienepessoal = 0; setActive("BARTHEL1", "btnBarthel11") }}
@@ -1305,8 +1313,8 @@ function EscalasAssistenciais() {
               </div>
               <div
                 id="BARTHEL2"
-                style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>BANHO:</div>
+                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
+                <div className="title2" style={{ width: 150, minWidth: 150,  textAlign: 'center', alignSelf: 'center' }}>BANHO:</div>
                 <button
                   id="btnBarthel21"
                   onClick={() => { banho = 0; setActive("BARTHEL2", "btnBarthel21") }}
@@ -1345,8 +1353,8 @@ function EscalasAssistenciais() {
               </div>
               <div
                 id="BARTHEL3"
-                style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>ALIMENTAÇÃO:</div>
+                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
+                <div className="title2" style={{ width: 150, minWidth: 150,  textAlign: 'center', alignSelf: 'center' }}>ALIMENTAÇÃO:</div>
                 <button
                   id="btnBarthel31"
                   onClick={() => { alimentacaobarthel = 0; setActive("BARTHEL3", "btnBarthel31") }}
@@ -1385,8 +1393,8 @@ function EscalasAssistenciais() {
               </div>
               <div
                 id="BARTHEL4"
-                style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>TOALETE:</div>
+                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
+                <div className="title2" style={{ width: 150, minWidth: 150,  textAlign: 'center', alignSelf: 'center' }}>TOALETE:</div>
                 <button
                   id="btnBarthel41"
                   onClick={() => { toalete = 0; setActive("BARTHEL4", "btnBarthel41") }}
@@ -1426,7 +1434,7 @@ function EscalasAssistenciais() {
               <div
                 id="BARTHEL5"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>SUBIR ESCADAS:</div>
+                <div className="title2" style={{ width: 150, minWidth: 150,  textAlign: 'center', alignSelf: 'center' }}>SUBIR ESCADAS:</div>
                 <button
                   id="btnBarthel51"
                   onClick={() => { escadas = 0; setActive("BARTHEL5", "btnBarthel51") }}
@@ -1465,8 +1473,8 @@ function EscalasAssistenciais() {
               </div>
               <div
                 id="BARTHEL6"
-                style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>VESTUÁRIO:</div>
+                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
+                <div className="title2" style={{ width: 150, minWidth: 150,  textAlign: 'center', alignSelf: 'center' }}>VESTUÁRIO:</div>
                 <button
                   id="btnBarthel61"
                   onClick={() => { vestir = 0; setActive("BARTHEL6", "btnBarthel61") }}
@@ -1505,8 +1513,8 @@ function EscalasAssistenciais() {
               </div>
               <div
                 id="BARTHEL7"
-                style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>BEXIGA:</div>
+                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
+                <div className="title2" style={{ width: 150, minWidth: 150,  textAlign: 'center', alignSelf: 'center' }}>BEXIGA:</div>
                 <button
                   id="btnBarthel71"
                   onClick={() => { urina = 0; setActive("BARTHEL7", "btnBarthel71") }}
@@ -1545,8 +1553,8 @@ function EscalasAssistenciais() {
               </div>
               <div
                 id="BARTHEL8"
-                style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>INTESTINO:</div>
+                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
+                <div className="title2" style={{ width: 150, minWidth: 150,  textAlign: 'center', alignSelf: 'center' }}>INTESTINO:</div>
                 <button
                   id="btnBarthel81"
                   onClick={() => { intestino = 0; setActive("BARTHEL8", "btnBarthel81") }}
@@ -1585,8 +1593,8 @@ function EscalasAssistenciais() {
               </div>
               <div
                 id="BARTHEL9.1"
-                style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>DEAMBULAÇÃO:</div>
+                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
+                <div className="title2" style={{ width: 150, minWidth: 150, textAlign: 'center', alignSelf: 'center' }}>DEAMBULAÇÃO:</div>
                 <button
                   id="btnBarthel9.11"
                   onClick={() => { deambulacao = 0; setActive("BARTHEL9.1", "btnBarthel9.11") }}
@@ -1625,8 +1633,8 @@ function EscalasAssistenciais() {
               </div>
               <div
                 id="BARTHEL9.2"
-                style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>CADEIRA DE RODAS:</div>
+                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
+                <div className="title2" style={{ width: 150, minWidth: 150, textAlign: 'center', alignSelf: 'center' }}>CADEIRA DE RODAS:</div>
                 <button
                   id="btnBarthel9.21"
                   onClick={() => { cadeiraderodas = 0; setActive("BARTHEL9.2", "btnBarthel9.21") }}
@@ -1665,8 +1673,8 @@ function EscalasAssistenciais() {
               </div>
               <div
                 id="BARTHEL10"
-                style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ fontSize: 14, width: 150, textAlign: 'center', alignSelf: 'center' }}>TRANSFERÊNCIAS CADEIRA/CAMA:</div>
+                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
+                <div className="title2" style={{ width: 150, minWidth: 150, textAlign: 'center', alignSelf: 'center' }}>TRANSFERÊNCIAS CADEIRA/CAMA:</div>
                 <button
                   id="btnBarthel101"
                   onClick={() => { transferencia = 0; setActive("BARTHEL10", "btnBarthel101") }}
@@ -1915,7 +1923,7 @@ function EscalasAssistenciais() {
             className="corpo">
             <div className="scroll" style={{ height: '80vh', justifyContent: 'flex-start' }}>
               <div id="RISCOASPIRA1" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
-                <div className="title2" style={{ fontSize: 14, width: '100%', alignSelf: 'center', justifyContent: 'flex-start' }}>BOA DEGLUTIÇÃO E ESTADO DE ALERTA:</div>
+                <div className="title2" style={{ width: '100%', alignSelf: 'center', justifyContent: 'flex-start' }}>BOA DEGLUTIÇÃO E ESTADO DE ALERTA:</div>
                 <button
                   id="btnRiscoAspira1"
                   onClick={() => { bdea = 0; setActive("RISCOASPIRA1", "btnRiscoAspira1") }}
@@ -1932,7 +1940,7 @@ function EscalasAssistenciais() {
                 </button>
               </div>
               <div id="RISCOASPIRA2" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
-                <div className="title2" style={{ fontSize: 14, width: '100%', alignSelf: 'center', justifyContent: 'flex-start' }}>AUSÊNCIA DE DENTES:</div>
+                <div className="title2" style={{ width: '100%', alignSelf: 'center', justifyContent: 'flex-start' }}>AUSÊNCIA DE DENTES:</div>
                 <button
                   id="btnRiscoAspira3"
                   onClick={() => { edentado = 0; setActive("RISCOASPIRA2", "btnRiscoAspira3") }}
@@ -1949,7 +1957,7 @@ function EscalasAssistenciais() {
                 </button>
               </div>
               <div id="RISCOASPIRA3" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
-                <div className="title2" style={{ fontSize: 14, width: '100%', alignSelf: 'center', justifyContent: 'flex-start' }}>HIGIENE ORAL PRECÁRIA:</div>
+                <div className="title2" style={{ width: '100%', alignSelf: 'center', justifyContent: 'flex-start' }}>HIGIENE ORAL PRECÁRIA:</div>
                 <button
                   id="btnRiscoAspira5"
                   onClick={() => { hop = 1; setActive("RISCOASPIRA3", "btnRiscoAspira5") }}
@@ -1966,7 +1974,7 @@ function EscalasAssistenciais() {
                 </button>
               </div>
               <div id="RISCOASPIRA4" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
-                <div className="title2" style={{ fontSize: 14, width: '100%', alignSelf: 'center', justifyContent: 'flex-start' }}>DIETA PASTOSA/MISTA:</div>
+                <div className="title2" style={{ width: '100%', alignSelf: 'center', justifyContent: 'flex-start' }}>DIETA PASTOSA/MISTA:</div>
                 <button
                   id="btnRiscoAspira7"
                   onClick={() => { dpm = 1; setActive("RISCOASPIRA4", "btnRiscoAspira7") }}
@@ -1983,7 +1991,7 @@ function EscalasAssistenciais() {
                 </button>
               </div>
               <div id="RISCOASPIRA5" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
-                <div className="title2" style={{ fontSize: 14, width: '100%', alignSelf: 'center', justifyContent: 'flex-start' }}>VÔMITO:</div>
+                <div className="title2" style={{ width: '100%', alignSelf: 'center', justifyContent: 'flex-start' }}>VÔMITO:</div>
                 <button
                   id="btnRiscoAspira9"
                   onClick={() => { vomito = 1; setActive("RISCOASPIRA5", "btnRiscoAspira9") }}
@@ -2000,7 +2008,7 @@ function EscalasAssistenciais() {
                 </button>
               </div>
               <div id="RISCOASPIRA6" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
-                <div className="title2" style={{ fontSize: 14, width: '100%', alignSelf: 'center', justifyContent: 'flex-start' }}>USO DE ESPESSANTE:</div>
+                <div className="title2" style={{ width: '100%', alignSelf: 'center', justifyContent: 'flex-start' }}>USO DE ESPESSANTE:</div>
                 <button
                   id="btnRiscoAspira11"
                   onClick={() => { espessante = 1; setActive("RISCOASPIRA6", "btnRiscoAspira11") }}
@@ -2017,7 +2025,7 @@ function EscalasAssistenciais() {
                 </button>
               </div>
               <div id="RISCOASPIRA7" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
-                <div className="title2" style={{ fontSize: 14, width: '100%', alignSelf: 'center', justifyContent: 'flex-start' }}>ALTERAÇÃO DO NÍVEL DE CONSCIÊNCIA:</div>
+                <div className="title2" style={{ width: '100%', alignSelf: 'center', justifyContent: 'flex-start' }}>ALTERAÇÃO DO NÍVEL DE CONSCIÊNCIA:</div>
                 <button
                   id="btnRiscoAspira13"
                   onClick={() => { sensorio = 1; setActive("RISCOASPIRA7", "btnRiscoAspira13") }}
@@ -2034,7 +2042,7 @@ function EscalasAssistenciais() {
                 </button>
               </div>
               <div id="RISCOASPIRA8" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
-                <div className="title2" style={{ fontSize: 14, width: '100%', alignSelf: 'center', justifyContent: 'flex-start' }}>USO DE DISPOSITIVO (SNE, GTT, TQT):</div>
+                <div className="title2" style={{ width: '100%', alignSelf: 'center', justifyContent: 'flex-start' }}>USO DE DISPOSITIVO (SNE, GTT, TQT):</div>
                 <button
                   id="btnRiscoAspira15"
                   onClick={() => { dispositivo = 1; setActive("RISCOASPIRA8", "btnRiscoAspira15") }}
@@ -3475,11 +3483,11 @@ function EscalasAssistenciais() {
       status: 1,
     }
     console.log(JSON.stringify(obj));
-    
+
     axios.post(htmlghapinsertescala, obj).then(() => {
       loadEscalas();
     })
-    
+
   }
   function Medidas() {
     var timeout = null;

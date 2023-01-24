@@ -99,8 +99,8 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   border-radius: 0px;
   margin: 0px;
   padding: 0px;
@@ -653,9 +653,9 @@ body {
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
 .textarea {
@@ -4714,18 +4714,12 @@ input::-webkit-inner-spin-button {
   .main {
     font-size: 14px;
   }
-  .menu {
-    width: 25vw;
-  }
-  .prontuario {
-    left: 25vw;
-  }
   .conteudo {
-    height: 80vh;
-    width: 75vw;
+    height: 80%;
+    width: 75%;
   }
   .detalhes {
-    width: 30vw;
+    width: 30%;
   }
   /* TÍTULOS */
   .title1 {
@@ -4754,6 +4748,10 @@ input::-webkit-inner-spin-button {
 .pacientes-menu-out {
   left: -50vw;
   transition: 0.5s;
+}
+
+.blue-button {
+  font-size: 12px;
 }
 
 /* RESPONSIVIDADE PARA CELULARES */
@@ -4801,8 +4799,8 @@ input::-webkit-inner-spin-button {
     font-weight: bold;
   }
   .corpo {
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     margin: 0px;
     padding: 20px;
     overflow-y: scroll;
