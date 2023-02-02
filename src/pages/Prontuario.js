@@ -1315,6 +1315,7 @@ function Prontuario() {
           width: window.innerWidth > 1000 ? '35%' : '50vw',
           minWidth: window.innerWidth > 1000 ? '35%' : '50vw',
           position: 'absolute',
+          top: 0, bottom: 0,
           padding: 10, paddingLeft: 0,
           zIndex: 50,
         }
@@ -1334,7 +1335,7 @@ function Prontuario() {
           <div className="scroll"
             style={{
               backgroundColor: 'white',
-              height: '80vh', width: '100%',
+              height: '100%', width: '100%',
               justifyContent: 'flex-start', borderTopLeftRadius: 0, borderBottomLeftRadius: 0, paddingLeft: 7.5
             }}>
             {todosatendimentos.filter(item => item.Leito.unidade.id == idunidade).sort(((a, b) => a.Leito.descricao > b.Leito.descricao ? 1 : -1)).map(item => (

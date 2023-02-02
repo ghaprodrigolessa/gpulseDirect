@@ -4060,6 +4060,7 @@ input::-webkit-inner-spin-button {
 /* animação para o menu flutuante da tela prontuário (sidebar) */
 
 .pacientes-menu-in {
+  display: flex;
   left: 0px;
   transition: 0.5s;
 }
@@ -4069,7 +4070,8 @@ input::-webkit-inner-spin-button {
 }
 
 .pacientes-menu-out {
-  left: -30vw;
+  display: none;
+  left: -50vw;
   transition: 0.5s;
 }
 
@@ -4743,15 +4745,18 @@ input::-webkit-inner-spin-button {
   .pulsewidgethospitais {
     animation-duration: 0ms;
   }
-}
-
-.pacientes-menu-out {
-  left: -50vw;
-  transition: 0.5s;
-}
-
-.blue-button {
-  font-size: 12px;
+  .pacientes-menu-in {
+    left: -50vw;
+    transition: 0.5s;
+  }
+  .pacientes-menu-out {
+    display: none;
+    left: -50vw;
+    transition: 0.5s;
+  }
+  .blue-button {
+    font-size: 12px;
+  }
 }
 
 /* RESPONSIVIDADE PARA CELULARES */
@@ -5146,5 +5151,15 @@ input::-webkit-inner-spin-button {
     display: none;
     background-color: transparent;
     border-radius: 5px;
+  }
+  .pacientes-menu-in {
+    display: none;
+    left: -50vw;
+    transition: 0.5s;
+  }
+  .pacientes-menu-out {
+    display: none;
+    left: -50vw;
+    transition: 0.5s;
   }
 }
