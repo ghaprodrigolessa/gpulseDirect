@@ -2259,7 +2259,7 @@ function AptPlanoTerapeutico() {
                   ></img>
                 </button>
                 <button
-                  onClick={() => { setselectedobjetivo(0); loadOpcoesMetas(); setviewgerirplano(1) }}
+                  onClick={() => { setviewacessoeditorplanoterapeutico(1) }}
                   title="GERENCIAR OPÇÕES DE METAS E MÉTODOS DE AVALIAÇÃO."
                   className="blue-button"
                   style={{ display: boss_planoterapeutico_usuario == 1 && window.innerWidth > 425 ? 'flex' : 'none' }}
@@ -2290,6 +2290,59 @@ function AptPlanoTerapeutico() {
       </div>
     )
   };
+
+  const [viewacessoeditorplanoterapeutico, setviewacessoeditorplanoterapeutico] = useState(0);
+  let senha = 'apt@pulse'
+  function AcessoEditorPlanoTerapeutico() {
+    return (
+      <div
+        className="menucover"
+        onClick={(e) => { setviewacessoeditorplanoterapeutico(0); e.stopPropagation() }}
+        style={{
+          display: viewacessoeditorplanoterapeutico == 0 ? 'none' : 'flex',
+          zIndex: 25, flexDirection: 'column',
+          justifyContent: 'center', alignItems: 'center'
+        }}>
+        <div
+          className="menucontainer" style={{ padding: 20 }}
+          onClick={(e) => { e.stopPropagation() }}
+        >
+          <div className='title2'>INSIRA A SENHA PARA ACESSAR O EDITOR DE PLANOS TERAPÊUTICOS</div>
+          <input
+            className="input"
+            autoComplete="off"
+            placeholder="SENHA"
+            type="password"
+            id="inputSenha"
+            onFocus={(e) => (e.target.placeholder = '')}
+            onBlur={(e) => (e.target.placeholder = 'SENHA')}
+            style={{
+              display: 'flex',
+              marginTop: 15,
+              marginBottom: 10,
+              width: 200,
+              height: 50,
+              backgroundColor: '#ffffff'
+            }}
+          ></input>
+          <button
+            className='blue-button'
+            style={{ padding: 10, width: 200 }}
+            onClick={() => {
+              if (document.getElementById("inputSenha").value == senha) {
+                setviewacessoeditorplanoterapeutico(0);
+                setselectedobjetivo(0); loadOpcoesMetas(); setviewgerirplano(1);
+              } else {
+                toast(1, '#ec7063', 'SENHA INCORRETA.', 2000);
+              }
+            }}
+          >
+            ACESSAR
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   // SUBCOMPONENTES DO PLANO TERAPÊUTICO:
   // scroll para rápida visualização dos componentes do plano terapêutico.
@@ -4887,6 +4940,7 @@ function AptPlanoTerapeutico() {
           flexDirection: 'column', justifyContent: 'center',
           marginTop: vieweditor == 5 ? 10 : '',
         }}>
+          <div className='title2'>SELECIONE UMA CATEGORIA PROFISSIONAL</div>
           <div id="opções de categoria profissional"
             style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', marginBottom: 5 }}>
             {listcategoriaprofissional.map(item => (
@@ -4914,7 +4968,7 @@ function AptPlanoTerapeutico() {
           </div>
         </div>
         <div style={{ display: viewopcoesmetas == 1 ? 'flex' : 'none', flexDirection: 'column', justifyContent: 'center' }}>
-          <div className="title2center">{vieweditor == 4 ? 'METAS' : 'SELECIONE UMA META'}</div>
+          <div className="title2center">{vieweditor == 4 ? 'METAS JÁ CADASTRADAS' : 'SELECIONE UMA META'}</div>
           <div id="LISTA DE METAS CADASTRADAS."
             className="scroll"
             style={{
@@ -5076,17 +5130,22 @@ function AptPlanoTerapeutico() {
     });
   }
   const insertOpcaoMetodo = (metodo) => {
-    var obj = {
-      id_meta: pickmeta,
-      metodo: metodo,
-      idespecialidade: pickcategoriaprofissional,
+    // verificando se este método já foi cadastrado para a meta selecionada.
+    if (listopcoesmetodospt.filter(item => item.id_meta == pickmeta && item.metodo == metodo).length > 0) {
+      toast(1, '#ec7063', 'MÉTODO DE AVALIAÇÃO JÁ CADASTRADO PARA A META SELECIONADA.', 5000);
+    } else {
+      var obj = {
+        id_meta: pickmeta,
+        metodo: metodo,
+        idespecialidade: pickcategoriaprofissional,
+      }
+      axios.post(htmlinsertopcaometodo, obj).then(() => {
+        toast(1, '#52be80', 'MÉTODO CADASTRADO PARA A META SELECIONADA.', 3000);
+        loadOpcoesMetodos();
+        loadOpcoesMetodosPt();
+        loadOpcoesEscalas();
+      })
     }
-    axios.post(htmlinsertopcaometodo, obj).then(() => {
-      toast(1, '#52be80', 'MÉTODO CADASTRADO PARA A META SELECIONADA.', 3000);
-      loadOpcoesMetodos();
-      loadOpcoesMetodosPt();
-      loadOpcoesEscalas();
-    })
   }
   // lista de opções de métodos cadastrados para cada meta.
   const [viewopcoesmetodos, setviewopcoesmetodos] = useState(0);
@@ -5117,10 +5176,10 @@ function AptPlanoTerapeutico() {
               <div className="blue-button"
                 style={{
                   width: 250,
-                  backgroundColor: arraycategoriaprofissional.filter(valor => valor.id == parseInt(item.idespecialidade)).map(valor => valor.cor)
+                  backgroundColor: listcategoriaprofissional.filter(valor => valor.id == parseInt(item.idespecialidade)).map(valor => valor.cor)
                 }}
               >
-                {arraycategoriaprofissional.filter(valor => valor.id == item.idespecialidade).map(valor => valor.nome)}
+                {listcategoriaprofissional.filter(valor => valor.id == parseInt(item.idespecialidade)).map(valor => valor.nome)}
               </div>
               <button
                 className={window.innerWidth < 426 ? 'red-button' : "animated-red-button"}
@@ -5177,7 +5236,7 @@ function AptPlanoTerapeutico() {
         onClick={(e) => { setviewgerirplano(0); e.stopPropagation() }}
         style={{
           display: viewgerirplano == 0 ? 'none' : 'flex',
-          zIndex: 9, flexDirection: 'column',
+          zIndex: 25, flexDirection: 'column',
           justifyContent: 'center', alignItems: 'center'
         }}>
         <div className="menucontainer" style={{ width: '80vw' }}>
@@ -5289,6 +5348,7 @@ function AptPlanoTerapeutico() {
         </div>
         <ViewProfissionalSelector></ViewProfissionalSelector>
         <ModalPlanoTerapeutico></ModalPlanoTerapeutico>
+        <AcessoEditorPlanoTerapeutico></AcessoEditorPlanoTerapeutico>
         <GerirOpcoes></GerirOpcoes>
         <JustificaObjetivoPrimario></JustificaObjetivoPrimario>
         <JustificaObjetivoSecundario></JustificaObjetivoSecundario>

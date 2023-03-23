@@ -589,7 +589,7 @@ function TodosPacientes() {
     axios.get(htmlhistoricodeatendimentos + codigo).then((response) => {
       var x = [0, 1]
       x = response.data;
-      setatendimentosencerrados(x.filter(item => item.dt_hr_alta == null)); // PENDÊNCIA! trocar aqui para !=
+      setatendimentosencerrados(x.filter(item => item.dt_hr_alta != null)); // PENDÊNCIA! trocar aqui para !=
       document.getElementById("inputFilterPaciente").value = searchpaciente;
       document.getElementById("inputFilterPaciente").focus();
     });
