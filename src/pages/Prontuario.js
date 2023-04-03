@@ -31,6 +31,7 @@ import 'chartjs-plugin-style';
 // componentes do Paulo de Tarso (APT).
 import AptPlanoTerapeutico from '../components/AptPlanoTerapeutico';
 import AptResumoPlanoTerapeutico from '../components/AptResumoPlanoTerapeutico';
+import Evolucao from '../components/Evolucao';
 
 function Prontuario() {
   moment.locale('pt-br');
@@ -279,13 +280,27 @@ function Prontuario() {
   }, [stateprontuario, listescalas, opcoesescalas, arrayopcoesescalas, showescala]);
 
 
-  // plano terapêutico.
+  // resumo do plano terapêutico.
   const ShowResumoPlanoTerapeutico = useCallback(() => {
     if (stateprontuario === 31) {
       return (
         <div id="ivcf"
           className="conteudo" style={{ margin: 0, padding: 0 }}>
           <AptResumoPlanoTerapeutico></AptResumoPlanoTerapeutico>
+        </div>
+      )
+    } else {
+      return null;
+    }
+  }, [stateprontuario]);
+
+  // evoluções estruturadas.
+  const ShowEvolucoes = useCallback(() => {
+    if (stateprontuario === 35) {
+      return (
+        <div id="evoluções"
+          className="conteudo" style={{ display: 'flex', margin: 0, padding: 0 }}>
+          <Evolucao></Evolucao>
         </div>
       )
     } else {
@@ -1029,6 +1044,20 @@ function Prontuario() {
                       }}
                     >
                     </img>
+                    <button
+                      id="EVOLUÇÃO"
+                      onClick={() => setstateprontuario(35)}
+                      className='blue-button'
+                      title='CLIQUE PARA EVOLUIR.'
+                      style={{
+                        padding: 10,
+                        margin: 2.5,
+                        width: 50,
+                        height: 50,
+                      }}
+                    >
+                      {'E'}
+                    </button>
                     <DetalhesPaciente></DetalhesPaciente>
                   </div>
                 </div>
@@ -1408,12 +1437,13 @@ function Prontuario() {
           <ShowPlanoTerapeutico></ShowPlanoTerapeutico>
           <ShowListEscalas></ShowListEscalas>
           <ShowResumoPlanoTerapeutico></ShowResumoPlanoTerapeutico>
+          <ShowEvolucoes></ShowEvolucoes>
           <CategoriaSelector></CategoriaSelector>
           <EscalasAssistenciais></EscalasAssistenciais>
         </div>
         <SideBar></SideBar>
       </div>
-    </div >
+    </div>
   );
 }
 

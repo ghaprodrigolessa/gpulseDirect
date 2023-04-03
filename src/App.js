@@ -250,6 +250,7 @@ function App() {
   const [menuimagem, setmenuimagem] = useState(1);
   const [menuprescricao, setmenuprescricao] = useState(1);
   const [menuformularios, setmenuformularios] = useState(1);
+
   // cards.
   const [cardstatus, setcardstatus] = useState(0);
   const [cardalertas, setcardalertas] = useState(0);
@@ -263,6 +264,7 @@ function App() {
   const [cardhistoricoatb, setcardhistoricoatb] = useState(0);
   const [cardhistoricoatendimentos, setcardhistoricoatendimentos] = useState(0);
   const [cardanamnese, setcardanamnese] = useState(0);
+
   // color scheme.
   const [schemecolor, setschemecolor] = useState("purplescheme");
 
@@ -314,6 +316,10 @@ function App() {
   const [viewconteudo, setviewconteudo] = useState("");
   const [datadocumento, setdatadocumento] = useState("");
   const [backup, setbackup] = useState(''); // salvando o texto para que o usuário possa trafergar entre as evoluções e retornar à evolução livre ainda não salva.
+
+  // evoluções com campos estruturados.
+  const [camposopcoes, setcamposopcoes] = useState([]); // opções de seleção para campos que permitem uma ou múltiplas escolhas (tabela evolucao_campo_opcao).
+  const [camposvalores, setcamposvalores] = useState([]); // todos os valores registrados para os campos preenchidos nos documentos (tabela atendimento_campo_valor).
 
   // assinatura digital de documentos / certificado digital.
   const [signature, setsignature] = useState(0);
@@ -490,6 +496,10 @@ function App() {
         viewconteudo, setviewconteudo,
         datadocumento, setdatadocumento,
         backup, setbackup,
+
+        // evoluções com campos estruturados.
+        camposopcoes, setcamposopcoes,
+        camposvalores, setcamposvalores,
 
         // assinatura digital.
         signature, setsignature,
