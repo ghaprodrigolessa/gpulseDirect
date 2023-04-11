@@ -71,6 +71,9 @@ azul claro 3: #c5bfd2
   #Footer {
     display: none !important;
   }
+  .noprint {
+    display: none !important;
+  }
 }
 
 /* CONTAINERS */
@@ -5161,5 +5164,30 @@ input::-webkit-inner-spin-button {
     display: none;
     left: -50vw;
     transition: 0.5s;
+  }
+}
+
+@media print {
+  .red-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #ffffff;
+    font-weight: bold;
+    min-width: 50px;
+    min-height: 50px;
+    background-color: #ec7063;
+    border: none;
+    border-color: transparent;
+    border-radius: 5px;
+    outline: none;
+    box-shadow: transparent;
+    margin: 2.5px;
+    padding: 0px;
+    cursor: default;
+    box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.3);
+    transition: 200ms ease-in-out;
   }
 }

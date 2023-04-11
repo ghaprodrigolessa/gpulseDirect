@@ -4550,6 +4550,7 @@ function AptPlanoTerapeutico() {
             setviewcategoriaprofissional(0);
             setviewopcoesmetas(0);
             setviewopcoesmetodos(0);
+            setarrayopcoesobjetivos(opcoesobjetivos);
           }}
           style={{ width: 170, minWidth: 170, padding: 10 }}>
           EDITAR OBJETIVOS SECUNDÁRIOS
@@ -4563,6 +4564,7 @@ function AptPlanoTerapeutico() {
             setviewcategoriaprofissional(1);
             setviewopcoesmetas(1);
             setviewopcoesmetodos(0);
+            setarrayopcoesobjetivos(opcoesobjetivos);
           }}
           style={{ width: 170, minWidth: 170, padding: 10 }}>
           EDITAR METAS
@@ -5051,7 +5053,7 @@ function AptPlanoTerapeutico() {
                   toast(1, '#e74c3c', 'CAMPO OBRIGATÓRIO EM BRANCO.', 3000);
                 } else if (pickobjetivosecundario == 0) {
                   toast(1, '#e74c3c', 'SELECIONE UM OBJETIVO SECUNDÁRIO PARA VINCULAR A META.', 3000);
-                } else if (pickcategoriaprofissional == 0) {
+                } else if (localpickcategoriaprofissional == 0) {
                   toast(1, '#e74c3c', 'SELECIONE UMA CATEGORIA PROFISSIONAL PARA VINCULAR A META.', 3000);
                 } else {
                   insertOpcaoMeta(localpickcategoriaprofissional);

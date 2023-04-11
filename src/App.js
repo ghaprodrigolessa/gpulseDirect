@@ -311,8 +311,11 @@ function App() {
   const [conselho, setconselho] = useState('');
   const [tipodocumento, settipodocumento] = useState('');
   const [iddocumento, setiddocumento] = useState('');
+  const [idselecteddocumento, setidselecteddocumento] = useState('');
+  const [selectedcampo, setselectedcampo] = useState(0);
   const [usuariodocumento, setusuariodocumento] = useState(0);
   const [statusdocumento, setstatusdocumento] = useState(0);
+  const [printdocumento, setprintdocumento] = useState(0);
   const [viewconteudo, setviewconteudo] = useState("");
   const [datadocumento, setdatadocumento] = useState("");
   const [backup, setbackup] = useState(''); // salvando o texto para que o usuário possa trafergar entre as evoluções e retornar à evolução livre ainda não salva.
@@ -491,8 +494,11 @@ function App() {
         conselho, setconselho,
         tipodocumento, settipodocumento,
         statusdocumento, setstatusdocumento,
+        printdocumento, setprintdocumento,
         usuariodocumento, setusuariodocumento,
         iddocumento, setiddocumento,
+        idselecteddocumento, setidselecteddocumento,
+        selectedcampo, setselectedcampo,
         viewconteudo, setviewconteudo,
         datadocumento, setdatadocumento,
         backup, setbackup,

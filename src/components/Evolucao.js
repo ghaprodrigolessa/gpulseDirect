@@ -33,7 +33,7 @@ function Evolucao(
     stateprontuario,
 
     iddocumento, setiddocumento,
-    viewevolucao, setviewevolucao,
+    viewevolucao,
     viewdocumento, setviewdocumento,
     tipodocumento, settipodocumento,
 
@@ -51,7 +51,7 @@ function Evolucao(
     statusdocumento, setstatusdocumento,
     usuariodocumento, setusuariodocumento,
     datadocumento, setdatadocumento,
-
+    setidselecteddocumento, idselecteddocumento,
     viewpdf, setviewpdf,
 
     setarraycategoriaprofissional, arraycategoriaprofissional,
@@ -59,6 +59,7 @@ function Evolucao(
     signature, setsignature,
     camposopcoes, setcamposopcoes,
     camposvalores, setcamposvalores,
+    setprintdocumento,
 
   } = useContext(Context)
 
@@ -73,6 +74,8 @@ function Evolucao(
       settipodocumento(0);
       setiddocumento(0);
       loadCamposOpcoes();
+      setstatusdocumento(0);
+      setprintdocumento(0);
       // PENDÊNCIA! excluir a array e o setcamposopcoes relacionado abaixo (usado para testes).
       var arrayopcoes = [
         {
@@ -148,7 +151,7 @@ function Evolucao(
       }
     }, 500);
   }
-
+  
   // renderização da lista de evoluções.
   const ShowRegistrosInterdisciplinares = useCallback(() => {
     if (stateprontuario == 35) {
@@ -188,20 +191,6 @@ function Evolucao(
               <div style={{ display: tipodocumento != '' && iddocumento != 0 ? 'flex' : 'none', width: '70vw', height: '50vh', flexDirection: 'column', justifyContent: 'center', marginRight: 10 }}>
                 <div
                   onMouseLeave={() => {
-                    /*
-                    setTimeout(() => {
-                      if (iddocumento != 0) {
-                        var botoes = document.getElementById("LISTA DE EVOLUÇÕES").getElementsByClassName("red-button");
-                        for (var i = 0; i < botoes.length; i++) {
-                          botoes.item(i).className = "blue-button";
-                        }
-                        document.getElementById("tag do profissional" + iddocumento).className = "red-button";
-                        var inicio = document.getElementById("LISTA DE EVOLUÇÕES").offsetTop;
-                        var position = document.getElementById("tag do profissional" + iddocumento).offsetTop;
-                        document.getElementById("LISTA DE EVOLUÇÕES").scrollTo(0, position - inicio - 60);
-                      }
-                    }, 1000);
-                    */
                   }}
                 >
                   <Modelo></Modelo>
@@ -582,58 +571,53 @@ function Evolucao(
   // copiando uma evolução.
   var htmlinsertevolucao = process.env.REACT_APP_API_CLONE_INSERTEVOLUCAO;
   const copiarEvolucao = (item) => {
-    axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
-      console.log('CARREGANDO VALORES DE CAMPOS');
-      var x = [0, 1];
-      x = response.data;
-      setcamposvalores(x.rows);
-      setstatusdocumento(0);
-      var botoes = document.getElementById('LISTA DE EVOLUÇÕES').getElementsByClassName("red-button");
-      for (var i = 0; i < botoes.length; i++) {
-        botoes.item(i).className = "blue-button";
+    setstatusdocumento(0);
+    setidselecteddocumento(item.id);
+    var botoes = document.getElementById('LISTA DE EVOLUÇÕES').getElementsByClassName("red-button");
+    for (var i = 0; i < botoes.length; i++) {
+      botoes.item(i).className = "blue-button";
+    }
+    var obj = {
+      idpct: idpaciente,
+      idatendimento: idatendimento,
+      data: moment(),
+      evolucao: tipodocumento,
+      idprofissional: iduser,
+      status: 0,
+      conselho: conselhousuario.toString(),
+    };
+    axios.post(htmlinsertdocumento, obj).then(() => {
+      setTimeout(() => {
+        setstatusdocumento(-2);
+      }, 2000);
+      loadEvolucoesGpulse(conselho, tipodocumento, null);
+      if (conselho == 'CREFITO' && tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFITO') {
+        setviewdocumento(51);
+      } else if (conselho == 'CREFITO' && tipodocumento == 'MODELO DE DOCUMENTO') {
+        setviewdocumento(61);
+      } else if (conselho == 'CREFONO' && tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFONO') {
+        setviewdocumento(71);
+      } else if (conselho == 'CRP' && tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CRP') {
+        setviewdocumento(81);
+      } else if (conselho == 'TO' && tipodocumento == 'EVOLUÇÃO ESTRUTURADA - TO') {
+        setviewdocumento(91);
+      } else if (conselho == 'CRN' && tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CRN') {
+        setviewdocumento(101);
+      } else if (conselho == 'CRESS' && tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CRESS') {
+        setviewdocumento(111);
+      } else if (conselho == 'CREFITO' && tipodocumento == 'ANAMNESE - CREFITO') {
+        setviewdocumento(121);
+      } else if (conselho == 'CREFONO' && tipodocumento == 'ANAMNESE - CREFONO') {
+        setviewdocumento(131);
+      } else if (conselho == 'CRP' && tipodocumento == 'ANAMNESE - CRP') {
+        setviewdocumento(141);
+      } else if (conselho == 'TO' && tipodocumento == 'ANAMNESE - TO') {
+        setviewdocumento(151);
+      } else if (conselho == 'CRESS' && tipodocumento == 'ANAMNESE - CRESS') {
+        setviewdocumento(161);
+      } else {
+        // pendência !!! incluir documentos pendentes aqui...
       }
-      var obj = {
-        idpct: idpaciente,
-        idatendimento: idatendimento,
-        data: moment(),
-        evolucao: tipodocumento,
-        idprofissional: iduser,
-        status: 0,
-        conselho: conselhousuario.toString(),
-      };
-      axios.post(htmlinsertdocumento, obj).then(() => {
-        setTimeout(() => {
-          setstatusdocumento(-2);
-        }, 2000);
-        loadEvolucoesGpulse(conselho, tipodocumento, null);
-        if (conselho == 'CREFITO' && tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFITO') {
-          setviewdocumento(51);
-        } else if (conselho == 'CREFITO' && tipodocumento == 'MODELO DE DOCUMENTO') {
-          setviewdocumento(61);
-        } else if (conselho == 'CREFONO' && tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFONO') {
-          setviewdocumento(71);
-        } else if (conselho == 'CRP' && tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CRP') {
-          setviewdocumento(81);
-        } else if (conselho == 'TO' && tipodocumento == 'EVOLUÇÃO ESTRUTURADA - TO') {
-          setviewdocumento(91);
-        } else if (conselho == 'CRN' && tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CRN') {
-          setviewdocumento(101);
-        } else if (conselho == 'CRESS' && tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CRESS') {
-          setviewdocumento(111);
-        } else if (conselho == 'CREFITO' && tipodocumento == 'ANAMNESE - CREFITO') {
-          setviewdocumento(121);
-        } else if (conselho == 'CREFONO' && tipodocumento == 'ANAMNESE - CREFONO') {
-          setviewdocumento(131);
-        } else if (conselho == 'CRP' && tipodocumento == 'ANAMNESE - CRP') {
-          setviewdocumento(141);
-        } else if (conselho == 'TO' && tipodocumento == 'ANAMNESE - TO') {
-          setviewdocumento(151);
-        } else if (conselho == 'CRESS' && tipodocumento == 'ANAMNESE - CRESS') {
-          setviewdocumento(161);
-        } else {
-          // pendência !!! incluir documentos pendentes aqui...
-        }
-      });
     });
   }
 
@@ -771,6 +755,7 @@ function Evolucao(
               onClick={(e) => {
                 setiddocumento(item.id);
                 setstatusdocumento(item.status);
+                setdatadocumento(item.data);
                 loadCamposValores();
                 setTimeout(() => {
                   var botoes = document.getElementById("LISTA DE EVOLUÇÕES").getElementsByClassName("red-button");
@@ -818,7 +803,7 @@ function Evolucao(
                 </button>
                 <button id="copy-button"
                   className="animated-green-button"
-                  onClick={(e) => { copiarEvolucao(item); e.stopPropagation() }}
+                  onClick={(e) => { setidselecteddocumento(item.id); copiarEvolucao(item); e.stopPropagation() }}
 
                   title="COPIAR EVOLUÇÃO."
                   style={{
@@ -842,6 +827,7 @@ function Evolucao(
                   className="animated-green-button"
                   onClick={(e) => {
                     console.log(item.evolucao);
+                    setstatusdocumento(100);
                     setTimeout(() => {
                       if (item.evolucao.split('*').slice(0, 1).toString().substring(0, 14) == 'EVOLUÇÃO LIVRE') {
                         setviewpdf(11);
@@ -862,7 +848,7 @@ function Evolucao(
                       } else if (item.evolucao.split('*').slice(0, 1) == 'ANAMNESE - TO') {
                         setviewpdf(152);
                       } else if (item.evolucao.split('*').slice(0, 1) == 'EVOLUÇÃO ESTRUTURADA - CRESS') {
-                        setviewpdf(112);
+                        settipodocumento("EVOLUÇÃO ESTRUTURADA - CRESS");
                       } else if (item.evolucao.split('*').slice(0, 1) == 'EVOLUÇÃO ESTRUTURADA - TO') {
                         setviewpdf(92);
                       } else if (item.evolucao.split('*').slice(0, 1) == 'EVOLUÇÃO ESTRUTURADA - CRN') {
