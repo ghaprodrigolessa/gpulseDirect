@@ -4,19 +4,21 @@ import moment from 'moment';
 import axios from 'axios';
 import Context from '../Context';
 
-function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, tamanho }) {
+function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
 
   const {
     idpaciente, idatendimento,
     iddocumento, idselecteddocumento,
-    camposopcoes,
+    camposopcoes, camposvalores,
     setcamposvalores, printdocumento,
     statusdocumento, setstatusdocumento,
+    registros_atuais,
   } = useContext(Context)
 
   let htmlinsertvalor = process.env.REACT_INSERT_EVOLUCAO_VALOR;
   let htmldeletevalor = process.env.REACT_DELETE_EVOLUCAO_VALOR;
 
+  /*
   const [registros_antigos, setregistros_antigos] = useState([]);
   const [registros_atuais, setregistros_atuais] = useState([]);
 
@@ -38,31 +40,33 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, tamanho }) {
             var x = [0, 1];
             x = response.data.rows;
             setregistros_atuais(x.filter(item => item.idcampo == idcampo && item.idevolucao == iddocumento));
-            setstatusdocumento(0);
+            // setstatusdocumento(0);
           });
         }, 1000);
 
       } else if (statusdocumento == -1 && iddocumento != 0 && registros_antigos.length == 0) {
         // cria um registro baseado nos campos de seleção única (valor padrão 'SELECIONE').
         console.log('CRIA VALOR NOVO - SELEÇÃO ÚNICA');
-        camposopcoes.filter(item => item.idcampo == idcampo).slice(-1).map(item => insertValor(item, 'NÃO'));
+        camposopcoes.filter(item => item.idcampo == idcampo).slice(-1).map(item => insertValor(item, '...'));
 
         setTimeout(() => {
           axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
             var x = [0, 1];
             x = response.data.rows;
             setregistros_atuais(x.filter(item => item.idcampo == idcampo && item.idevolucao == iddocumento));
-            setstatusdocumento(0);
+            // setstatusdocumento(0);
           });
         }, 1000);
 
-      } else {
+      } else if (statusdocumento > -1 || statusdocumento == -2) {
         console.log('RECUPERANDO VALOR DO DOCUMENTO');
         // setregistros_antigos([]);
         camposopcoes.filter(item => item.idcampo == idcampo && item.idevolucao == iddocumento).map(item => registros_atuais.push(item));
       }
     });
   }, [statusdocumento]);
+
+  */
 
   const insertValor = (item, valor) => {
     var obj = {
@@ -97,7 +101,6 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, tamanho }) {
       // loadCamposValores();
     });
   }
-
 
   const updateValor = (item, valor) => {
     axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
@@ -162,6 +165,7 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, tamanho }) {
           borderWidth: 5,
           padding: 10,
           margin: 5,
+          width: width,
         }}
       >
         <div className='title2center'>{campo}</div>
@@ -196,13 +200,14 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, tamanho }) {
                     onBlur={(e) => (e.target.placeholder = '...')}
                     title={""}
                     type="text"
-                    maxLength={tamanho}
+                    maxLength={length}
                     id={"text" + idcampo}
                     defaultValue={x}
                     style={{
-                      minWidth: 200, maxWidth: 300,
                       alignSelf: 'center',
-                      height: 100
+                      height: 100,
+                      width: width - 35,
+                      margin: 2.5,
                     }}
                     onKeyUp={() => {
                       clearTimeout(timeout);
@@ -228,17 +233,18 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, tamanho }) {
                     onBlur={(e) => (e.target.placeholder = '...')}
                     title={""}
                     type="text"
-                    maxLength={tamanho}
+                    maxLength={length}
                     id={"text" + idcampo}
                     defaultValue={x}
                     style={{
-                      minWidth: 200, maxWidth: 300,
                       alignSelf: 'center',
+                      margin: 2.5,
+                      width: width - 35,
                     }}
                     onKeyUp={() => {
                       clearTimeout(timeout);
                       timeout = setTimeout(() => {
-                        insertValor(item, document.getElementById("text" + idcampo).value)
+                        updateValor(item, document.getElementById("text" + idcampo).value.toUpperCase())
                       }, 2000);
                     }}
                   ></input>
@@ -258,15 +264,17 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, tamanho }) {
           borderColor: 'black',
           borderStyle: 'solid',
           borderWidth: 1,
-          padding: 10,
-          margin: 5,
+          padding: 5,
+          margin: 2.5,
+          width: width,
+          pageBreakInside: 'avoid',
         }}
       >
         <div className='title2center'
           style={{
             color: 'black', fontWeight: 'bold', alignSelf: 'center',
             fontFamily: 'Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
-            fontSize: 14,
+            fontSize: 12,
             textAlign: 'center',
           }}>
           {campo}
@@ -284,16 +292,15 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, tamanho }) {
                 <div style={{ position: 'relative' }}>
                   <div
                     style={{
-                      minWidth: 200, maxWidth: 300,
                       alignSelf: 'center',
                       height: 100,
-                      width: tamanho,
+                      width: width - 15,
                       backgroundColor: 'rgb(0, 0, 0, 0.2)',
                       borderRadius: 5,
                       padding: 5,
                       color: 'black',
                       fontFamily: 'Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
-                      fontSize: 14,
+                      fontSize: 10,
                     }}
                   >
                     {x}
@@ -307,16 +314,15 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, tamanho }) {
                   <div style={{ position: 'relative' }}>
                     <div
                       style={{
-                        minWidth: 200, maxWidth: 300,
                         alignSelf: 'center',
-                        height: 50,
-                        width: tamanho,
-                        backgroundColor: 'rgb(0, 0, 0, 0.2)',
+                        height: 19,
+                        width: width - 15,
+                        backgroundColor: 'rgb(0, 0, 0, 0.1)',
                         borderRadius: 5,
                         padding: 5,
                         color: 'black',
                         fontFamily: 'Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
-                        fontSize: 14,
+                        fontSize: 10,
                       }}
                     >{x}
                     </div>

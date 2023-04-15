@@ -14,6 +14,7 @@ import novo from '../images/novo.svg';
 import Signature from './Signature';
 
 import Modelo from '../documents/Modelo'
+import EvolucaoFisio from '../documents/EvolucaoFisio';
 
 function Evolucao(
   {
@@ -60,6 +61,7 @@ function Evolucao(
     camposopcoes, setcamposopcoes,
     camposvalores, setcamposvalores,
     setprintdocumento,
+    registros_atuais, setregistros_atuais,
 
   } = useContext(Context)
 
@@ -74,7 +76,7 @@ function Evolucao(
       settipodocumento(0);
       setiddocumento(0);
       loadCamposOpcoes();
-      setstatusdocumento(0);
+      setstatusdocumento(null);
       setprintdocumento(0);
       // PENDÊNCIA! excluir a array e o setcamposopcoes relacionado abaixo (usado para testes).
       var arrayopcoes = [
@@ -118,6 +120,7 @@ function Evolucao(
       var x = [0, 1];
       x = response.data;
       setcamposvalores(x.rows);
+      setregistros_atuais(x.rows.filter(item => item.idevolucao == iddocumento));
     });
   }
 
@@ -151,7 +154,7 @@ function Evolucao(
       }
     }, 500);
   }
-  
+
   // renderização da lista de evoluções.
   const ShowRegistrosInterdisciplinares = useCallback(() => {
     if (stateprontuario == 35) {
@@ -193,7 +196,7 @@ function Evolucao(
                   onMouseLeave={() => {
                   }}
                 >
-                  <Modelo></Modelo>
+                  <EvolucaoFisio></EvolucaoFisio>
                 </div>
               </div>
             </div>
@@ -203,8 +206,7 @@ function Evolucao(
     } else {
       return null;
     }
-  }, [stateprontuario, listevolucoes, arrayevolucao, selectedcategoria, tipodocumento, iddocumento, statusdocumento, arraycategoriaprofissional, viewdocumento]
-  );
+  }, [stateprontuario, listevolucoes, arrayevolucao, selectedcategoria, tipodocumento, iddocumento, statusdocumento, arraycategoriaprofissional, viewdocumento]);
 
   // opções de registros interdisciplinares por categoria profissional.
   function OpcoesRegistrosInterdisciplinares() {
@@ -589,6 +591,13 @@ function Evolucao(
     axios.post(htmlinsertdocumento, obj).then(() => {
       setTimeout(() => {
         setstatusdocumento(-2);
+
+        /*
+        setTimeout(() => {
+          setstatusdocumento(0);
+        }, 1000);
+        */
+
       }, 2000);
       loadEvolucoesGpulse(conselho, tipodocumento, null);
       if (conselho == 'CREFITO' && tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFITO') {
@@ -756,7 +765,7 @@ function Evolucao(
                 setiddocumento(item.id);
                 setstatusdocumento(item.status);
                 setdatadocumento(item.data);
-                loadCamposValores();
+                // loadCamposValores();
                 setTimeout(() => {
                   var botoes = document.getElementById("LISTA DE EVOLUÇÕES").getElementsByClassName("red-button");
                   for (var i = 0; i < botoes.length; i++) {
@@ -1116,6 +1125,9 @@ function Evolucao(
 
                   setTimeout(() => {
                     setstatusdocumento(-1);
+                    setTimeout(() => {
+                      setstatusdocumento(0);
+                    }, 3000);
                   }, 2000);
 
                   loadEvolucoesGpulse(conselho, tipodocumento, null);

@@ -323,6 +323,9 @@ function App() {
   // evoluções com campos estruturados.
   const [camposopcoes, setcamposopcoes] = useState([]); // opções de seleção para campos que permitem uma ou múltiplas escolhas (tabela evolucao_campo_opcao).
   const [camposvalores, setcamposvalores] = useState([]); // todos os valores registrados para os campos preenchidos nos documentos (tabela atendimento_campo_valor).
+  const [registros_atuais, setregistros_atuais] = useState([]);
+  const [registros_antigos, setregistros_antigos] = useState([]);
+  const [idcampo, setidcampo] = useState(0);
 
   // assinatura digital de documentos / certificado digital.
   const [signature, setsignature] = useState(0);
@@ -506,6 +509,10 @@ function App() {
         // evoluções com campos estruturados.
         camposopcoes, setcamposopcoes,
         camposvalores, setcamposvalores,
+        registros_atuais, setregistros_atuais,
+        registros_antigos, setregistros_antigos,
+        idcampo, setidcampo,
+
 
         // assinatura digital.
         signature, setsignature,

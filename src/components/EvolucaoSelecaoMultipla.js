@@ -10,16 +10,18 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio }) {
     idpaciente, idatendimento,
     iddocumento, tipodocumento,
     statusdocumento, setstatusdocumento,
-    camposopcoes,
+    camposopcoes, camposvalores,
     setcamposvalores,
     idselecteddocumento,
     printdocumento, setprintdocumento,
+    registros_atuais
   } = useContext(Context)
 
   let htmlinsertvalor = process.env.REACT_INSERT_EVOLUCAO_VALOR;
   let htmlupdatevalor = process.env.REACT_UPDATE_EVOLUCAO_VALOR;
   let htmldeletevalor = process.env.REACT_DELETE_EVOLUCAO_VALOR;
 
+  /*
   const [registros_antigos, setregistros_antigos] = useState([]);
   const [registros_atuais, setregistros_atuais] = useState([]);
   useEffect(() => {
@@ -41,7 +43,7 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio }) {
             var x = [0, 1];
             x = response.data.rows;
             setregistros_atuais(x.filter(item => item.idcampo == idcampo && item.idevolucao == iddocumento));
-            setstatusdocumento(0);
+            // setstatusdocumento(0);
           });
         }, 1000);
 
@@ -55,17 +57,18 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio }) {
             var x = [0, 1];
             x = response.data.rows;
             setregistros_atuais(x.filter(item => item.idcampo == idcampo && item.idevolucao == iddocumento));
-            setstatusdocumento(0);
+            // setstatusdocumento(0);
           });
         }, 1000);
 
-      } else {
+      } else if (statusdocumento > -1 || statusdocumento == -2) {
         console.log('RECUPERANDO VALOR DO DOCUMENTO');
         // setregistros_antigos([]);
         camposopcoes.filter(item => item.idcampo == idcampo && item.idevolucao == iddocumento).map(item => registros_atuais.push(item));
       }
     });
   }, [statusdocumento]);
+  */
 
   var registros = [];
   const loadCamposValores = () => {
@@ -225,15 +228,15 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio }) {
           borderColor: 'black',
           borderStyle: 'solid',
           borderWidth: 1,
-          padding: 10,
-          margin: 5,
+          padding: 5,
+          margin: 2.5,
+          pageBreakInside: 'avoid',
         }}>
         <div className='title2center'
           style={{
             color: 'black', fontWeight: 'bold', alignSelf: 'center',
-            marginTop: 10,
             fontFamily: 'Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
-            fontSize: 14,
+            fontSize: 12,
             textAlign: 'center',
           }}>
           {campo}
@@ -250,16 +253,15 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio }) {
               <div id={'opcao' + item.id}
                 className={x == 'SIM' ? 'red-button' : 'blue-button'}
                 style={{
-                  paddingLeft: 10, paddingRight: 10,
+                  paddingLeft: 5, paddingRight: 5,
                   backgroundColor: x == 'SIM' ? 'rgb(0, 0, 0, 0.2)' : 'transparent',
                   borderRadius: 5,
-                  margin: 10,
-                  padding: 10,
-                  minWidth: 100,
-                  maxWidth: 300,
+                  margin: 2.5,
+                  padding: 5,
+                  maxWidth: 200,
                   color: x == 'SIM' ? 'black' : 'grey',
                   fontFamily: 'Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
-                  fontSize: 12,
+                  fontSize: 10,
                   textAlign: 'center',
                 }}
               >
