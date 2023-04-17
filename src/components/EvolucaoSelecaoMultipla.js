@@ -198,7 +198,7 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio }) {
           {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
             var x = registros_atuais.filter(valor => valor.opcao == item.opcao).map(item => item.valor);
             return (
-              <div id={'opcao' + item.id}
+              <div id={'opcao' + iddocumento + item.id}
                 className={x == 'SIM' ? 'red-button' : 'blue-button'}
                 style={{ paddingLeft: 10, paddingRight: 10 }}
                 onClick={() => {
@@ -250,7 +250,7 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio }) {
           {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
             var x = registros_atuais.filter(valor => valor.opcao == item.opcao).map(item => item.valor);
             return (
-              <div id={'opcao' + item.id}
+              <div id={'opcao' + iddocumento + item.id}
                 className={x == 'SIM' ? 'red-button' : 'blue-button'}
                 style={{
                   paddingLeft: 5, paddingRight: 5,

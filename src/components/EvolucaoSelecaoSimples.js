@@ -17,14 +17,16 @@ function EvolucaoSelecaoSimples({ idcampo, campo, obrigatorio }) {
     selectedcampo, setselectedcampo,
     printdocumento, setprintdocumento,
     registros_atuais, setregistros_atuais,
+    selectedcategoria,
   } = useContext(Context)
 
   const [registros, setregistros] = useState([]);
+  const [random, setrandom] = useState(null);
   useEffect(() => {
-    if (statusdocumento > -1 && statusdocumento != null) {
-      console.log('STATUSDOCUMENTO: ' + statusdocumento);
-      console.log('BUCETA: ' + registros_atuais.length);
+    if (statusdocumento != null) {
+      console.log('RENDER - EVOLUÇÃO SIMPLES');
       setregistros(registros_atuais);
+      setrandom(Math.random());
     }
   }, [registros_atuais, statusdocumento]);
 
@@ -49,7 +51,15 @@ function EvolucaoSelecaoSimples({ idcampo, campo, obrigatorio }) {
       }
       console.log(obj);
       axios.post('http://192.168.100.6:3333/update_evolucao_valor/' + id, obj).then(() => {
-        // loadCamposValores();
+        setTimeout(() => {
+          var botoes = document.getElementById("campo" + random).getElementsByClassName("red-button");
+          for (var i = 0; i < botoes.length; i++) {
+            botoes.item(i).className = "blue-button";
+          }
+          document.getElementById('opcao' + item.id + random).className = 'red-button';
+          console.log("campo" + random);
+          console.log('opcao' + item.id + random);
+        }, 500);
       });
     });
   }
@@ -58,7 +68,7 @@ function EvolucaoSelecaoSimples({ idcampo, campo, obrigatorio }) {
   const alertaEmBranco = (id) => {
     return (
       <div
-        id={"alerta" + id}
+        id={"alerta" + random}
         className='red-button fade-in'
         title='CAMPO EM BRANCO!'
         style={{
@@ -73,7 +83,7 @@ function EvolucaoSelecaoSimples({ idcampo, campo, obrigatorio }) {
 
   return (
     <div>
-      <div id="form"
+      <div id={"form" + random}
         style={{
           display: printdocumento == 1 ? 'none' : 'flex',
           flexDirection: 'column',
@@ -90,14 +100,14 @@ function EvolucaoSelecaoSimples({ idcampo, campo, obrigatorio }) {
         <div className='title2center'>{campo}</div>
         {alertaEmBranco(idcampo)}
         <div
-          id={"seletor" + idcampo}
+          id={"campo" + random}
           onMouseLeave={() => {
             if (
               obrigatorio == 1 &&
-              document.getElementById("seletor" + idcampo).getElementsByClassName("red-button").length < 1) {
-              document.getElementById("alerta" + idcampo).style.display = 'flex';
+              document.getElementById("campo" + random).getElementsByClassName("red-button").length < 1) {
+              document.getElementById("alerta" + random).style.display = 'flex';
             } else {
-              document.getElementById("alerta" + idcampo).style.display = 'none';
+              document.getElementById("alerta" + random).style.display = 'none';
             }
           }}
           style={{
@@ -106,12 +116,12 @@ function EvolucaoSelecaoSimples({ idcampo, campo, obrigatorio }) {
           }}>
           {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
             var x = registros.filter(valor => valor.idevolucao == iddocumento && valor.idcampo == idcampo && valor.idopcao == item.id).map(item => item.valor);
-            console.log('PORRA: ' + x)
+            console.log('VALOR: ' + x)
             return (
-              <div id={'opcao' + item.id}
+              <div id={'opcao' + item.id + random}
+                title={'opcao' + item.id + random}
                 className={x != '' ? 'red-button' : 'blue-button'}
                 style={{ paddingLeft: 10, paddingRight: 10 }}
-                onMouseEnter={() => { console.log('CARREGOU: ' + x) }}
                 onClick={() => {
                   // limpando todas as opções.
                   registros.filter(valor => valor.idevolucao == iddocumento && valor.idcampo == item.idcampo).map(item => {
@@ -127,18 +137,7 @@ function EvolucaoSelecaoSimples({ idcampo, campo, obrigatorio }) {
                     }
                     axios.post('http://192.168.100.6:3333/update_evolucao_valor/' + item.id, obj);
                   });
-                  
                   updateValor(item, item.opcao, item.opcao);
-                  
-                  // x = item.opcao;
-                  setTimeout(() => {
-                    var botoes = document.getElementById("seletor" + idcampo).getElementsByClassName("red-button");
-                    for (var i = 0; i < botoes.length; i++) {
-                      botoes.item(i).className = "blue-button";
-                    }
-                    document.getElementById('opcao' + item.id).className = 'red-button';
-                    // x = item.valor
-                  }, 500);
                 }}
               >
                 {item.opcao}
@@ -148,7 +147,7 @@ function EvolucaoSelecaoSimples({ idcampo, campo, obrigatorio }) {
           )}
         </div>
       </div>
-      <div id="print"
+      <div id={"print" + random}
         style={{
           display: printdocumento == 1 ? 'flex' : 'none',
           flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap',
@@ -182,7 +181,7 @@ function EvolucaoSelecaoSimples({ idcampo, campo, obrigatorio }) {
             {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
               var x = registros.filter(valor => valor.idcampo == item.idcampo).map(item => item.valor);
               return (
-                <div id={'opcao' + item.id}
+                <div id={'print_opcao' + random}
                   className={x == item.opcao ? 'red-button' : 'blue-button'}
                   style={{
                     paddingLeft: 5, paddingRight: 5,

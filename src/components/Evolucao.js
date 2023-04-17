@@ -15,6 +15,7 @@ import Signature from './Signature';
 
 import Modelo from '../documents/Modelo'
 import EvolucaoFisio from '../documents/EvolucaoFisio';
+import AnamneseFisio from '../documents/AnamneseFisio';
 
 function Evolucao(
   {
@@ -78,26 +79,6 @@ function Evolucao(
       loadCamposOpcoes();
       setstatusdocumento(null);
       setprintdocumento(0);
-      // PENDÊNCIA! excluir a array e o setcamposopcoes relacionado abaixo (usado para testes).
-      var arrayopcoes = [
-        {
-          id: 1,
-          idcampo: 1,
-          opcao: 'OPÇÃO 1'
-        },
-        {
-          id: 2,
-          idcampo: 1,
-          opcao: 'OPÇÃO 2'
-        },
-        {
-          id: 3,
-          idcampo: 1,
-          opcao: 'OPÇÃO 3'
-        }
-      ]
-      // setcamposopcoes(arrayopcoes);
-      loadCamposValores();
     }
   }, [stateprontuario]);
 
@@ -121,6 +102,9 @@ function Evolucao(
       x = response.data;
       setcamposvalores(x.rows);
       setregistros_atuais(x.rows.filter(item => item.idevolucao == iddocumento));
+      setTimeout(() => {
+        setstatusdocumento(0);
+      }, 2000);
     });
   }
 
@@ -197,6 +181,7 @@ function Evolucao(
                   }}
                 >
                   <EvolucaoFisio></EvolucaoFisio>
+                  <AnamneseFisio></AnamneseFisio>
                 </div>
               </div>
             </div>
@@ -500,7 +485,7 @@ function Evolucao(
       x = response.data;
       y = x.rows;
       // retornando os registros de documento gravados conforme o tipo de documento (categoria progissional).
-      var z = y.sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).filter(item => item.conselho == conselho && item.evolucao == tipodocumento);
+      var z = y.sort((a, b) => moment(a.data) < moment(b.data) ? 1 : -1).filter(item => item.conselho == conselho && item.evolucao == tipodocumento);
       setlistghapevolucoes(z);
       setarraylistghapevolucoes(z);
       if (item != null) {
@@ -518,11 +503,14 @@ function Evolucao(
         document.getElementById("tag do profissional" + item.id).className = "red-button";
       } else {
         if (z.length > 0) {
+          z = y.sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).filter(item => item.conselho == conselho && item.evolucao == tipodocumento);
           // selecionando o documento na lista de documentos.         
-          setiddocumento(y.slice(-1).map(item => item.id).pop());
-          setdatadocumento(y.slice(-1).map(item => item.data).pop());
+          console.log('###' + z.map(item => item.id))
+          setiddocumento(z.map(item => item.id).slice(-1).pop());
+          setdatadocumento(z.map(item => item.data).slice(-1).pop());
+          setstatusdocumento(z.map(item => item.status).slice(-1).pop());
           setTimeout(() => {
-            document.getElementById("tag do profissional" + y.slice(-1).map(item => item.id)).className = "red-button";
+            document.getElementById("tag do profissional" + z.slice(-1).map(item => item.id)).className = "red-button";
           }, 500);
         } else {
 
@@ -591,14 +579,7 @@ function Evolucao(
     axios.post(htmlinsertdocumento, obj).then(() => {
       setTimeout(() => {
         setstatusdocumento(-2);
-
-        /*
-        setTimeout(() => {
-          setstatusdocumento(0);
-        }, 1000);
-        */
-
-      }, 2000);
+      }, 1000);
       loadEvolucoesGpulse(conselho, tipodocumento, null);
       if (conselho == 'CREFITO' && tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFITO') {
         setviewdocumento(51);
@@ -702,6 +683,7 @@ function Evolucao(
               setconselho(item.conselho);
               settipodocumento('');
               setviewdocumento(0);
+              setstatusdocumento(null);
             }}
           >
             {item.nome}
@@ -765,7 +747,7 @@ function Evolucao(
                 setiddocumento(item.id);
                 setstatusdocumento(item.status);
                 setdatadocumento(item.data);
-                // loadCamposValores();
+                // loadEvolucoesGpulse(conselho, tipodocumento, item);
                 setTimeout(() => {
                   var botoes = document.getElementById("LISTA DE EVOLUÇÕES").getElementsByClassName("red-button");
                   for (var i = 0; i < botoes.length; i++) {
@@ -1122,14 +1104,12 @@ function Evolucao(
                   conselho: conselhousuario.toString(),
                 };
                 axios.post(htmlinsertdocumento, obj).then(() => {
-
                   setTimeout(() => {
                     setstatusdocumento(-1);
                     setTimeout(() => {
                       setstatusdocumento(0);
-                    }, 3000);
-                  }, 2000);
-
+                    }, 1000);
+                  }, 1000);
                   loadEvolucoesGpulse(conselho, tipodocumento, null);
                   if (conselho == 'CREFITO' && tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFITO') {
                     setviewdocumento(51);

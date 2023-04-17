@@ -15,93 +15,6 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
     registros_atuais,
   } = useContext(Context)
 
-  let htmlinsertvalor = process.env.REACT_INSERT_EVOLUCAO_VALOR;
-  let htmldeletevalor = process.env.REACT_DELETE_EVOLUCAO_VALOR;
-
-  /*
-  const [registros_antigos, setregistros_antigos] = useState([]);
-  const [registros_atuais, setregistros_atuais] = useState([]);
-
-  useEffect(() => {
-    axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
-      var x = [0, 1];
-      x = response.data.rows;
-      setregistros_atuais([]);
-      setregistros_antigos(x.filter(item => item.idcampo == idcampo && item.idevolucao < iddocumento));
-      setregistros_atuais(x.filter(item => item.idcampo == idcampo && item.idevolucao == iddocumento));
-      setcamposvalores(x.rows);
-      if (statusdocumento == -2) {
-        // novo documento (copia registros do documento anterior).
-        console.log('COPIA VALOR DA EVOLUÇÃO ANTERIOR');
-        x.filter(item => item.idevolucao == idselecteddocumento && item.idcampo == idcampo).map(item => copiaValor(item, item.valor));
-
-        setTimeout(() => {
-          axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
-            var x = [0, 1];
-            x = response.data.rows;
-            setregistros_atuais(x.filter(item => item.idcampo == idcampo && item.idevolucao == iddocumento));
-            // setstatusdocumento(0);
-          });
-        }, 1000);
-
-      } else if (statusdocumento == -1 && iddocumento != 0 && registros_antigos.length == 0) {
-        // cria um registro baseado nos campos de seleção única (valor padrão 'SELECIONE').
-        console.log('CRIA VALOR NOVO - SELEÇÃO ÚNICA');
-        camposopcoes.filter(item => item.idcampo == idcampo).slice(-1).map(item => insertValor(item, '...'));
-
-        setTimeout(() => {
-          axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
-            var x = [0, 1];
-            x = response.data.rows;
-            setregistros_atuais(x.filter(item => item.idcampo == idcampo && item.idevolucao == iddocumento));
-            // setstatusdocumento(0);
-          });
-        }, 1000);
-
-      } else if (statusdocumento > -1 || statusdocumento == -2) {
-        console.log('RECUPERANDO VALOR DO DOCUMENTO');
-        // setregistros_antigos([]);
-        camposopcoes.filter(item => item.idcampo == idcampo && item.idevolucao == iddocumento).map(item => registros_atuais.push(item));
-      }
-    });
-  }, [statusdocumento]);
-
-  */
-
-  const insertValor = (item, valor) => {
-    var obj = {
-      idpct: idpaciente,
-      idatendimento: idatendimento,
-      data: moment(),
-      idcampo: idcampo,
-      idopcao: item.id,
-      opcao: item.opcao,
-      valor: valor,
-      idevolucao: iddocumento
-    }
-    console.log(obj);
-    axios.post('http://192.168.100.6:3333/insert_evolucao_valor', obj).then(() => {
-    });
-  }
-
-  const copiaValor = (item, valor) => {
-    // inserindo registro.  
-    var obj = {
-      idpct: idpaciente,
-      idatendimento: idatendimento,
-      data: moment(),
-      idcampo: idcampo,
-      idopcao: item.idopcao,
-      opcao: item.opcao,
-      valor: valor,
-      idevolucao: iddocumento // id do documento recém-criado.
-    }
-    console.log(obj);
-    axios.post('http://192.168.100.6:3333/insert_evolucao_valor', obj).then(() => {
-      // loadCamposValores();
-    });
-  }
-
   const updateValor = (item, valor) => {
     axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
       var x = [0, 1];
@@ -145,12 +58,6 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
     )
   }
 
-  /*
-  Cada clique em uma das opções de seleção para o campo respondido, gera um registro no banco 
-  de dados, para o documento em preenchimento.
-  Quando este documento é consultado, os últimos registros para cada opção de campo serão exibidos. 
-  */
-
   var timeout = null;
   return (
     <div>
@@ -158,6 +65,7 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
         style={{
           display: printdocumento == 0 ? 'flex' : 'none',
           flexDirection: 'column',
+          justifyContent: 'center',
           position: 'relative',
           borderRadius: 5,
           borderColor: 'white',
@@ -166,29 +74,31 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
           padding: 10,
           margin: 5,
           width: width,
+          alignSelf: 'center'
         }}
       >
         <div className='title2center'>{campo}</div>
         <div
           id="texto"
-          onMouseLeave={() => {
-            if (
-              obrigatorio == 1 &&
-              document.getElementById("text" + idcampo).value == '') {
-              document.getElementById("alerta" + idcampo).style.display = 'flex';
-            } else {
-              document.getElementById("alerta" + idcampo).style.display = 'none';
-            }
-          }}
           style={{
             display: 'flex', flexDirection: 'row',
-            justifyContent: 'center', flexWrap: 'wrap'
+            justifyContent: 'center', flexWrap: 'wrap', alignContent: 'center',
           }}>
           {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
             var x = registros_atuais.filter(valor => valor.idcampo == item.idcampo).map(item => item.valor);
             if (tipo == "textarea") {
               return (
-                <div style={{ position: 'relative' }}>
+                <div style={{ position: 'relative' }}
+                  onMouseLeave={() => {
+                    if (
+                      obrigatorio == 1 &&
+                      document.getElementById('opcao' + iddocumento + item.id).value == '') {
+                      document.getElementById("alerta" + idcampo).style.display = 'flex';
+                    } else {
+                      document.getElementById("alerta" + idcampo).style.display = 'none';
+                    }
+                  }}
+                >
                   {alertaEmBranco(idcampo)}
                   <textarea
                     autoComplete="off"
@@ -201,7 +111,7 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
                     title={""}
                     type="text"
                     maxLength={length}
-                    id={"text" + idcampo}
+                    id={'opcao' + iddocumento + item.id}
                     defaultValue={x}
                     style={{
                       alignSelf: 'center',
@@ -216,6 +126,52 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
                       }, 2000);
                     }}
                   ></textarea>
+                </div>
+              )
+            } else if (tipo == "date") {
+              return (
+                <div style={{ position: 'relative' }}>
+                  {alertaEmBranco(idcampo)}
+                  <input
+                    autoComplete="off"
+                    placeholder="DATA"
+                    className="textarea"
+                    type="text"
+                    id={'opcao' + iddocumento + item.id}
+                    title="FORMATO: DD/MM/YYYY"
+                    onClick={() => document.getElementById('opcao' + iddocumento + item.id).value = ''}
+                    onFocus={(e) => (e.target.placeholder = '')}
+                    onBlur={(e) => (e.target.placeholder = 'DATA')}
+                    onKeyUp={() => {
+                      var x = document.getElementById('opcao' + iddocumento + item.id).value;
+                      if (x.length == 2) {
+                        x = x + '/';
+                        document.getElementById('opcao' + iddocumento + item.id).value = x;
+                      }
+                      if (x.length == 5) {
+                        x = x + '/'
+                        document.getElementById('opcao' + iddocumento + item.id).value = x;
+                      }
+                      clearTimeout(timeout);
+                      var date = moment(document.getElementById('opcao' + iddocumento + item.id).value, 'DD/MM/YYYY', true);
+                      timeout = setTimeout(() => {
+                        if (date.isValid() == false) {
+                          document.getElementById('opcao' + iddocumento + item.id).value = '';
+                        } else {
+                          document.getElementById('opcao' + iddocumento + item.id).value = moment(date).format('DD/MM/YYYY');
+                          updateValor(item, document.getElementById('opcao' + iddocumento + item.id).value);
+                        }
+                      }, 3000);
+                    }}
+                    defaultValue={moment().format('DD/MM/YYYY')}
+                    style={{
+                      alignSelf: 'center',
+                      width: width - 35,
+                      margin: 2.5,
+                      borderStyle: 'none',
+                      textAlign: 'center',
+                    }}
+                  ></input>
                 </div>
               )
             } else {
@@ -244,7 +200,7 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
                     onKeyUp={() => {
                       clearTimeout(timeout);
                       timeout = setTimeout(() => {
-                        updateValor(item, document.getElementById("text" + idcampo).value.toUpperCase())
+                        updateValor(item, document.getElementById('opcao' + iddocumento + item.id).value.toUpperCase())
                       }, 2000);
                     }}
                   ></input>
