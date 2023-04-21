@@ -15,6 +15,15 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
     registros_atuais,
   } = useContext(Context)
 
+  const [registros, setregistros] = useState([]);
+  const [random, setrandom] = useState(null);
+  useEffect(() => {
+    if (statusdocumento != null) {
+      setregistros(registros_atuais);
+      setrandom(Math.random());
+    }
+  }, [registros_atuais, statusdocumento]);
+
   const updateValor = (item, valor) => {
     axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
       var x = [0, 1];
@@ -22,7 +31,6 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
       var id = x
         .filter(valor => valor.idevolucao == iddocumento && valor.idcampo == idcampo)
         .sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).slice(-1).map(item => item.id);
-      console.log('ID:' + id)
       // atualizando registro.  
       var obj = {
         idpct: idpaciente,
@@ -35,17 +43,15 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
         idevolucao: iddocumento
       }
       console.log(obj);
-      axios.post('http://192.168.100.6:3333/update_evolucao_valor/' + id, obj).then(() => {
-        // loadCamposValores();
-      });
+      axios.post('http://192.168.100.6:3333/update_evolucao_valor/' + id, obj);
     });
   }
 
   // alerta para campo obrigatório em branco.
-  const alertaEmBranco = (id) => {
+  const alertaEmBranco = () => {
     return (
       <div
-        id={"alerta" + id}
+        id={"alerta" + random}
         className='red-button fade-in'
         title='CAMPO EM BRANCO!'
         style={{
@@ -61,7 +67,7 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
   var timeout = null;
   return (
     <div>
-      <div id="form"
+      <div id={"form" + random}
         style={{
           display: printdocumento == 0 ? 'flex' : 'none',
           flexDirection: 'column',
@@ -111,7 +117,7 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
                     title={""}
                     type="text"
                     maxLength={length}
-                    id={'opcao' + iddocumento + item.id}
+                    id={'opcao' + item.id + random}
                     defaultValue={x}
                     style={{
                       alignSelf: 'center',
@@ -122,7 +128,7 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
                     onKeyUp={() => {
                       clearTimeout(timeout);
                       timeout = setTimeout(() => {
-                        updateValor(item, document.getElementById("text" + idcampo).value.toUpperCase())
+                        updateValor(item, document.getElementById('opcao' + item.id + random).value.toUpperCase())
                       }, 2000);
                     }}
                   ></textarea>
@@ -137,29 +143,29 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
                     placeholder="DATA"
                     className="textarea"
                     type="text"
-                    id={'opcao' + iddocumento + item.id}
+                    id={'opcao' + item.id + random}
                     title="FORMATO: DD/MM/YYYY"
-                    onClick={() => document.getElementById('opcao' + iddocumento + item.id).value = ''}
+                    onClick={() => document.getElementById('opcao' + item.id + random).value = ''}
                     onFocus={(e) => (e.target.placeholder = '')}
                     onBlur={(e) => (e.target.placeholder = 'DATA')}
                     onKeyUp={() => {
-                      var x = document.getElementById('opcao' + iddocumento + item.id).value;
+                      var x = document.getElementById('opcao' + item.id + random).value;
                       if (x.length == 2) {
                         x = x + '/';
-                        document.getElementById('opcao' + iddocumento + item.id).value = x;
+                        document.getElementById('opcao' + item.id + random).value = x;
                       }
                       if (x.length == 5) {
                         x = x + '/'
-                        document.getElementById('opcao' + iddocumento + item.id).value = x;
+                        document.getElementById('opcao' + item.id + random).value = x;
                       }
                       clearTimeout(timeout);
-                      var date = moment(document.getElementById('opcao' + iddocumento + item.id).value, 'DD/MM/YYYY', true);
+                      var date = moment(document.getElementById('opcao' + item.id + random).value, 'DD/MM/YYYY', true);
                       timeout = setTimeout(() => {
                         if (date.isValid() == false) {
-                          document.getElementById('opcao' + iddocumento + item.id).value = '';
+                          document.getElementById('opcao' + item.id + random).value = '';
                         } else {
-                          document.getElementById('opcao' + iddocumento + item.id).value = moment(date).format('DD/MM/YYYY');
-                          updateValor(item, document.getElementById('opcao' + iddocumento + item.id).value);
+                          document.getElementById('opcao' + item.id + random).value = moment(date).format('DD/MM/YYYY');
+                          updateValor(item, document.getElementById('opcao' + item.id + random).value);
                         }
                       }, 3000);
                     }}
@@ -190,7 +196,7 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
                     title={""}
                     type="text"
                     maxLength={length}
-                    id={"text" + idcampo}
+                    id={'opcao' + item.id + random}
                     defaultValue={x}
                     style={{
                       alignSelf: 'center',
@@ -200,7 +206,7 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
                     onKeyUp={() => {
                       clearTimeout(timeout);
                       timeout = setTimeout(() => {
-                        updateValor(item, document.getElementById('opcao' + iddocumento + item.id).value.toUpperCase())
+                        updateValor(item, document.getElementById('opcao' + item.id + random).value.toUpperCase())
                       }, 2000);
                     }}
                   ></input>

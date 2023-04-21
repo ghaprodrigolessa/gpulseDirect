@@ -17,86 +17,14 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio }) {
     registros_atuais
   } = useContext(Context)
 
-  let htmlinsertvalor = process.env.REACT_INSERT_EVOLUCAO_VALOR;
-  let htmlupdatevalor = process.env.REACT_UPDATE_EVOLUCAO_VALOR;
-  let htmldeletevalor = process.env.REACT_DELETE_EVOLUCAO_VALOR;
-
-  /*
-  const [registros_antigos, setregistros_antigos] = useState([]);
-  const [registros_atuais, setregistros_atuais] = useState([]);
+  const [registros, setregistros] = useState([]);
+  const [random, setrandom] = useState(null);
   useEffect(() => {
-    axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
-      var x = [0, 1];
-      x = response.data.rows;
-      setregistros_atuais([]);
-      setregistros_antigos(x.filter(item => item.idcampo == idcampo && item.idevolucao < iddocumento));
-      setregistros_atuais(x.filter(item => item.idcampo == idcampo && item.idevolucao == iddocumento));
-      setcamposvalores(x.rows);
-      if (statusdocumento == -2) {
-        // novo documento (copia registros do documento anterior).
-        console.log('COPIA VALOR DA EVOLUÇÃO ANTERIOR');
-        console.log('ITENS A COPIAR: ' + x.filter(item => item.idevolucao == idselecteddocumento && item.idcampo == idcampo).length);
-        x.filter(item => item.idevolucao == idselecteddocumento && item.idcampo == idcampo).map(item => copiaValor(item, item.valor));
-
-        setTimeout(() => {
-          axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
-            var x = [0, 1];
-            x = response.data.rows;
-            setregistros_atuais(x.filter(item => item.idcampo == idcampo && item.idevolucao == iddocumento));
-            // setstatusdocumento(0);
-          });
-        }, 1000);
-
-      } else if (statusdocumento == -1 && iddocumento != 0 && registros_antigos.length == 0) {
-        // cria registros baseados nos campos de seleção múltipla (valor padrão 'NÃO').
-        console.log('CRIA VALOR NOVO');
-        camposopcoes.filter(item => item.idcampo == idcampo).map(item => insertValor(item, 'NÃO'));
-
-        setTimeout(() => {
-          axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
-            var x = [0, 1];
-            x = response.data.rows;
-            setregistros_atuais(x.filter(item => item.idcampo == idcampo && item.idevolucao == iddocumento));
-            // setstatusdocumento(0);
-          });
-        }, 1000);
-
-      } else if (statusdocumento > -1 || statusdocumento == -2) {
-        console.log('RECUPERANDO VALOR DO DOCUMENTO');
-        // setregistros_antigos([]);
-        camposopcoes.filter(item => item.idcampo == idcampo && item.idevolucao == iddocumento).map(item => registros_atuais.push(item));
-      }
-    });
-  }, [statusdocumento]);
-  */
-
-  var registros = [];
-  const loadCamposValores = () => {
-    axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
-      var x = [0, 1];
-      x = response.data.rows;
-      registros = x.filter(item => item.idcampo == idcampo && item.idevolucao == iddocumento);
-      setcamposvalores(x.rows);
-    });
-  }
-
-  const copiaValor = (item, valor) => {
-    // inserindo registro.  
-    var obj = {
-      idpct: idpaciente,
-      idatendimento: idatendimento,
-      data: moment(),
-      idcampo: idcampo,
-      idopcao: item.idopcao,
-      opcao: item.opcao,
-      valor: valor,
-      idevolucao: iddocumento // id do documento recém-criado.
+    if (statusdocumento != null) {
+      setregistros(registros_atuais);
+      setrandom(Math.random());
     }
-    console.log(obj);
-    axios.post('http://192.168.100.6:3333/insert_evolucao_valor', obj).then(() => {
-      // loadCamposValores();
-    });
-  }
+  }, [registros_atuais, statusdocumento]);
 
   const insertValor = (item, valor) => {
     // inserindo registro.  
@@ -111,9 +39,7 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio }) {
       idevolucao: iddocumento // id do documento recém-criado.
     }
     console.log(obj);
-    axios.post('http://192.168.100.6:3333/insert_evolucao_valor', obj).then(() => {
-      // loadCamposValores();
-    });
+    axios.post('http://192.168.100.6:3333/insert_evolucao_valor', obj);
   }
 
   const updateValor = (item, valor) => {
@@ -123,7 +49,6 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio }) {
       var id = x
         .filter(valor => valor.idevolucao == iddocumento && valor.idcampo == idcampo && valor.opcao == item.opcao)
         .sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).slice(-1).map(item => item.id);
-      console.log('ID:' + id)
       // atualizando registro.  
       var obj = {
         idpct: idpaciente,
@@ -136,17 +61,15 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio }) {
         idevolucao: iddocumento
       }
       console.log(obj);
-      axios.post('http://192.168.100.6:3333/update_evolucao_valor/' + id, obj).then(() => {
-        loadCamposValores();
-      });
+      axios.post('http://192.168.100.6:3333/update_evolucao_valor/' + id, obj);
     });
   }
 
   // alerta para campo obrigatório em branco.
-  const alertaEmBranco = (id) => {
+  const alertaEmBranco = () => {
     return (
       <div
-        id={"alerta" + id}
+        id={"alerta" + random}
         className='red-button fade-in'
         title='CAMPO EM BRANCO!'
         style={{
@@ -159,14 +82,9 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio }) {
     )
   }
 
-  /*
-  Cada clique em uma das opções de seleção para o campo respondido, gera um registro no banco 
-  de dados, para o documento em preenchimento.
-  Quando este documento é consultado, os últimos registros para cada opção de campo serão exibidos. 
-  */
   return (
     <div>
-      <div id='form'
+      <div id={"form" + random}
         style={{
           display: printdocumento == 0 ? 'flex' : 'none',
           flexDirection: 'column',
@@ -179,16 +97,16 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio }) {
           margin: 5,
         }}>
         <div className='title2center'>{campo}</div>
-        {alertaEmBranco(idcampo)}
+        {alertaEmBranco()}
         <div
-          id={"seletor" + idcampo}
+          id={"campo" + random}
           onMouseLeave={() => {
             if (
               obrigatorio == 1 &&
-              document.getElementById("seletor" + idcampo).getElementsByClassName("red-button").length < 1) {
-              document.getElementById("alerta" + idcampo).style.display = 'flex';
+              document.getElementById("campo" + random).getElementsByClassName("red-button").length < 1) {
+              document.getElementById("alerta" + random).style.display = 'flex';
             } else {
-              document.getElementById("alerta" + idcampo).style.display = 'none';
+              document.getElementById("alerta" + random).style.display = 'none';
             }
           }}
           style={{
@@ -196,18 +114,18 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio }) {
             justifyContent: 'center', flexWrap: 'wrap',
           }}>
           {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
-            var x = registros_atuais.filter(valor => valor.opcao == item.opcao).map(item => item.valor);
+            var x = registros_atuais.filter(valor => valor.idevolucao == iddocumento && valor.opcao == item.opcao).map(item => item.valor);
             return (
-              <div id={'opcao' + iddocumento + item.id}
+              <div id={'opcao' + item.id + random}
                 className={x == 'SIM' ? 'red-button' : 'blue-button'}
                 style={{ paddingLeft: 10, paddingRight: 10 }}
                 onClick={() => {
                   if (x == 'NÃO' || x == '') {
-                    document.getElementById('opcao' + item.id).className = 'red-button';
+                    document.getElementById('opcao' + item.id + random).className = 'red-button';
                     updateValor(item, 'SIM', item.opcao);
                     x = 'SIM'
                   } else {
-                    document.getElementById('opcao' + item.id).className = 'blue-button';
+                    document.getElementById('opcao' + item.id + random).className = 'blue-button';
                     updateValor(item, 'NÃO', item.opcao);
                     x = 'NÃO';
                   }
@@ -250,7 +168,7 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio }) {
           {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
             var x = registros_atuais.filter(valor => valor.opcao == item.opcao).map(item => item.valor);
             return (
-              <div id={'opcao' + iddocumento + item.id}
+              <div id={'opcao' + item.id + random}
                 className={x == 'SIM' ? 'red-button' : 'blue-button'}
                 style={{
                   paddingLeft: 5, paddingRight: 5,

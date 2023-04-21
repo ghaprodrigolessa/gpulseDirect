@@ -24,7 +24,7 @@ function EvolucaoSelecaoSimples({ idcampo, campo, obrigatorio }) {
   const [random, setrandom] = useState(null);
   useEffect(() => {
     if (statusdocumento != null) {
-      console.log('RENDER - EVOLUÇÃO SIMPLES');
+      // console.log('RENDERIZOU - EVOLUÇÃO SIMPLES');
       setregistros(registros_atuais);
       setrandom(Math.random());
     }
@@ -37,7 +37,7 @@ function EvolucaoSelecaoSimples({ idcampo, campo, obrigatorio }) {
       var id = x
         .filter(valor => valor.idevolucao == iddocumento && valor.idcampo == idcampo && valor.opcao == opcao)
         .sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).slice(-1).map(item => item.id);
-      console.log('ID:' + id)
+      // console.log('ID:' + id)
       // atualizando registro.  
       var obj = {
         idpct: idpaciente,
@@ -49,7 +49,7 @@ function EvolucaoSelecaoSimples({ idcampo, campo, obrigatorio }) {
         valor: valor,
         idevolucao: iddocumento
       }
-      console.log(obj);
+      // console.log(obj);
       axios.post('http://192.168.100.6:3333/update_evolucao_valor/' + id, obj).then(() => {
         setTimeout(() => {
           var botoes = document.getElementById("campo" + random).getElementsByClassName("red-button");
@@ -57,15 +57,15 @@ function EvolucaoSelecaoSimples({ idcampo, campo, obrigatorio }) {
             botoes.item(i).className = "blue-button";
           }
           document.getElementById('opcao' + item.id + random).className = 'red-button';
-          console.log("campo" + random);
-          console.log('opcao' + item.id + random);
+          // console.log("campo" + random);
+          // console.log('opcao' + item.id + random);
         }, 500);
       });
     });
   }
 
   // alerta para campo obrigatório em branco.
-  const alertaEmBranco = (id) => {
+  const alertaEmBranco = () => {
     return (
       <div
         id={"alerta" + random}
@@ -98,7 +98,7 @@ function EvolucaoSelecaoSimples({ idcampo, campo, obrigatorio }) {
         }}
       >
         <div className='title2center'>{campo}</div>
-        {alertaEmBranco(idcampo)}
+        {alertaEmBranco()}
         <div
           id={"campo" + random}
           onMouseLeave={() => {
@@ -116,7 +116,6 @@ function EvolucaoSelecaoSimples({ idcampo, campo, obrigatorio }) {
           }}>
           {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
             var x = registros.filter(valor => valor.idevolucao == iddocumento && valor.idcampo == idcampo && valor.idopcao == item.id).map(item => item.valor);
-            console.log('VALOR: ' + x)
             return (
               <div id={'opcao' + item.id + random}
                 title={'opcao' + item.id + random}
