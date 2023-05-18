@@ -849,7 +849,7 @@ function EscalasAssistenciais() {
   const Fugulin = useCallback(() => {
     return (
       <div className="menucover" style={{ zIndex: 9, display: showescala == 5 ? 'flex' : 'none', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-        <div className="menucontainer" style={{width: '90vw', height: '80vh'}}>
+        <div className="menucontainer" style={{ width: '90vw', height: '80vh' }}>
           <div id="cabeçalho" className="cabecalho">
             <div className="title5">{'ESCALA DE FUGULIN'}</div>
             <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
@@ -1275,7 +1275,7 @@ function EscalasAssistenciais() {
               <div
                 id="BARTHEL1"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginBottom: 5 }}>
-                <div className="title2" style={{ width: 150, minWidth: 150,  textAlign: 'center', alignSelf: 'center' }}>HIGIENE PESSOAL:</div>
+                <div className="title2" style={{ width: 150, minWidth: 150, textAlign: 'center', alignSelf: 'center' }}>HIGIENE PESSOAL:</div>
                 <button
                   id="btnBarthel11"
                   onClick={() => { higienepessoal = 0; setActive("BARTHEL1", "btnBarthel11") }}
@@ -1314,7 +1314,7 @@ function EscalasAssistenciais() {
               <div
                 id="BARTHEL2"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ width: 150, minWidth: 150,  textAlign: 'center', alignSelf: 'center' }}>BANHO:</div>
+                <div className="title2" style={{ width: 150, minWidth: 150, textAlign: 'center', alignSelf: 'center' }}>BANHO:</div>
                 <button
                   id="btnBarthel21"
                   onClick={() => { banho = 0; setActive("BARTHEL2", "btnBarthel21") }}
@@ -1354,7 +1354,7 @@ function EscalasAssistenciais() {
               <div
                 id="BARTHEL3"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ width: 150, minWidth: 150,  textAlign: 'center', alignSelf: 'center' }}>ALIMENTAÇÃO:</div>
+                <div className="title2" style={{ width: 150, minWidth: 150, textAlign: 'center', alignSelf: 'center' }}>ALIMENTAÇÃO:</div>
                 <button
                   id="btnBarthel31"
                   onClick={() => { alimentacaobarthel = 0; setActive("BARTHEL3", "btnBarthel31") }}
@@ -1394,7 +1394,7 @@ function EscalasAssistenciais() {
               <div
                 id="BARTHEL4"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ width: 150, minWidth: 150,  textAlign: 'center', alignSelf: 'center' }}>TOALETE:</div>
+                <div className="title2" style={{ width: 150, minWidth: 150, textAlign: 'center', alignSelf: 'center' }}>TOALETE:</div>
                 <button
                   id="btnBarthel41"
                   onClick={() => { toalete = 0; setActive("BARTHEL4", "btnBarthel41") }}
@@ -1434,7 +1434,7 @@ function EscalasAssistenciais() {
               <div
                 id="BARTHEL5"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ width: 150, minWidth: 150,  textAlign: 'center', alignSelf: 'center' }}>SUBIR ESCADAS:</div>
+                <div className="title2" style={{ width: 150, minWidth: 150, textAlign: 'center', alignSelf: 'center' }}>SUBIR ESCADAS:</div>
                 <button
                   id="btnBarthel51"
                   onClick={() => { escadas = 0; setActive("BARTHEL5", "btnBarthel51") }}
@@ -1474,7 +1474,7 @@ function EscalasAssistenciais() {
               <div
                 id="BARTHEL6"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ width: 150, minWidth: 150,  textAlign: 'center', alignSelf: 'center' }}>VESTUÁRIO:</div>
+                <div className="title2" style={{ width: 150, minWidth: 150, textAlign: 'center', alignSelf: 'center' }}>VESTUÁRIO:</div>
                 <button
                   id="btnBarthel61"
                   onClick={() => { vestir = 0; setActive("BARTHEL6", "btnBarthel61") }}
@@ -1514,7 +1514,7 @@ function EscalasAssistenciais() {
               <div
                 id="BARTHEL7"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ width: 150, minWidth: 150,  textAlign: 'center', alignSelf: 'center' }}>BEXIGA:</div>
+                <div className="title2" style={{ width: 150, minWidth: 150, textAlign: 'center', alignSelf: 'center' }}>BEXIGA:</div>
                 <button
                   id="btnBarthel71"
                   onClick={() => { urina = 0; setActive("BARTHEL7", "btnBarthel71") }}
@@ -1554,7 +1554,7 @@ function EscalasAssistenciais() {
               <div
                 id="BARTHEL8"
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 5 }}>
-                <div className="title2" style={{ width: 150, minWidth: 150,  textAlign: 'center', alignSelf: 'center' }}>INTESTINO:</div>
+                <div className="title2" style={{ width: 150, minWidth: 150, textAlign: 'center', alignSelf: 'center' }}>INTESTINO:</div>
                 <button
                   id="btnBarthel81"
                   onClick={() => { intestino = 0; setActive("BARTHEL8", "btnBarthel81") }}
@@ -3630,6 +3630,156 @@ function EscalasAssistenciais() {
     );
   }
 
+  // ESCALA PARD (showescala = 16).
+  const [pardscore, setpardscore] = useState(0);
+
+  const [escapeoralanterior, setoralescapeanterior] = useState(0);
+  const [tempotransitooraladequado, settempotransitooraladequado] = useState(0);
+  const [refluxonasal, setrefluxonasal] = useState(0);
+  const [numerodegluticoes, setnumerodegluticoes] = useState(0);
+  const [residuooral, setresiduooral] = useState(0);
+  const [elevacaolaringea, setelevacaolaringea] = useState(0);
+  const [tosse, settosse] = useState(0);
+  const [engasgo, setengasgo] = useState(0);
+  const [auscultacervicallimpa, setauscultacervicallimpa] = useState(0);
+  const [qualidadevocaladequada, setqualidadevocaladequada] = useState(0);
+  const [sato2, setsao2] = useState(0);
+  const [cianose, setcianose] = useState(0);
+  const [broncoespasmo, setbroncoespasmo] = useState(0);
+  const [fc, setfc] = useState(0);
+  const [fr, setfr] = useState(0);
+
+  const insertPard = () => {
+    pardscore =
+      escapeoralanterior + tempotransitooraladequado + refluxonasal +
+      numerodegluticoes + residuooral + elevacaolaringea + tosse +
+      engasgo + auscultacervicallimpa + qualidadevocaladequada + sato2 +
+      cianose + broncoespasmo + fc + fr;
+    var significado = '';
+    if (pardscore < 5) {
+      significado = 'DEGLUTIÇÃO NORMAL';
+    } else if (pardscore > 4 && pardscore < 10) {
+      significado = 'DEGLUTIÇÃO FUNCIONAL';
+    } else if (pardscore > 9 && pardscore < 15) {
+      significado = 'DISFAGIA OROFARÍNGEA LEVE';
+    } else if (pardscore > 14 && pardscore < 20) {
+      significado = 'DISFAGIA OROFARÍNGEA LEVE A MODERADA';
+    } else if (pardscore > 19 && pardscore < 25) {
+      significado = 'DISFAGIA OROFARÍNGEA MODERADA';
+    } else if (pardscore > 24 && pardscore < 30) {
+      significado = 'DISFAGIA OROFARÍNGEA MODERADA A GRAVE';
+    } else {
+      significado = 'DISFAGIA OROFARÍNGEA GRAVE';
+    }
+    var obj = {
+      idpct: idpaciente,
+      idatendimento: idatendimento,
+      data: moment(),
+      cd_escala: 16,
+      ds_escala: 'PARD',
+      valor_resultado: pardscore,
+      ds_resultado: significado,
+      idprofissional: 0,
+      status: 1,
+    }
+    axios.post(htmlghapinsertescala, obj).then(() => {
+      loadEscalas();
+    })
+  }
+
+  function Pard() {
+    return (
+      <div className="menucover" style={{ zIndex: 9, display: showescala == 16 ? 'flex' : 'none', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+        <div className="menucontainer">
+          <div id="cabeçalho" className="cabecalho">
+            <div className="title5">{'AVALIAÇÃO DE RISCO PARA DISFAGIA'}</div>
+            <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+              <button className="red-button" onClick={() => setshowescala(0)}>
+                <img
+                  alt=""
+                  src={deletar}
+                  style={{
+                    margin: 10,
+                    height: 30,
+                    width: 30,
+                  }}
+                ></img>
+              </button>
+              <button className="green-button"
+                onClick={() => insertPard()}
+              >
+                <img
+                  alt=""
+                  src={salvar}
+                  style={{
+                    margin: 10,
+                    height: 30,
+                    width: 30,
+                  }}
+                ></img>
+              </button>
+            </div>
+          </div>
+          <div>
+            <div
+              className="corpo">
+              <div
+                className="scroll"
+                style={{
+                  display: 'flex', flexDirection: 'row', justifyContent: 'center',
+                  marginBottom: 5, flexWrap: 'wrap',
+                  width: '60vw', height: '50vh'
+                }}>
+                <button
+                  onClick={() => { setnivel(1) }}
+                  className={nivel == 1 ? "red-button" : "blue-button"}
+                  style={{ width: 200, height: 200, padding: 10 }}>
+                  NADA POR VIA ORAL
+                </button>
+                <button
+                  onClick={() => { setnivel(2) }}
+                  className={nivel == 2 ? "red-button" : "blue-button"}
+                  style={{ width: 200, height: 200, padding: 10 }}>
+                  DEPENDÊNCIA DE VIA ALTERNATIVA, MÍNIMA OFERTA DE VIA ORAL (ESTÍMULO GUSTATIVO).
+                </button>
+                <button
+                  onClick={() => { setnivel(3) }}
+                  className={nivel == 3 ? "red-button" : "blue-button"}
+                  style={{ width: 200, height: 200, padding: 10 }}>
+                  DEPENDÊNCIA DE VIA ALTERNATIVA, OFERTA DE UMA ÚNICA CONSISTÊNCIA POR VIA ORAL.
+                </button>
+                <button
+                  onClick={() => { setnivel(4) }}
+                  className={nivel == 4 ? "red-button" : "blue-button"}
+                  style={{ width: 200, height: 200, minHeight: 150, padding: 10 }}>
+                  VIA ORAL TOTAL, LIMITADA A UMA ÚNICA CONSISTÊNCIA.
+                </button>
+                <button
+                  onClick={() => { setnivel(5) }}
+                  className={nivel == 5 ? "red-button" : "blue-button"}
+                  style={{ width: 200, height: 200, padding: 10 }}>
+                  VIA ORAL TOTAL, MAIS DE UMA CONSISTÊNCIA, NECESSITANDO PREPARO ESPECIAL.
+                </button>
+                <button
+                  onClick={() => { setnivel(6) }}
+                  className={nivel == 6 ? "red-button" : "blue-button"}
+                  style={{ width: 200, height: 200, padding: 10 }}>
+                  VIA ORAL TOTAL, MAIS DE UMA CONSISTÊNCIA, LIMITAÇÕES OU RESTRIÇÕES ESPECÍFICAS.
+                </button>
+                <button
+                  onClick={() => { setnivel(7) }}
+                  className={nivel == 7 ? "red-button" : "blue-button"}
+                  style={{ width: 200, height: 200, padding: 10 }}>
+                  VIA ORAL TOTAL, SEM RESTRIÇÕES.
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <Braden></Braden>
@@ -3647,6 +3797,7 @@ function EscalasAssistenciais() {
       <MEEM></MEEM>
       <Glim></Glim>
       <Medidas></Medidas>
+      <Pard></Pard>
       <div
         className="menucover"
         style={{

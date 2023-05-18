@@ -5173,6 +5173,10 @@ input::-webkit-inner-spin-button {
 }
 
 @media print {
+  .noprint {
+    display: none !important;
+  }
+  
   .red-button {
     display: flex;
     flex-direction: column;

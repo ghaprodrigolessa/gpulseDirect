@@ -4732,6 +4732,16 @@ function AptPlanoTerapeutico() {
               >
                 {item.objetivo}
               </div>
+              <div
+                ID={"item objetivoprimario" + item.id}
+                style={{
+                  width: 200, padding: 5,
+                  backgroundColor: item.id_linhadecuidado == 1 ? '#52be80' : item.id_linhadecuidado == 2 ? '#f5b041' : '#52dade'
+                }}
+                className="blue-button"
+              >
+                {item.id_linhadecuidado == 1 ? 'CRÔNICO' : item.id_linhadecuidado == 2 ? 'REABILITAÇÃO' : 'PALIATIVO'}
+              </div>
               <button
                 style={{ display: vieweditor == 2 ? 'flex' : 'none' }}
                 className={window.innerWidth < 426 ? 'red-button' : "animated-red-button"}

@@ -380,9 +380,6 @@ function TodosPacientes() {
                 width: window.innerWidth > 425 ? '95%' : '70vw'
               }}>
               <div className="header-button" style={{ width: '100%' }}>NOME</div>
-              <div className="header-button" style={{ minWidth: 100 }}>DN</div>
-              <div className="header-button" style={{ minWidth: 100 }}>INICIO</div>
-              <div className="header-button" style={{ minWidth: 100 }}>TERMINO</div>
             </div>
             {atendimentosencerrados.map((item) => (
               <div style={{
@@ -408,33 +405,6 @@ function TodosPacientes() {
                     onClick={() => selectAtendimentoAntigo(item)}
                   >
                     {item.nm_paciente}
-                  </button>
-
-                  <button
-                    className="grey-button"
-                    style={{
-                      display: window.innerWidth < 400 ? 'none' : 'flex',
-                      minWidth: 100,
-                    }}
-                  >
-                    {moment(listapacientespornome.slice(-1).map(item => item.data_nascimento_paciente).pop()).format('DD/MM/YY')}
-                  </button>
-
-                  <button
-                    className="grey-button"
-                    style={{ minWidth: 100, margin: 2.5, color: '#ffffff', backgroundColor: 'grey' }}
-                    title="ADMISSÃO"
-                    disabled="true"
-                  >
-                    {moment(item.dt_hr_atendimento).format('DD/MM/YY')}
-                  </button>
-                  <button
-                    className="grey-button"
-                    style={{ minWidth: 100, margin: 2.5, color: '#ffffff', backgroundColor: 'grey' }}
-                    title="ALTA"
-                    disabled="true"
-                  >
-                    {moment(item.dt_hr_alta).format('DD/MM/YY')}
                   </button>
                 </div>
               </div>
@@ -483,12 +453,7 @@ function TodosPacientes() {
 
   const selectAtendimentoAntigo = (item) => {
     console.log('BABAOEY')
-    setidunidade(0);
-    setnomeunidade('');
-    setidpaciente(item.cd_paciente)
-    setidatendimento(item.cd_atendimento)
-    setdatainternacao(item.dt_hr_atendimento);
-    setconvenio(item.nm_convenio);
+    // o que vou pegar...
     // setdadospaciente(arrayPacientesEmAtendimento.filter(value => value.codigo_paciente == item.cd_paciente));
     history.push('/prontuario');
   };
@@ -569,30 +534,13 @@ function TodosPacientes() {
     }, 1000);
   }
 
-  var htmlhistoricodeatendimentos = process.env.REACT_APP_API_HISTORICODEATENDIMENTOS;
+  var htmlhistoricodeatendimentos = process.env.REACT_APP_API_LUQUINHAS
   // filtrando atendimentos de pacientes fora do atendimento atual.
-  const [listapacientespornome, setlistapacientespornome] = useState([]);
   const [atendimentosencerrados, setatendimentosencerrados] = useState([]);
-  const loadPacientePorNome = (nome) => {
-    console.log('NOME: ' + nome)
-    axios.get(htmlfiltrapacientenome + '?nome_paciente=' + nome).then((response) => {
-      setlistapacientespornome(response.data);
-      var zetta = [];
-      zetta = parseInt(response.data.slice(-1).map(item => item.codigo_paciente).pop());
-      // console.log(zetta);
-      // setcodigopaciente(response.data.pop().codigo_paciente);
-      loadHistoricoDeAtendimentos(zetta);
+  const loadPacientePorNome = (prontuario) => {
+    axios.get(htmlhistoricodeatendimentos + '?attendance_id=' + prontuario).then((response) => {
+      setatendimentosencerrados(response.data);
     })
-  }
-  const loadHistoricoDeAtendimentos = (codigo) => {
-    console.log(codigo);
-    axios.get(htmlhistoricodeatendimentos + codigo).then((response) => {
-      var x = [0, 1]
-      x = response.data;
-      setatendimentosencerrados(x.filter(item => item.dt_hr_alta != null)); // PENDÊNCIA! trocar aqui para !=
-      document.getElementById("inputFilterPaciente").value = searchpaciente;
-      document.getElementById("inputFilterPaciente").focus();
-    });
   }
 
   // renderização do componente.

@@ -148,7 +148,7 @@ function EvolucaoFisio() {
   function Form() {
     return (
       <div className="scroll"
-        id="FORMULÁRIO"
+        id="FORMULÁRIO - EVOLUÇÃO FISIO"
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -348,7 +348,7 @@ function EvolucaoFisio() {
   function printDiv() {
     setprintdocumento(1);
     setTimeout(() => {
-      var divContents = document.getElementById("FORMULÁRIO").innerHTML;
+      var divContents = document.getElementById("FORMULÁRIO - EVOLUÇÃO FISIO").innerHTML;
       var a = window.open();
       a.document.write('<html>');
       a.document.write(divContents);

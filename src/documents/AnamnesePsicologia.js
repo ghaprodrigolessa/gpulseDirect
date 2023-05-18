@@ -1,19 +1,15 @@
 /* eslint eqeqeq: "off" */
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useCallback } from 'react';
 import Context from '../Context';
 import axios from 'axios'
 import moment from 'moment';
 import logo from '../images/paulodetarso_logo.png'
-import { Font } from '@react-pdf/renderer';
-import fontbold from '../fonts/Roboto-Bold.ttf';
-import EvolucaoSelecaoMultipla from '../components/EvolucaoSelecaoMultipla';
 import EvolucaoSelecaoSimples from '../components/EvolucaoSelecaoSimples';
+import EvolucaoSelecaoMultipla from '../components/EvolucaoSelecaoMultipla';
+import EvolucaoTexto from '../components/EvolucaoTexto';
 import imprimir from '../images/imprimir.svg';
 
-import EvolucaoTexto from '../components/EvolucaoTexto';
-
-// viewdocumento 111(form), 112(pdf), 113(busy).
-function AnamneseFisio() {
+function AnamnesePsicologia() {
 
   // recuperando estados globais (Context.API).
   const {
@@ -25,8 +21,8 @@ function AnamneseFisio() {
     nomepaciente, nomemae, dn,
     nomeusuario, conselho,
     tipodocumento,
-    camposopcoes, setcamposopcoes,
-    camposvalores, setcamposvalores,
+    camposopcoes,
+    setcamposvalores,
     registros_atuais, setregistros_atuais,
     registros_antigos, setregistros_antigos,
     idcampo, setidcampo,
@@ -37,14 +33,14 @@ function AnamneseFisio() {
     selectedcategoria,
   } = useContext(Context);
 
-  let camposusados = [63, 4, 64, 65, 66, 67, 68, 69, 6, 70, 71, 72, 73, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 27, 28, 29, 30, 31, 22, 23, 24, 26, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 74, 75, 76]
+  let camposusados = [176, 177, 129, 130, 178, 126, 135, 134, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198]
 
   useEffect(() => {
-    if (tipodocumento == 'ANAMNESE - CREFITO' && conselho == 'CREFITO') {
+    if (tipodocumento == 'ANAMNESE - CRP' && conselho == 'CRP') {
       axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
         var x = [0, 1];
         x = response.data.rows;
-        setregistros_antigos(x.filter(item => item.evolucao == 'ANAMNESE - CREFITO' && item.idevolucao < iddocumento));
+        setregistros_antigos(x.filter(item => item.evolucao == 'ANAMNESE - CRP' && item.idevolucao < iddocumento));
         setcamposvalores(x.rows);
         if (statusdocumento == -2) {
           console.log('COPIA VALOR DA EVOLUÇÃO SELECIONADA');
@@ -134,7 +130,7 @@ function AnamneseFisio() {
   function Form() {
     return (
       <div className="scroll"
-        id="FORMULÁRIO - ANAMNESE FISIO"
+        id={"FORMULÁRIO - ANAMNESE PSICOLOGIA"}
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -231,61 +227,35 @@ function AnamneseFisio() {
             </div>
           </div>
 
-          <div style={{ fontSize: 14, textAlign: 'center', padding: 10, fontWeight: 'bold', alignSelf: 'center' }}>AVALIAÇÃO INICIAL</div>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <EvolucaoTexto idcampo={63} campo={'QUEIXA PRINCIPAL'} obrigatorio={1} tipo={'textarea'} lenght={500} width={500}></EvolucaoTexto>
-            <EvolucaoSelecaoSimples idcampo={4} campo={'DOR'} obrigatorio={1}></EvolucaoSelecaoSimples>
-            <EvolucaoTexto idcampo={64} campo={'EVA'} obrigatorio={1} tipo={'input'} lenght={2} width={125}></EvolucaoTexto>
-            <EvolucaoTexto idcampo={65} campo={'LOCAL DA DOR'} obrigatorio={1} tipo={'input'} lenght={2} width={125}></EvolucaoTexto>
-            <EvolucaoSelecaoSimples idcampo={66} campo={'PREVIAMENTE INDEPENDENTE'} obrigatorio={1}></EvolucaoSelecaoSimples>
-            <EvolucaoTexto idcampo={67} campo={'HISTÓRIA DA DOENÇA ATUAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={500}></EvolucaoTexto>
-            <EvolucaoSelecaoMultipla idcampo={68} campo={'DOENÇAS ASSOCIADAS'} obrigatorio={1}></EvolucaoSelecaoMultipla>
-            <EvolucaoTexto idcampo={69} campo={'GLASGOW'} obrigatorio={1} tipo={'input'} lenght={2} width={125}></EvolucaoTexto>
-            <EvolucaoSelecaoSimples idcampo={6} campo={'COMPREENSÃO'} obrigatorio={1}></EvolucaoSelecaoSimples>
-
-            <div style={{ fontSize: 14, textAlign: 'center', padding: 10, fontWeight: 'bold', alignSelf: 'center' }}>DADOS VITAIS</div>
-            <EvolucaoTexto idcampo={70} campo={'FR'} obrigatorio={1} tipo={'input'} lenght={3} width={125}></EvolucaoTexto>
-            <EvolucaoTexto idcampo={71} campo={'FC'} obrigatorio={1} tipo={'input'} lenght={3} width={125}></EvolucaoTexto>
-            <EvolucaoTexto idcampo={72} campo={'SPO2'} obrigatorio={1} tipo={'input'} lenght={2} width={125}></EvolucaoTexto>
-            <EvolucaoTexto idcampo={73} campo={'PA'} obrigatorio={1} tipo={'input'} lenght={7} width={125}></EvolucaoTexto>
-
-            <EvolucaoSelecaoSimples idcampo={11} campo={'VIA DE ENTRADA DE AR'} obrigatorio={1}></EvolucaoSelecaoSimples>
-            <EvolucaoSelecaoSimples idcampo={12} campo={'EXPANSIBILIDADE'} obrigatorio={1}></EvolucaoSelecaoSimples>
-            <EvolucaoSelecaoSimples idcampo={13} campo={'SIMETRIA TORÁCICA'} obrigatorio={1}></EvolucaoSelecaoSimples>
-            <EvolucaoSelecaoSimples idcampo={14} campo={'ESFORÇO RESPIRATÓRIO'} obrigatorio={1}></EvolucaoSelecaoSimples>
-            <EvolucaoSelecaoSimples idcampo={15} campo={'RITMO RESPIRATÓRIO'} obrigatorio={1}></EvolucaoSelecaoSimples>
-            <EvolucaoSelecaoMultipla idcampo={16} campo={'AUSCULTA RESPIRATÓRIA'} obrigatorio={1}></EvolucaoSelecaoMultipla>
-            <EvolucaoSelecaoMultipla idcampo={17} campo={'TOSSE'} obrigatorio={1}></EvolucaoSelecaoMultipla>
-            <EvolucaoSelecaoMultipla idcampo={18} campo={'SECREÇÃO'} obrigatorio={1}></EvolucaoSelecaoMultipla>
-            <EvolucaoSelecaoMultipla idcampo={19} campo={'OXIGENOTERAPIA'} obrigatorio={1}></EvolucaoSelecaoMultipla>
-            <EvolucaoTexto idcampo={20} campo={'FLUXO'} obrigatorio={2} tipo={"input"} length={3} width={100}></EvolucaoTexto>
-            <EvolucaoSelecaoSimples idcampo={21} campo={'VENTILAÇÃO MECÂNICA'} obrigatorio={1}></EvolucaoSelecaoSimples>
-            <EvolucaoTexto idcampo={27} campo={'MODO'} obrigatorio={1} tipo={"input"} length={3} width={100}></EvolucaoTexto>
-            <EvolucaoTexto idcampo={28} campo={'PRESSÃO'} obrigatorio={1} tipo={"input"} length={3} width={100}></EvolucaoTexto>
-            <EvolucaoTexto idcampo={29} campo={'VOLUME'} obrigatorio={1} tipo={"input"} length={3} width={100}></EvolucaoTexto>
-            <EvolucaoTexto idcampo={30} campo={'PEEP'} obrigatorio={1} tipo={"input"} length={3} width={100}></EvolucaoTexto>
-            <EvolucaoTexto idcampo={31} campo={'FI'} obrigatorio={1} tipo={"input"} length={3} width={100}></EvolucaoTexto>
-
-            <EvolucaoSelecaoMultipla idcampo={22} campo={'ALTERAÇÕES NEUROMUSCULARES'} obrigatorio={1}></EvolucaoSelecaoMultipla>
-            <EvolucaoSelecaoMultipla idcampo={23} campo={'ALTERAÇÕES ORTOPÉDICAS'} obrigatorio={1}></EvolucaoSelecaoMultipla>
-            <EvolucaoTexto idcampo={24} campo={'LOCAL DA ARTRODESE'} obrigatorio={1} tipo={"input"} length={300} width={300}></EvolucaoTexto>
-            <EvolucaoTexto idcampo={26} campo={'LOCAL DA OSTEOSSÍNTESE'} obrigatorio={1} tipo={"input"} length={300} width={300}></EvolucaoTexto>
-            <EvolucaoSelecaoSimples idcampo={32} campo={'MOBILIDADE NO LEITO'} obrigatorio={1}></EvolucaoSelecaoSimples>
-            <EvolucaoSelecaoSimples idcampo={33} campo={'CONTROLE CERVICAL'} obrigatorio={1}></EvolucaoSelecaoSimples>
-            <EvolucaoSelecaoSimples idcampo={34} campo={'CONTROLE DE TRONCO'} obrigatorio={1}></EvolucaoSelecaoSimples>
-            <EvolucaoSelecaoSimples idcampo={35} campo={'TRANSFERÊNCIA'} obrigatorio={1}></EvolucaoSelecaoSimples>
-            <EvolucaoSelecaoSimples idcampo={36} campo={'MARCHA'} obrigatorio={1}></EvolucaoSelecaoSimples>
-            <EvolucaoSelecaoSimples idcampo={37} campo={'DISPOSITIVO'} obrigatorio={1}></EvolucaoSelecaoSimples>
-            <EvolucaoSelecaoMultipla idcampo={38} campo={'EQUILÍBRIO'} obrigatorio={1}></EvolucaoSelecaoMultipla>
-            <EvolucaoTexto idcampo={39} campo={'FORÇA MUSCULAR'} obrigatorio={1} tipo={"input"} length={300} width={300}></EvolucaoTexto>
-            <EvolucaoTexto idcampo={40} campo={'AMPLITUDE DE MOVIMENTO'} obrigatorio={1} tipo={"input"} length={300} width={300}></EvolucaoTexto>
-            <EvolucaoSelecaoSimples idcampo={41} campo={'CONTROLE ESFINCTERIANO URINÁRIO'} obrigatorio={1}></EvolucaoSelecaoSimples>
-            <EvolucaoSelecaoSimples idcampo={42} campo={'CONTROLE ESFINCTERIANO FECAL'} obrigatorio={1}></EvolucaoSelecaoSimples>
-
-            <EvolucaoSelecaoMultipla idcampo={74} campo={'PROGNÓSTICO'} obrigatorio={1}></EvolucaoSelecaoMultipla>
-            <EvolucaoSelecaoSimples idcampo={75} campo={'LOCAL DO ATENDIMENTO'} obrigatorio={1}></EvolucaoSelecaoSimples>
-            <EvolucaoTexto idcampo={76} campo={'OBSERVAÇÕES'} obrigatorio={1} tipo={"input"} length={2000} width={300}></EvolucaoTexto>
-
+            <EvolucaoTexto idcampo={176} campo={'DOENÇA DE BASE'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={500}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={177} campo={'SÚMULA DE AVALIAÇÃO, EXAME PSÍQUICO E ESTADO AFETIVO GERAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'90%'}></EvolucaoTexto>
+            <EvolucaoSelecaoSimples idcampo={129} campo={'ESTADO CIVIL'} obrigatorio={1}></EvolucaoSelecaoSimples>
+            <EvolucaoSelecaoSimples idcampo={130} campo={'POSSUI FILHOS'} obrigatorio={1}></EvolucaoSelecaoSimples>
+            <EvolucaoSelecaoMultipla idcampo={178} campo={'PARTICIPAÇÃO DA FAMÍLIA'} obrigatorio={1}></EvolucaoSelecaoMultipla>
+            <EvolucaoSelecaoSimples idcampo={126} campo={'RELIGIÃO'} obrigatorio={1}></EvolucaoSelecaoSimples>
+            <EvolucaoSelecaoSimples idcampo={135} campo={'ETILISTA'} obrigatorio={1}></EvolucaoSelecaoSimples>
+            <EvolucaoSelecaoSimples idcampo={134} campo={'TABAGISTA'} obrigatorio={1}></EvolucaoSelecaoSimples>
+            <EvolucaoSelecaoSimples idcampo={179} campo={'DROGAS ILÍCITAS'} obrigatorio={1}></EvolucaoSelecaoSimples>
+            <EvolucaoTexto idcampo={180} campo={'INFORMAÇÕES ADICIONAIS'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={500}></EvolucaoTexto>
+            <EvolucaoSelecaoMultipla idcampo={181} campo={'HISTÓRIA DE SUPORTE'} obrigatorio={1}></EvolucaoSelecaoMultipla>
+            <EvolucaoTexto idcampo={182} campo={'HISTÓRIA DE SUPORTE - OUTRAS INFORMAÇÕES'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={500}></EvolucaoTexto>
+            <EvolucaoSelecaoSimples idcampo={183} campo={'ESTADO DE ALERTA'} obrigatorio={1}></EvolucaoSelecaoSimples>
+            <EvolucaoSelecaoSimples idcampo={184} campo={'COMUNICAÇÃO'} obrigatorio={1}></EvolucaoSelecaoSimples>
+            <EvolucaoSelecaoSimples idcampo={185} campo={'ATENÇÃO'} obrigatorio={1}></EvolucaoSelecaoSimples>
+            <EvolucaoSelecaoSimples idcampo={186} campo={'MEMÓRIA'} obrigatorio={1}></EvolucaoSelecaoSimples>
+            <EvolucaoSelecaoSimples idcampo={187} campo={'PENSAMENTO/DISCURSO'} obrigatorio={1}></EvolucaoSelecaoSimples>
+            <EvolucaoSelecaoSimples idcampo={188} campo={'ORIENTAÇÃO'} obrigatorio={1}></EvolucaoSelecaoSimples>
+            <EvolucaoSelecaoSimples idcampo={189} campo={'SENSO/PERCEPÇÃO'} obrigatorio={1}></EvolucaoSelecaoSimples>
+            <EvolucaoSelecaoSimples idcampo={190} campo={'ESTADO EMOCIONAL GERAL'} obrigatorio={1}></EvolucaoSelecaoSimples>
+            <EvolucaoSelecaoSimples idcampo={191} campo={'DECLÍNIO COGNITIVO APARENTE'} obrigatorio={1}></EvolucaoSelecaoSimples>
+            <EvolucaoSelecaoMultipla idcampo={192} campo={'DEMANDA DE ATENDIMENTO'} obrigatorio={1}></EvolucaoSelecaoMultipla>
+            <EvolucaoSelecaoMultipla idcampo={193} campo={'JUSTIFICATIVA DO ATENDIMENTO'} obrigatorio={1}></EvolucaoSelecaoMultipla>
+            <EvolucaoSelecaoSimples idcampo={194} campo={'FREQUÊNCIA DO ATENDIMENTO'} obrigatorio={1}></EvolucaoSelecaoSimples>
+            <EvolucaoSelecaoMultipla idcampo={195} campo={'JUST. PARA ATENDIMENTO SEMANAL'} obrigatorio={1}></EvolucaoSelecaoMultipla>
+            <EvolucaoSelecaoMultipla idcampo={196} campo={'JUST. PARA MONITORAMENTO QUINZENAL'} obrigatorio={1}></EvolucaoSelecaoMultipla>
+            <EvolucaoSelecaoMultipla idcampo={197} campo={'JUST. PARA MONITORAMENTO MENSAL'} obrigatorio={1}></EvolucaoSelecaoMultipla>
+            <EvolucaoSelecaoMultipla idcampo={198} campo={'PROPOSTAS'} obrigatorio={1}></EvolucaoSelecaoMultipla>
           </div>
 
           <div id="assinatura"
@@ -309,7 +279,7 @@ function AnamneseFisio() {
   function printDiv() {
     setprintdocumento(1);
     setTimeout(() => {
-      var divContents = document.getElementById("FORMULÁRIO - ANAMNESE FISIO").innerHTML;
+      var divContents = document.getElementById("FORMULÁRIO - ANAMNESE PSICOLOGIA").innerHTML;
       var a = window.open();
       a.document.write('<html>');
       a.document.write(divContents);
@@ -322,10 +292,10 @@ function AnamneseFisio() {
 
   // renderização dos componentes.
   return (
-    <div style={{ display: tipodocumento == 'ANAMNESE - CREFITO' && conselho == 'CREFITO' && statusdocumento != null ? 'flex' : 'none' }}>
+    <div style={{ display: tipodocumento == 'ANAMNESE - CRP' && conselho == 'CRP' && statusdocumento != null ? 'flex' : 'none' }}>
       <Form></Form>
     </div>
   )
 }
 
-export default AnamneseFisio;
+export default AnamnesePsicologia;

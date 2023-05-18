@@ -79,7 +79,7 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
           borderWidth: 5,
           padding: 10,
           margin: 5,
-          width: width,
+          // width: width,
           alignSelf: 'center'
         }}
       >
@@ -98,10 +98,10 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
                   onMouseLeave={() => {
                     if (
                       obrigatorio == 1 &&
-                      document.getElementById('opcao' + iddocumento + item.id).value == '') {
-                      document.getElementById("alerta" + idcampo).style.display = 'flex';
+                      document.getElementById('opcao' + item.id + random).value == '') {
+                      document.getElementById("alerta" + random).style.display = 'flex';
                     } else {
-                      document.getElementById("alerta" + idcampo).style.display = 'none';
+                      document.getElementById("alerta" + random).style.display = 'none';
                     }
                   }}
                 >
@@ -122,7 +122,9 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
                     style={{
                       alignSelf: 'center',
                       height: 100,
-                      width: width - 35,
+                      width: width,
+                      maxWidth: '',
+                      minWidth: '',
                       margin: 2.5,
                     }}
                     onKeyUp={() => {
@@ -178,6 +180,15 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
                       textAlign: 'center',
                     }}
                   ></input>
+                </div>
+              )
+            } else if (tipo == "card") {
+              return (
+                <div className='blue-button'
+                  style={{
+                    padding: 5,
+                  }}>
+                  <div>{x}</div>
                 </div>
               )
             } else {
@@ -267,6 +278,18 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
                   >
                     {x}
                   </div>
+                </div>
+              )
+            } else if (tipo == "card") {
+              return (
+                <div className='blue-button'
+                  style={{
+                    backgroundColor: 'rgb(0, 0, 0, 0.1)',
+                    color: 'black',
+                    fontFamily: 'Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
+                    fontSize: 10,
+                  }}>
+                  <div>{x}</div>
                 </div>
               )
             } else {

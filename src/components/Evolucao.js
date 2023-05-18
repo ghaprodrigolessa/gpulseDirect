@@ -14,8 +14,16 @@ import novo from '../images/novo.svg';
 import Signature from './Signature';
 
 import Modelo from '../documents/Modelo'
-import EvolucaoFisio from '../documents/EvolucaoFisio';
 import AnamneseFisio from '../documents/AnamneseFisio';
+import AnamneseFono from '../documents/AnamneseFono';
+import AnamnesePsicologia from '../documents/AnamnesePsicologia';
+import AnamneseServicoSocial from '../documents/AnamneseServicoSocial';
+import AnamneseTerapiaOcupacional from '../documents/AnamneseTerapiaOcupacional';
+import EvolucaoFisio from '../documents/EvolucaoFisio';
+import EvolucaoFono from '../documents/EvolucaoFono';
+import EvolucaoPsicologia from '../documents/EvolucaoPsicologia';
+import EvolucaoServicoSocial from '../documents/EvolucaoServicoSocial';
+import EvolucaoTerapiaOcupacional from '../documents/EvolucaoTerapiaOcupacional';
 
 function Evolucao(
   {
@@ -180,8 +188,16 @@ function Evolucao(
                   onMouseLeave={() => {
                   }}
                 >
-                  <EvolucaoFisio></EvolucaoFisio>
                   <AnamneseFisio></AnamneseFisio>
+                  <AnamneseFono></AnamneseFono>
+                  <AnamnesePsicologia></AnamnesePsicologia>
+                  <AnamneseServicoSocial></AnamneseServicoSocial>
+                  <AnamneseTerapiaOcupacional></AnamneseTerapiaOcupacional>
+                  <EvolucaoFisio></EvolucaoFisio>
+                  <EvolucaoFono></EvolucaoFono>
+                  <EvolucaoPsicologia></EvolucaoPsicologia>
+                  <EvolucaoServicoSocial></EvolucaoServicoSocial>
+                  <EvolucaoTerapiaOcupacional></EvolucaoTerapiaOcupacional>
                 </div>
               </div>
             </div>
@@ -461,6 +477,7 @@ function Evolucao(
             : null
           }
           style={{
+            display: 'none',
             width: '60vw',
             margin: 0,
             marginTop: 0, marginBottom: 10,
