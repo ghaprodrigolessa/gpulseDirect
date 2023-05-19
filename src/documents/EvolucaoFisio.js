@@ -245,8 +245,9 @@ function EvolucaoFisio() {
             </div>
           </div>
 
-          <div style={{ fontSize: 14, textAlign: 'center', padding: 10, fontWeight: 'bold', alignSelf: 'center' }}>AVALIAÇÃO INICIAL</div>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <div className="title2center" style={{ width: '100%', fontSize: 16, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>EVOLUÇÃO FISIOTERÁPICA</div>
+            <div className="title2center" style={{ width: '100%', fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>AVALIAÇÃO INICIAL</div>
             <EvolucaoSelecaoSimples idcampo={4} campo={'DOR'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoSelecaoSimples idcampo={5} campo={'VIGÍLIA'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoSelecaoSimples idcampo={6} campo={'COMPREENSÃO'} obrigatorio={1}></EvolucaoSelecaoSimples>
@@ -255,7 +256,7 @@ function EvolucaoFisio() {
             <EvolucaoTexto idcampo={9} campo={'NOME DO ACOMPANHANTE'} obrigatorio={2} tipo={"input"} length={300} width={300}></EvolucaoTexto>
             <EvolucaoSelecaoSimples idcampo={10} campo={'POSIÇÃO NO LEITO'} obrigatorio={2}></EvolucaoSelecaoSimples>
           </div>
-          <div style={{ fontSize: 14, textAlign: 'center', padding: 20, fontWeight: 'bold', alignSelf: 'center' }}>AVALIAÇÃO RESPIRATÓRIA</div>
+          <div className="title2center" style={{ width: '100%', fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>AVALIAÇÃO RESPIRATÓRIA</div>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
             <EvolucaoSelecaoSimples idcampo={11} campo={'VIA DE ENTRADA DE AR'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoSelecaoSimples idcampo={12} campo={'EXPANSIBILIDADE'} obrigatorio={1}></EvolucaoSelecaoSimples>
@@ -274,7 +275,7 @@ function EvolucaoFisio() {
             <EvolucaoTexto idcampo={30} campo={'PEEP'} obrigatorio={1} tipo={"input"} length={3} width={100}></EvolucaoTexto>
             <EvolucaoTexto idcampo={31} campo={'FI'} obrigatorio={1} tipo={"input"} length={3} width={100}></EvolucaoTexto>
           </div>
-          <div style={{ fontSize: 14, textAlign: 'center', padding: 20, fontWeight: 'bold', alignSelf: 'center' }}>AVALIAÇÃO MOTORA</div>
+          <div className="title2center" style={{ width: '100%', fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>AVALIAÇÃO MOTORA</div>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
             <EvolucaoSelecaoMultipla idcampo={22} campo={'ALTERAÇÕES NEUROMUSCULARES'} obrigatorio={1}></EvolucaoSelecaoMultipla>
             <EvolucaoSelecaoMultipla idcampo={23} campo={'ALTERAÇÕES ORTOPÉDICAS'} obrigatorio={1}></EvolucaoSelecaoMultipla>
@@ -291,13 +292,14 @@ function EvolucaoFisio() {
             <EvolucaoTexto idcampo={40} campo={'AMPLITUDE DE MOVIMENTO'} obrigatorio={1} tipo={"input"} length={300} width={300}></EvolucaoTexto>
             <EvolucaoSelecaoSimples idcampo={41} campo={'CONTROLE ESFINCTERIANO URINÁRIO'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoSelecaoSimples idcampo={42} campo={'CONTROLE ESFINCTERIANO FECAL'} obrigatorio={1}></EvolucaoSelecaoSimples>
+            
             <EvolucaoSelecaoMultipla idcampo={43} campo={'CONDUTA - FISIOTERAPIA MOTORA'} obrigatorio={1}></EvolucaoSelecaoMultipla>
-            <EvolucaoTexto idcampo={44} campo={'OUTRAS CONDUTAS - MOTORA'} obrigatorio={1} tipo={"textarea"} length={2000} width={200}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={44} campo={'OUTRAS CONDUTAS - MOTORA'} obrigatorio={1} tipo={"textarea"} length={2000} width={'60vw'}></EvolucaoTexto>
             <EvolucaoSelecaoMultipla idcampo={45} campo={'CONDUTA - FISIOTERAPIA RESPIRATÓRIA'} obrigatorio={1}></EvolucaoSelecaoMultipla>
-            <EvolucaoTexto idcampo={46} campo={'OUTRAS CONDUTAS - RESPIRATÓRIA'} obrigatorio={1} tipo={"textarea"} length={2000} width={200}></EvolucaoTexto>
-            <EvolucaoTexto idcampo={47} campo={'TRANSIÇÃO DE CUIDADOS'} obrigatorio={1} tipo={"textarea"} length={2000} width={200}></EvolucaoTexto>
-            <EvolucaoTexto idcampo={48} campo={'DISCUSSÃO INTERDISCIPLINAR'} obrigatorio={1} tipo={"textarea"} length={2000} width={200}></EvolucaoTexto>
-            <EvolucaoTexto idcampo={49} campo={'OBSERVAÇÕES'} obrigatorio={1} tipo={"textarea"} length={2000} width={200}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={46} campo={'OUTRAS CONDUTAS - RESPIRATÓRIA'} obrigatorio={1} tipo={"textarea"} length={2000} width={'60vw'}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={47} campo={'TRANSIÇÃO DE CUIDADOS'} obrigatorio={1} tipo={"textarea"} length={2000} width={'60vw'}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={48} campo={'DISCUSSÃO INTERDISCIPLINAR'} obrigatorio={1} tipo={"textarea"} length={2000} width={'60vw'}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={49} campo={'OBSERVAÇÕES'} obrigatorio={1} tipo={"textarea"} length={2000} width={'60vw'}></EvolucaoTexto>
           </div>
           <div style={{ fontSize: 14, textAlign: 'center', padding: 20, fontWeight: 'bold', alignSelf: 'center' }}>UTILIZAÇÃO DE DISPOSITIVOS RESPIRATÓRIOS</div>
           <EvolucaoSelecaoSimples idcampo={50} campo={'DISPOSITIVO RESPIRATÓRIO'} obrigatorio={1}></EvolucaoSelecaoSimples>

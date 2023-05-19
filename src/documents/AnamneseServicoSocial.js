@@ -1,5 +1,5 @@
 /* eslint eqeqeq: "off" */
-import React, { useContext, useEffect, useCallback } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Context from '../Context';
 import axios from 'axios'
 import moment from 'moment';
@@ -33,7 +33,7 @@ function AnamneseServicoSocial() {
     selectedcategoria,
   } = useContext(Context);
 
-  let camposusados = [123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145]
+  let camposusados = [123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 205]
 
   useEffect(() => {
     if (tipodocumento == 'ANAMNESE - CRESS' && conselho == 'CRESS') {
@@ -128,279 +128,305 @@ function AnamneseServicoSocial() {
   }
 
   // ESCALA DE GIJÓN (showescala = 9).
-  let situacaofamiliar = -1;
-  let situacaoeconomica = -1;
-  let relacoessociais = -1;
-  let contatofamilia = -1;
-  let apoioredesocial = -1;
-  let habitacao = -1;
+  function Gijon() {
+    const [situacaofamiliar, setsituacaofamiliar] = useState(-1);
+    const [situacaoeconomica, setsituacaoeconomica] = useState(0);
+    const [relacoessociais, setrelacoessociais] = useState(0);
+    const [contatofamilia, setcontatofamilia] = useState(0);
+    const [apoioredesocial, setapoioredesocial] = useState(0);
+    const [habitacao, sethabitacao] = useState(0);
 
-  var htmlghapinsertescala = process.env.REACT_APP_API_CLONE_INSERTESCALA;
-  const insertGijon = () => {
-    var score = situacaofamiliar + situacaoeconomica + relacoessociais + contatofamilia + apoioredesocial + habitacao;
-    var significado = '';
-    if (score < 10) {
-      significado = 'BOA SITUAÇÃO SOCIAL';
-    } else if (score > 9 && score < 15) {
-      significado = 'RISCO SOCIAL';
-    } else {
-      significado = 'PROBLEMA SOCIAL';
+    var htmlghapinsertescala = process.env.REACT_APP_API_CLONE_INSERTESCALA;
+    const [score, setscore] = useState(0);
+    const insertGijon = () => {
+      setscore(situacaofamiliar + situacaoeconomica + relacoessociais + contatofamilia + apoioredesocial + habitacao);
+      var significado = '';
+      if (score < 10) {
+        significado = 'BOA SITUAÇÃO SOCIAL';
+      } else if (score > 9 && score < 15) {
+        significado = 'RISCO SOCIAL';
+      } else {
+        significado = 'PROBLEMA SOCIAL';
+      }
+      var obj = {
+        idpct: idpaciente,
+        idatendimento: idatendimento,
+        data: moment(),
+        cd_escala: 9,
+        ds_escala: 'GIJÓN',
+        valor_resultado: score,
+        ds_resultado: significado,
+        idprofissional: 0,
+        status: 1,
+      }
+      axios.post(htmlghapinsertescala, obj).then(() => {
+        // loadEscalas();
+      })
     }
-    var obj = {
-      idpct: idpaciente,
-      idatendimento: idatendimento,
-      data: moment(),
-      cd_escala: 9,
-      ds_escala: 'GIJÓN',
-      valor_resultado: score,
-      ds_resultado: significado,
-      idprofissional: 0,
-      status: 1,
+    const updateGijonValor = () => {
+      axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
+        var x = [0, 1];
+        x = response.data.rows;
+        var id = x
+          .filter(valor => valor.idevolucao == iddocumento && valor.idcampo == 205)
+          .sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).slice(-1).map(item => item.id);
+        // atualizando registro.  
+        var obj = {
+          idpct: idpaciente,
+          idatendimento: idatendimento,
+          data: moment(),
+          idcampo: 205,
+          idopcao: 677,
+          opcao: 'ESCALA - GIJON',
+          valor: situacaofamiliar + situacaoeconomica + relacoessociais + contatofamilia + apoioredesocial + habitacao,
+          idevolucao: iddocumento
+        }
+        console.log(obj);
+        axios.post('http://192.168.100.6:3333/update_evolucao_valor/' + id, obj);
+      });
     }
-    axios.post(htmlghapinsertescala, obj).then(() => {
-      // loadEscalas();
-    })
-  }
 
-  // destacando botões selecionados nas escalas.
-  const setActive = (escala, btn) => {
-    var botoes = document.getElementById(escala).getElementsByClassName("red-button");
-    for (var i = 0; i < botoes.length; i++) {
-      botoes.item(i).className = "blue-button";
+    // destacando botões selecionados nas escalas.
+    const setActive = (escala, btn) => {
+      var botoes = document.getElementById(escala).getElementsByClassName("red-button");
+      for (var i = 0; i < botoes.length; i++) {
+        botoes.item(i).className = "blue-button";
+      }
+      document.getElementById(btn).className = "red-button"
     }
-    document.getElementById(btn).className = "red-button"
-  }
 
-  const Gijon = useCallback(() => {
     return (
-      <div className="menucontainer">
-        <div id="cabeçalho" className="cabecalho">
-          <div className="title5">{'ESCALA DE GIJÓN'}</div>
-          <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-            <button className="green-button"
-            // onClick={() => checkEscala([situacaofamiliar, situacaoeconomica, relacoessociais, contatofamilia, apoioredesocial], insertGijon)}
-            >
-              <img
-                alt=""
-                src={salvar}
-                style={{
-                  margin: 10,
-                  height: 30,
-                  width: 30,
-                }}
-              ></img>
-            </button>
+      <div>
+        <div className="menucontainer">
+          <div id="cabeçalho" className="cabecalho">
+            <div className="title5">{'ESCALA DE GIJÓN'}</div>
+            <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+              <button className="green-button"
+                onClick={() => {insertGijon(); updateGijonValor()}}
+              >
+                <img
+                  alt=""
+                  src={salvar}
+                  style={{
+                    margin: 10,
+                    height: 30,
+                    width: 30,
+                  }}
+                ></img>
+              </button>
+            </div>
           </div>
-        </div>
-        <div
-          className="corpo">
-          <div>
-            <div className="scroll"
-              style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', marginBottom: 5, height: '60vh', width: '80vw' }}>
-              <div className="title2center">SITUAÇÃO FAMILIAR</div>
-              <div id="SITUACAO_FAMILIAR" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-                <button id="sf1"
-                  className="blue-button"
-                  onClick={() => { situacaofamiliar = 0; setActive("SITUACAO_FAMILIAR", "sf1") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  VIVE COM A FAMÍLIA SEM DEPENDÊNCIA FÍSICA OU PSÍQUICA
-                </button>
-                <button id="sf2"
-                  className="blue-button"
-                  onClick={() => { situacaofamiliar = 1; setActive("SITUACAO_FAMILIAR", "sf2") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  VIVE COM CONJUJE/ COMPANHEIRO DE SIMILARIDADE
-                </button>
-                <button id="sf3"
-                  className="blue-button"
-                  onClick={() => { situacaofamiliar = 2; setActive("SITUACAO_FAMILIAR", "sf3") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  VIVE COM A FAMÍLIA E/OU CONJUGUE/COMPANHEIRO COM ALGUM GRAU DE DEPENDÊNCIA
-                </button>
-                <button id="sf4"
-                  className="blue-button"
-                  onClick={() => { situacaofamiliar = 3; setActive("SITUACAO_FAMILIAR", "sf4") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  VIVE COM PESSOAS QUE NÃO SÃO FAMILIARES POR LAÇOS SANGUÍNEOS
-                </button>
-                <button id="sf5"
-                  className="blue-button"
-                  onClick={() => { situacaofamiliar = 4; setActive("SITUACAO_FAMILIAR", "sf5") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  VIVE SOZINHO, MAS TEM FAMILIARES PRÓXIMOS
-                </button>
-                <button id="sf6"
-                  className="blue-button"
-                  onClick={() => { situacaofamiliar = 5; setActive("SITUACAO_FAMILIAR", "sf6") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  VIVE SOZINHO, SEM FILHOS OU FAMILIARES PRÓXIMOS
-                </button>
-                <button id="sf7"
-                  className="blue-button"
-                  onClick={() => { situacaofamiliar = 6; setActive("SITUACAO_FAMILIAR", "sf7") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  {"ESTÁ INSTITUCIONALIZADO (LONGA PERMANÊNCIA)"}
-                </button>
-              </div>
-              <div className="title2center">SITUAÇÃO ECONÔMICA</div>
-              <div id="SITUACAO_ECONOMICA" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-                <button id="se1"
-                  className="blue-button"
-                  onClick={() => { situacaoeconomica = 0; setActive("SITUACAO_ECONOMICA", "se1") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  MAIS DE 3 SALÁRIOS MÍNIMOS
-                </button>
-                <button id="se2"
-                  className="blue-button"
-                  onClick={() => { situacaoeconomica = 1; setActive("SITUACAO_ECONOMICA", "se2") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  DE 2 A 3 SALÁRIOS MÍNIMOS
-                </button>
-                <button id="se3"
-                  className="blue-button"
-                  onClick={() => { situacaoeconomica = 2; setActive("SITUACAO_ECONOMICA", "se3") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  DE 1 A 2 SALÁRIOS MÍNIMOS
-                </button>
-                <button id="se4"
-                  className="blue-button"
-                  onClick={() => { situacaoeconomica = 3; setActive("SITUACAO_ECONOMICA", "se4") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  ABAIXO DE 1 SALÁRIO MÍNIMO
-                </button>
-                <button id="se5"
-                  className="blue-button"
-                  onClick={() => { situacaoeconomica = 4; setActive("SITUACAO_ECONOMICA", "se5") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  SEM RENDIMENTO
-                </button>
-              </div>
-              <div className="title2center">RELAÇÕES SOCIAIS</div>
-              <div id="RELACOES_SOCIAIS" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-                <button id="rl1"
-                  className="blue-button"
-                  onClick={() => { relacoessociais = 0; setActive("RELACOES_SOCIAIS", "rl1") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  RELAÇÕES SOCIAIS, VIDA SOCIAL ATIVA
-                </button>
-                <button id="rl2"
-                  className="blue-button"
-                  onClick={() => { relacoessociais = 1; setActive("RELACOES_SOCIAIS", "rl2") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  RELAÇÕES SOCIAIS SÓ COM FAMÍLIA E VIZINHOS, SAI DE CASA
-                </button>
-                <button id="rl3"
-                  className="blue-button"
-                  onClick={() => { relacoessociais = 2; setActive("RELACOES_SOCIAIS", "rl3") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  APENAS SE RELACIONA COM A FAMÍLIA OU VIZINHOS, SAI DE CASA
-                </button>
-                <button id="rl4"
-                  className="blue-button"
-                  onClick={() => { relacoessociais = 3; setActive("RELACOES_SOCIAIS", "rl4") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  NÃO SAI DE CASA, RECEBE FAMÍLIA OU VISITAS
-                </button>
-                <button id="rl5"
-                  className="blue-button"
-                  onClick={() => { relacoessociais = 4; setActive("RELACOES_SOCIAIS", "rl5") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  NÃO SAI DE CASA NEM RECEBE VISITAS
-                </button>
-              </div>
-              <div className="title2center">CONTATO COM A FAMÍLIA</div>
-              <div id="CONTATO_FAMILIA" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-                <button id="cf1"
-                  className="blue-button"
-                  onClick={() => { contatofamilia = 0; setActive("CONTATO_FAMILIA", "cf1") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  QUINZENAL / SEMANAL / DIÁRIO
-                </button>
-                <button id="cf2"
-                  className="blue-button"
-                  onClick={() => { contatofamilia = 1; setActive("CONTATO_FAMILIA", "cf2") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  MENSAL
-                </button>
-                <button id="cf3"
-                  className="blue-button"
-                  onClick={() => { contatofamilia = 2; setActive("CONTATO_FAMILIA", "cf3") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  4 A 11 VEZES AO ANO
-                </button>
-                <button id="cf4"
-                  className="blue-button"
-                  onClick={() => { contatofamilia = 3; setActive("CONTATO_FAMILIA", "cf4") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  1 A 3 VEZES AO ANO
-                </button>
-                <button id="cf5"
-                  className="blue-button"
-                  onClick={() => { contatofamilia = 4; setActive("CONTATO_FAMILIA", "cf5") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  SEM CONTATO
-                </button>
-              </div>
-              <div className="title2center">APOIO DE REDE SOCIAL</div>
-              <div id="REDE_SOCIAL" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-                <button id="rs1"
-                  className="blue-button"
-                  onClick={() => { apoioredesocial = 0; setActive("REDE_SOCIAL", "rs1") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  COM APOIO DE FAMILIAR OU DE VIZINHOS
-                </button>
-                <button id="rs2"
-                  className="blue-button"
-                  onClick={() => { apoioredesocial = 1; setActive("REDE_SOCIAL", "rs2") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  VOLUNTARIADO SOCIAL, AJUDA DOMICILIÁRIA
-                </button>
-                <button id="rs3"
-                  className="blue-button"
-                  onClick={() => { apoioredesocial = 2; setActive("REDE_SOCIAL", "rs3") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  NÃO TEM APOIO
-                </button>
-                <button id="rs4"
-                  className="blue-button"
-                  onClick={() => { apoioredesocial = 3; setActive("REDE_SOCIAL", "rs4") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  COM CRITÉRIOS PARA INGRESSO EM INSTITUIÇÃO GERIÁTRICA
-                </button>
-                <button id="rs5"
-                  className="blue-button"
-                  onClick={() => { apoioredesocial = 4; setActive("REDE_SOCIAL", "rs5") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  TEM CUIDADOS PERMANENTES
-                </button>
-              </div>
-              <div className="title2center">HABITAÇÃO</div>
-              <div id="HABITAÇÃO" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-                <button id="hab1"
-                  className="blue-button"
-                  onClick={() => { habitacao = 0; setActive("HABITAÇÃO", "hab1") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  ADEQUADA ÀS NECESSIDADES
-                </button>
-                <button id="hab2"
-                  className="blue-button"
-                  onClick={() => { habitacao = 1; setActive("HABITAÇÃO", "hab2") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  BARREIRAS ARQUITETÔNICAS NA CASA/ENTRADA
-                </button>
-                <button id="hab3"
-                  className="blue-button"
-                  onClick={() => { habitacao = 2; setActive("HABITAÇÃO", "hab3") }}
-                  style={{ padding: 10, width: 200, minWidth: 200 }}>
-                  UMIDADE, FRACAS CONDIÇÕES DE HIGIENE, AUSÊNCIA DE ÁGUA OU INFRAESTRUTURA
-                </button>
+          <div
+            className="corpo">
+            <div>
+              <div className="scroll"
+                style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', marginBottom: 5, height: '60vh' }}>
+                <div className="title2center">SITUAÇÃO FAMILIAR</div>
+                <div id="SITUACAO_FAMILIAR" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <button id="sf1"
+                    className="blue-button"
+                    onClick={() => { setsituacaofamiliar(0); setActive("SITUACAO_FAMILIAR", "sf1") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    VIVE COM A FAMÍLIA SEM DEPENDÊNCIA FÍSICA OU PSÍQUICA
+                  </button>
+                  <button id="sf2"
+                    className="blue-button"
+                    onClick={() => { setsituacaofamiliar(1); setActive("SITUACAO_FAMILIAR", "sf2") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    VIVE COM CONJUJE/ COMPANHEIRO DE SIMILARIDADE
+                  </button>
+                  <button id="sf3"
+                    className="blue-button"
+                    onClick={() => { setsituacaofamiliar(2); setActive("SITUACAO_FAMILIAR", "sf3") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    VIVE COM A FAMÍLIA E/OU CONJUGUE/COMPANHEIRO COM ALGUM GRAU DE DEPENDÊNCIA
+                  </button>
+                  <button id="sf4"
+                    className="blue-button"
+                    onClick={() => { setsituacaofamiliar(3); setActive("SITUACAO_FAMILIAR", "sf4") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    VIVE COM PESSOAS QUE NÃO SÃO FAMILIARES POR LAÇOS SANGUÍNEOS
+                  </button>
+                  <button id="sf5"
+                    className="blue-button"
+                    onClick={() => { setsituacaofamiliar(4); setActive("SITUACAO_FAMILIAR", "sf5") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    VIVE SOZINHO, MAS TEM FAMILIARES PRÓXIMOS
+                  </button>
+                  <button id="sf6"
+                    className="blue-button"
+                    onClick={() => { setsituacaofamiliar(5); setActive("SITUACAO_FAMILIAR", "sf6") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    VIVE SOZINHO, SEM FILHOS OU FAMILIARES PRÓXIMOS
+                  </button>
+                  <button id="sf7"
+                    className="blue-button"
+                    onClick={() => { setsituacaofamiliar(6); setActive("SITUACAO_FAMILIAR", "sf7") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    {"ESTÁ INSTITUCIONALIZADO (LONGA PERMANÊNCIA)"}
+                  </button>
+                </div>
+                <div className="title2center">SITUAÇÃO ECONÔMICA</div>
+                <div id="SITUACAO_ECONOMICA" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <button id="se1"
+                    className="blue-button"
+                    onClick={() => { setsituacaoeconomica(0); setActive("SITUACAO_ECONOMICA", "se1") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    MAIS DE 3 SALÁRIOS MÍNIMOS
+                  </button>
+                  <button id="se2"
+                    className="blue-button"
+                    onClick={() => { setsituacaoeconomica(1); setActive("SITUACAO_ECONOMICA", "se2") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    DE 2 A 3 SALÁRIOS MÍNIMOS
+                  </button>
+                  <button id="se3"
+                    className="blue-button"
+                    onClick={() => { setsituacaoeconomica(2); setActive("SITUACAO_ECONOMICA", "se3") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    DE 1 A 2 SALÁRIOS MÍNIMOS
+                  </button>
+                  <button id="se4"
+                    className="blue-button"
+                    onClick={() => { setsituacaoeconomica(3); setActive("SITUACAO_ECONOMICA", "se4") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    ABAIXO DE 1 SALÁRIO MÍNIMO
+                  </button>
+                  <button id="se5"
+                    className="blue-button"
+                    onClick={() => { setsituacaoeconomica(4); setActive("SITUACAO_ECONOMICA", "se5") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    SEM RENDIMENTO
+                  </button>
+                </div>
+                <div className="title2center">RELAÇÕES SOCIAIS</div>
+                <div id="RELACOES_SOCIAIS" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <button id="rl1"
+                    className="blue-button"
+                    onClick={() => { setrelacoessociais(0); setActive("RELACOES_SOCIAIS", "rl1") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    RELAÇÕES SOCIAIS, VIDA SOCIAL ATIVA
+                  </button>
+                  <button id="rl2"
+                    className="blue-button"
+                    onClick={() => { setrelacoessociais(1); setActive("RELACOES_SOCIAIS", "rl2") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    RELAÇÕES SOCIAIS SÓ COM FAMÍLIA E VIZINHOS, SAI DE CASA
+                  </button>
+                  <button id="rl3"
+                    className="blue-button"
+                    onClick={() => { setrelacoessociais(2); setActive("RELACOES_SOCIAIS", "rl3") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    APENAS SE RELACIONA COM A FAMÍLIA OU VIZINHOS, SAI DE CASA
+                  </button>
+                  <button id="rl4"
+                    className="blue-button"
+                    onClick={() => { setrelacoessociais(3); setActive("RELACOES_SOCIAIS", "rl4") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    NÃO SAI DE CASA, RECEBE FAMÍLIA OU VISITAS
+                  </button>
+                  <button id="rl5"
+                    className="blue-button"
+                    onClick={() => { setrelacoessociais(4); setActive("RELACOES_SOCIAIS", "rl5") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    NÃO SAI DE CASA NEM RECEBE VISITAS
+                  </button>
+                </div>
+                <div className="title2center">CONTATO COM A FAMÍLIA</div>
+                <div id="CONTATO_FAMILIA" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <button id="cf1"
+                    className="blue-button"
+                    onClick={() => { setcontatofamilia(0); setActive("CONTATO_FAMILIA", "cf1") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    QUINZENAL / SEMANAL / DIÁRIO
+                  </button>
+                  <button id="cf2"
+                    className="blue-button"
+                    onClick={() => { setcontatofamilia(1); setActive("CONTATO_FAMILIA", "cf2") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    MENSAL
+                  </button>
+                  <button id="cf3"
+                    className="blue-button"
+                    onClick={() => { setcontatofamilia(2); setActive("CONTATO_FAMILIA", "cf3") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    4 A 11 VEZES AO ANO
+                  </button>
+                  <button id="cf4"
+                    className="blue-button"
+                    onClick={() => { setcontatofamilia(3); setActive("CONTATO_FAMILIA", "cf4") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    1 A 3 VEZES AO ANO
+                  </button>
+                  <button id="cf5"
+                    className="blue-button"
+                    onClick={() => { setcontatofamilia(4); setActive("CONTATO_FAMILIA", "cf5") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    SEM CONTATO
+                  </button>
+                </div>
+                <div className="title2center">APOIO DE REDE SOCIAL</div>
+                <div id="REDE_SOCIAL" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <button id="rs1"
+                    className="blue-button"
+                    onClick={() => { setapoioredesocial(0); setActive("REDE_SOCIAL", "rs1") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    COM APOIO DE FAMILIAR OU DE VIZINHOS
+                  </button>
+                  <button id="rs2"
+                    className="blue-button"
+                    onClick={() => { setapoioredesocial(1); setActive("REDE_SOCIAL", "rs2") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    VOLUNTARIADO SOCIAL, AJUDA DOMICILIÁRIA
+                  </button>
+                  <button id="rs3"
+                    className="blue-button"
+                    onClick={() => { setapoioredesocial(2); setActive("REDE_SOCIAL", "rs3") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    NÃO TEM APOIO
+                  </button>
+                  <button id="rs4"
+                    className="blue-button"
+                    onClick={() => { setapoioredesocial(3); setActive("REDE_SOCIAL", "rs4") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    COM CRITÉRIOS PARA INGRESSO EM INSTITUIÇÃO GERIÁTRICA
+                  </button>
+                  <button id="rs5"
+                    className="blue-button"
+                    onClick={() => { setapoioredesocial(4); setActive("REDE_SOCIAL", "rs5") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    TEM CUIDADOS PERMANENTES
+                  </button>
+                </div>
+                <div className="title2center">HABITAÇÃO</div>
+                <div id="HABITAÇÃO" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <button id="hab1"
+                    className="blue-button"
+                    onClick={() => { sethabitacao(0); setActive("HABITAÇÃO", "hab1") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    ADEQUADA ÀS NECESSIDADES
+                  </button>
+                  <button id="hab2"
+                    className="blue-button"
+                    onClick={() => { sethabitacao(1); setActive("HABITAÇÃO", "hab2") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    BARREIRAS ARQUITETÔNICAS NA CASA/ENTRADA
+                  </button>
+                  <button id="hab3"
+                    className="blue-button"
+                    onClick={() => { sethabitacao(2); setActive("HABITAÇÃO", "hab3") }}
+                    style={{ padding: 10, width: 200, minWidth: 200 }}>
+                    UMIDADE, FRACAS CONDIÇÕES DE HIGIENE, AUSÊNCIA DE ÁGUA OU INFRAESTRUTURA
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <EvolucaoTexto idcampo={205} campo={'ESCALA DE GIJON'} obrigatorio={1} tipo={'card'} lenght={10} width={150} valor_escala={score}></EvolucaoTexto>
       </div>
     );
-  }, []);
+  };
 
   function Form() {
     return (
@@ -502,9 +528,9 @@ function AnamneseServicoSocial() {
             </div>
           </div>
 
-          <div style={{ fontSize: 14, textAlign: 'center', padding: 10, fontWeight: 'bold', alignSelf: 'center' }}>ANAMNESE SOCIAL REALIZADA COM:</div>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-
+            <div className="title2center" style={{ width: '100%', fontSize: 16, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>ANAMNESE DO SERVIÇO SOCIAL</div>
+            <div className="title2center" style={{ width: '100%', fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>ANAMNESE SOCIAL REALIZADA COM:</div>
             <EvolucaoTexto idcampo={123} campo={'NOME DO ACOMPANHANTE'} obrigatorio={1} tipo={'input'} lenght={200} width={500}></EvolucaoTexto>
             <EvolucaoTexto idcampo={124} campo={'GRAU DE PARENTESCO'} obrigatorio={1} tipo={'input'} lenght={200} width={500}></EvolucaoTexto>
             <EvolucaoTexto idcampo={125} campo={'CONTATO DO ACOMPANHANTE'} obrigatorio={1} tipo={'input'} lenght={200} width={500}></EvolucaoTexto>
@@ -520,8 +546,7 @@ function AnamneseServicoSocial() {
             <EvolucaoSelecaoSimples idcampo={134} campo={'TABAGISTA'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoSelecaoSimples idcampo={135} campo={'ETILISTA'} obrigatorio={1}></EvolucaoSelecaoSimples>
 
-            <Gijon></Gijon>
-
+            <div className="title2center" style={{ width: '100%', fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>{'COMPOSIÇÃO FAMILIAR (COM QUEM O PACIENTE RESIDE)'}</div>
             <EvolucaoTexto idcampo={136} campo={'NOME DO PARENTE DE REFERÊNCIA'} obrigatorio={1} tipo={'input'} lenght={200} width={500}></EvolucaoTexto>
             <EvolucaoTexto idcampo={137} campo={'GRAU DE PARENTESCO'} obrigatorio={1} tipo={'input'} lenght={200} width={500}></EvolucaoTexto>
             <EvolucaoTexto idcampo={138} campo={'IDADE DO PARENTE'} obrigatorio={1} tipo={'input'} lenght={3} width={150}></EvolucaoTexto>
@@ -529,10 +554,12 @@ function AnamneseServicoSocial() {
             <EvolucaoTexto idcampo={140} campo={'OCUPAÇÃO DO PARENTE'} obrigatorio={1} tipo={'input'} lenght={200} width={500}></EvolucaoTexto>
             <EvolucaoTexto idcampo={141} campo={'CONTATO DO PARENTE'} obrigatorio={1} tipo={'input'} lenght={200} width={500}></EvolucaoTexto>
             <EvolucaoTexto idcampo={142} campo={'ENDEREÇO ATUAL'} obrigatorio={1} tipo={'input'} lenght={2000} width={500}></EvolucaoTexto>
-            <EvolucaoTexto idcampo={143} campo={'CENTRO DE SAÚDE E EQUIPE DE REFERÊNCIA'} obrigatorio={1} tipo={'input'} lenght={2000} width={500}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={143} campo={'CENTRO DE SAÚDE E EQUIPE DE REFERÊNCIA'} obrigatorio={1} tipo={'input'} lenght={2000} width={'60vw'}></EvolucaoTexto>
             <EvolucaoTexto idcampo={144} campo={'ENDEREÇO PÓS ALTA'} obrigatorio={1} tipo={'input'} lenght={2000} width={500}></EvolucaoTexto>
-            <EvolucaoTexto idcampo={145} campo={'OBSERVAÇÕES - ANAMNESE DO SERVIÇO SOCIAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={500}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={145} campo={'OBSERVAÇÕES - ANAMNESE DO SERVIÇO SOCIAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
           </div>
+
+          <Gijon></Gijon>
 
           <div id="assinatura"
             style={{

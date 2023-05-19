@@ -227,26 +227,25 @@ function EvolucaoTerapiaOcupacional() {
             </div>
           </div>
 
-          <div style={{ fontSize: 14, textAlign: 'center', padding: 10, fontWeight: 'bold', alignSelf: 'center' }}>ANAMNESE SOCIAL REALIZADA COM:</div>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-
+            <div className="title2center" style={{ width: '100%', fontSize: 16, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>EVOLUÇÃO DO SERVIÇO SOCIAL</div>
             <EvolucaoSelecaoSimples idcampo={149} campo={'LOCAL DO ATENDIMENTO'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoSelecaoSimples idcampo={150} campo={'ACOMPANHANTE PRESENTE'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoTexto idcampo={151} campo={'NOME DO ACOMPANHANTE'} obrigatorio={1} tipo={'input'} lenght={200} width={500}></EvolucaoTexto>
-            <EvolucaoTexto idcampo={67} campo={'HISTÓRIA DA DOENÇA ATUAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={500}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={67} campo={'HISTÓRIA DA DOENÇA ATUAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
             <EvolucaoSelecaoMultipla idcampo={22} campo={'ALTERAÇÕES MOTORAS'} obrigatorio={1}></EvolucaoSelecaoMultipla>
             <EvolucaoSelecaoMultipla idcampo={92} campo={'ALTERAÇÕES DA FALA'} obrigatorio={1}></EvolucaoSelecaoMultipla>
             <EvolucaoSelecaoSimples idcampo={152} campo={'APRESENTAÇÃO'} obrigatorio={1}></EvolucaoSelecaoSimples>
-
+            <div className="title2center" style={{ width: '100%', fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>CONDUTA</div>
             <EvolucaoSelecaoMultipla idcampo={153} campo={'INTERVENÇÕES RESTAURADORAS DAS FUNÇÕES DO CORPO'} obrigatorio={1}></EvolucaoSelecaoMultipla>
-            <EvolucaoTexto idcampo={154} campo={'OUTRAS INTERVENÇÕES RESTAURADORAS DAS FUNÇÕES DO CORPO'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={500}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={154} campo={'OUTRAS INTERVENÇÕES RESTAURADORAS DAS FUNÇÕES DO CORPO'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
             <EvolucaoSelecaoMultipla idcampo={155} campo={'ATIVIDADE E PARTICIPAÇÃO'} obrigatorio={1}></EvolucaoSelecaoMultipla>
-            <EvolucaoTexto idcampo={156} campo={'OUTRAS ATIVIDADES E PARTICIPAÇÕES'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={500}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={156} campo={'OUTRAS ATIVIDADES E PARTICIPAÇÕES'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
             <EvolucaoSelecaoMultipla idcampo={157} campo={'FATORES AMBIENTAIS'} obrigatorio={1}></EvolucaoSelecaoMultipla>
-            <EvolucaoTexto idcampo={158} campo={'OUTROS FATORES AMBIENTAIS'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={500}></EvolucaoTexto>
-            <EvolucaoTexto idcampo={159} campo={'OBSERVAÇÕES - TERAPIA OCUPACIONAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={500}></EvolucaoTexto>
-            <EvolucaoTexto idcampo={48} campo={'DISCUSSÃO INTERDISCIPLINAR'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={500}></EvolucaoTexto>
-            <EvolucaoTexto idcampo={160} campo={'TRANSIÇÃO DE CUIDADOS - TERAPIA OCUPACIONAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={500}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={158} campo={'OUTROS FATORES AMBIENTAIS'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={159} campo={'OBSERVAÇÕES - TERAPIA OCUPACIONAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={48} campo={'DISCUSSÃO INTERDISCIPLINAR'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={160} campo={'TRANSIÇÃO DE CUIDADOS - TERAPIA OCUPACIONAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
           </div>
 
           <div id="assinatura"

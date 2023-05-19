@@ -227,9 +227,8 @@ function AnamneseTerapiaOcupacional() {
             </div>
           </div>
 
-          <div style={{ fontSize: 14, textAlign: 'center', padding: 10, fontWeight: 'bold', alignSelf: 'center' }}>ANAMNESE SOCIAL REALIZADA COM:</div>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-
+            <div className="title2center" style={{ width: '100%', fontSize: 16, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>ANAMNESE DA TERAPIA OCUPACIONAL</div>
             <EvolucaoSelecaoSimples idcampo={150} campo={'ACOMPANHANTE PRESENTE'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoTexto idcampo={151} campo={'NOME DO ACOMPANHANTE'} obrigatorio={1} tipo={'input'} lenght={200} width={500}></EvolucaoTexto>
             <EvolucaoSelecaoSimples idcampo={161} campo={'GÊNERO'} obrigatorio={1}></EvolucaoSelecaoSimples>
@@ -243,18 +242,18 @@ function AnamneseTerapiaOcupacional() {
             <EvolucaoTexto idcampo={167} campo={'BAIRRO'} obrigatorio={1} tipo={'input'} lenght={200} width={500}></EvolucaoTexto>
             <EvolucaoTexto idcampo={137} campo={'MORA COM QUEM?'} obrigatorio={1} tipo={'input'} lenght={200} width={500}></EvolucaoTexto>
             <EvolucaoTexto idcampo={136} campo={'PRINCIPAL CUIDADOR'} obrigatorio={1} tipo={'input'} lenght={200} width={500}></EvolucaoTexto>
-            <EvolucaoTexto idcampo={168} campo={'MOTIVO DA INTERNAÇÃO'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={500}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={168} campo={'MOTIVO DA INTERNAÇÃO'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
             <EvolucaoSelecaoMultipla idcampo={169} campo={'MOBILIDADE PRÉVIA'} obrigatorio={1}></EvolucaoSelecaoMultipla>
             <EvolucaoSelecaoSimples idcampo={170} campo={'ATIVIDADES BÁSICAS DE VIDA DIÁRIA'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoSelecaoSimples idcampo={171} campo={'ATIVIDADES INSTRUMENTAIS DE VIDA DIÁRIA'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoSelecaoSimples idcampo={152} campo={'APRESENTAÇÃO'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoSelecaoMultipla idcampo={22} campo={'ALTERAÇÕES MOTORAS'} obrigatorio={1}></EvolucaoSelecaoMultipla>
             <EvolucaoSelecaoMultipla idcampo={92} campo={'ALTERAÇÕES DA FALA'} obrigatorio={1}></EvolucaoSelecaoMultipla>
-            <EvolucaoTexto idcampo={40} campo={'AMPLITUDE DE MOVIMENTO'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={500}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={40} campo={'AMPLITUDE DE MOVIMENTO'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
             <EvolucaoSelecaoMultipla idcampo={172} campo={'PELE'} obrigatorio={1}></EvolucaoSelecaoMultipla>
             <EvolucaoSelecaoMultipla idcampo={173} campo={'CONDUTA'} obrigatorio={1}></EvolucaoSelecaoMultipla>
             <EvolucaoSelecaoMultipla idcampo={174} campo={'FUNCIONALIDADE ATUAL'} obrigatorio={1}></EvolucaoSelecaoMultipla>
-            <EvolucaoTexto idcampo={175} campo={'OBSERVAÇÕES'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={500}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={175} campo={'OBSERVAÇÕES'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
           </div>
 
           <div id="assinatura"

@@ -136,7 +136,7 @@ function Login() {
     { id: 6, nome: 'FONOAUDIOLOGIA', cor: '#F1948A', conselho: 'CREFONO', alias: 'FONOAUDIÓLOGO(A)' },
     { id: 10, nome: 'PSICOLOGIA', cor: '#EDBB99', conselho: 'CRP', alias: 'PSICÓLOGO(A)' },
     { id: 1, nome: 'SERVIÇO SOCIAL', cor: '#F7DC6F', conselho: 'CRESS', alias: 'ASSISTENTE SOCIAL' },
-    { id: 11, nome: 'TERAPIA OCUPACIONAL', cor: '#AEB6BF', conselho: 'CREFITO1', alias: 'TERAPIA OCUPACIONAL' },
+    { id: 11, nome: 'TERAPIA OCUPACIONAL', cor: '#AEB6BF', conselho: 'TO', alias: 'TERAPIA OCUPACIONAL' },
     { id: 9, nome: 'NUTRIÇÃO CLÍNICA', cor: 'grey', conselho: 'CRN', alias: 'NUTRICIONISTA' },
   ]
 

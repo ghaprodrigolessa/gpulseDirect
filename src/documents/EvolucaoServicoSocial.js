@@ -227,11 +227,11 @@ function EvolucaoServicoSocial() {
             </div>
           </div>
 
-          <div style={{ fontSize: 14, textAlign: 'center', padding: 10, fontWeight: 'bold', alignSelf: 'center' }}>ANAMNESE SOCIAL REALIZADA COM:</div>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div className="title2center" style={{ width: '100%', fontSize: 16, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>EVOLUÇÃO DO SERVIÇO SOCIAL</div>
             <EvolucaoSelecaoSimples idcampo={146} campo={'FREQUÊNCIA DE ATENDIMENTO'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoSelecaoMultipla idcampo={147} campo={'TIPO DE ATENDIMENTO'} obrigatorio={1}></EvolucaoSelecaoMultipla>
-            <EvolucaoTexto idcampo={148} campo={'EVOLUÇÃO DA ASSISTÊNCIA SOCIAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={500}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={148} campo={'EVOLUÇÃO DA ASSISTÊNCIA SOCIAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
           </div>
 
           <div id="assinatura"

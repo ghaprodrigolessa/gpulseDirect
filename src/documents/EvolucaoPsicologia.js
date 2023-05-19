@@ -227,12 +227,12 @@ function EvolucaoPsicologia() {
             </div>
           </div>
 
-          <div style={{ fontSize: 14, textAlign: 'center', padding: 10, fontWeight: 'bold', alignSelf: 'center' }}>ANAMNESE SOCIAL REALIZADA COM:</div>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div className="title2center" style={{ width: '100%', fontSize: 16, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>EVOLUÇÃO DA PSICOLOGIA</div>
             <EvolucaoSelecaoMultipla idcampo={199} campo={'JUSTIFICATIVA DO ATENDIMENTO'} obrigatorio={1}></EvolucaoSelecaoMultipla>
-            <EvolucaoTexto idcampo={200} campo={'SÚMULA DO ACOLHIMENTO, EXAME PSÍQUICO E ESTADO AFETIVO GERAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={500}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={200} campo={'SÚMULA DO ACOLHIMENTO, EXAME PSÍQUICO E ESTADO AFETIVO GERAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
             <EvolucaoSelecaoMultipla idcampo={201} campo={'FINALIZAÇÃO'} obrigatorio={1}></EvolucaoSelecaoMultipla>
-            <EvolucaoTexto idcampo={202} campo={'OBSERVAÇÕES'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={500}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={202} campo={'OBSERVAÇÕES'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
           </div>
 
           <div id="assinatura"

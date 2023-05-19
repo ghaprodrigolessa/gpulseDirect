@@ -4,7 +4,7 @@ import moment from 'moment';
 import axios from 'axios';
 import Context from '../Context';
 
-function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
+function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width, valor_escala }) {
 
   const {
     idpaciente, idatendimento,
@@ -188,7 +188,7 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
                   style={{
                     padding: 5,
                   }}>
-                  <div>{x}</div>
+                  <div>{valor_escala}</div>
                 </div>
               )
             } else {
@@ -239,7 +239,7 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
           borderWidth: 1,
           padding: 5,
           margin: 2.5,
-          width: width,
+          // width: width,
           pageBreakInside: 'avoid',
         }}
       >
@@ -266,8 +266,9 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
                   <div
                     style={{
                       alignSelf: 'center',
-                      height: 100,
-                      width: width - 15,
+                      height: '',
+                      minHeight: 100,
+                      width: width,
                       backgroundColor: 'rgb(0, 0, 0, 0.2)',
                       borderRadius: 5,
                       padding: 5,
@@ -289,7 +290,7 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width }) {
                     fontFamily: 'Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
                     fontSize: 10,
                   }}>
-                  <div>{x}</div>
+                  <div>{valor_escala}</div>
                 </div>
               )
             } else {

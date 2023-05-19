@@ -3492,7 +3492,10 @@ function EscalasAssistenciais() {
   function Medidas() {
     var timeout = null;
     return (
-      <div className="menucover" style={{ zIndex: 9, display: showescala == 15 ? 'flex' : 'none', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+      <div className="menucover"
+        style={{
+          zIndex: 9, display: showescala == 15 ? 'flex' : 'none', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'
+        }}>
         <div className="menucontainer">
           <div id="cabeçalho" className="cabecalho">
             <div className="title5">{'MEDIDAS'}</div>
@@ -3633,7 +3636,7 @@ function EscalasAssistenciais() {
   // ESCALA PARD (showescala = 16).
   const [pardscore, setpardscore] = useState(0);
 
-  const [escapeoralanterior, setoralescapeanterior] = useState(0);
+  const [escapeoralanterior, setescapeoralanterior] = useState(0);
   const [tempotransitooraladequado, settempotransitooraladequado] = useState(0);
   const [refluxonasal, setrefluxonasal] = useState(0);
   const [numerodegluticoes, setnumerodegluticoes] = useState(0);
@@ -3689,90 +3692,309 @@ function EscalasAssistenciais() {
 
   function Pard() {
     return (
-      <div className="menucover" style={{ zIndex: 9, display: showescala == 16 ? 'flex' : 'none', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-        <div className="menucontainer">
-          <div id="cabeçalho" className="cabecalho">
-            <div className="title5">{'AVALIAÇÃO DE RISCO PARA DISFAGIA'}</div>
-            <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-              <button className="red-button" onClick={() => setshowescala(0)}>
-                <img
-                  alt=""
-                  src={deletar}
-                  style={{
-                    margin: 10,
-                    height: 30,
-                    width: 30,
-                  }}
-                ></img>
-              </button>
-              <button className="green-button"
-                onClick={() => insertPard()}
-              >
-                <img
-                  alt=""
-                  src={salvar}
-                  style={{
-                    margin: 10,
-                    height: 30,
-                    width: 30,
-                  }}
-                ></img>
-              </button>
-            </div>
-          </div>
-          <div>
-            <div
-              className="corpo">
-              <div
-                className="scroll"
+      <div className="menucontainer"
+        style={{
+          zIndex: 9, display: showescala == 16 ? 'flex' : 'none', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'
+        }}>
+        <div id="cabeçalho" className="cabecalho">
+          <div className="title5">{'AVALIAÇÃO DE RISCO PARA DISFAGIA'}</div>
+          <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+            <button className="green-button"
+              onClick={() => { insertPard(); updatePardValor() }}
+            >
+              <img
+                alt=""
+                src={salvar}
                 style={{
-                  display: 'flex', flexDirection: 'row', justifyContent: 'center',
-                  marginBottom: 5, flexWrap: 'wrap',
-                  width: '60vw', height: '50vh'
-                }}>
-                <button
-                  onClick={() => { setnivel(1) }}
-                  className={nivel == 1 ? "red-button" : "blue-button"}
-                  style={{ width: 200, height: 200, padding: 10 }}>
-                  NADA POR VIA ORAL
-                </button>
-                <button
-                  onClick={() => { setnivel(2) }}
-                  className={nivel == 2 ? "red-button" : "blue-button"}
-                  style={{ width: 200, height: 200, padding: 10 }}>
-                  DEPENDÊNCIA DE VIA ALTERNATIVA, MÍNIMA OFERTA DE VIA ORAL (ESTÍMULO GUSTATIVO).
-                </button>
-                <button
-                  onClick={() => { setnivel(3) }}
-                  className={nivel == 3 ? "red-button" : "blue-button"}
-                  style={{ width: 200, height: 200, padding: 10 }}>
-                  DEPENDÊNCIA DE VIA ALTERNATIVA, OFERTA DE UMA ÚNICA CONSISTÊNCIA POR VIA ORAL.
-                </button>
-                <button
-                  onClick={() => { setnivel(4) }}
-                  className={nivel == 4 ? "red-button" : "blue-button"}
-                  style={{ width: 200, height: 200, minHeight: 150, padding: 10 }}>
-                  VIA ORAL TOTAL, LIMITADA A UMA ÚNICA CONSISTÊNCIA.
-                </button>
-                <button
-                  onClick={() => { setnivel(5) }}
-                  className={nivel == 5 ? "red-button" : "blue-button"}
-                  style={{ width: 200, height: 200, padding: 10 }}>
-                  VIA ORAL TOTAL, MAIS DE UMA CONSISTÊNCIA, NECESSITANDO PREPARO ESPECIAL.
-                </button>
-                <button
-                  onClick={() => { setnivel(6) }}
-                  className={nivel == 6 ? "red-button" : "blue-button"}
-                  style={{ width: 200, height: 200, padding: 10 }}>
-                  VIA ORAL TOTAL, MAIS DE UMA CONSISTÊNCIA, LIMITAÇÕES OU RESTRIÇÕES ESPECÍFICAS.
-                </button>
-                <button
-                  onClick={() => { setnivel(7) }}
-                  className={nivel == 7 ? "red-button" : "blue-button"}
-                  style={{ width: 200, height: 200, padding: 10 }}>
-                  VIA ORAL TOTAL, SEM RESTRIÇÕES.
-                </button>
+                  margin: 10,
+                  height: 30,
+                  width: 30,
+                }}
+              ></img>
+            </button>
+          </div>
+        </div>
+        <div>
+          <div
+            className="corpo">
+            <div
+              className="scroll"
+              style={{
+                display: 'flex', flexDirection: 'row', justifyContent: 'center',
+                marginBottom: 5, flexWrap: 'wrap',
+                width: '60vw', height: '50vh'
+              }}>
+
+              <div className="title2center">ESCAPE ORAL ANTERIOR</div>
+              <div style={{ display: 'flex', flexDirection: 'row', height: 75 }}>
+                <div
+                  className={escapeoralanterior == 2 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setescapeoralanterior(2)}
+                >
+                  LÍQUIDO
+                </div>
+                <div
+                  className={escapeoralanterior == 1 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setescapeoralanterior(1)}
+                >
+                  PASTOSO/SÓLIDO
+                </div>
               </div>
+
+              <div className="title2center">TEMPO DE TRÂNSITO ORAL ADEQUADO</div>
+              <div style={{ display: 'flex', flexDirection: 'row', height: 75 }}>
+                <div
+                  className={tempotransitooraladequado == 2 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => settempotransitooraladequado(2)}
+                >
+                  LÍQUIDO
+                </div>
+                <div
+                  className={tempotransitooraladequado == 1 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => settempotransitooraladequado(1)}
+                >
+                  PASTOSO/SÓLIDO
+                </div>
+              </div>
+
+              <div className="title2center">REFLUXO NASAL</div>
+              <div style={{ display: 'flex', flexDirection: 'row', height: 75 }}>
+                <div
+                  className={refluxonasal == 1 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setrefluxonasal(2)}
+                >
+                  LÍQUIDO
+                </div>
+                <div
+                  className={refluxonasal == 1 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setrefluxonasal(1)}
+                >
+                  PASTOSO/SÓLIDO
+                </div>
+              </div>
+
+              <div className="title2center">NÚMERO DE DEGLUTIÇÕES</div>
+              <div style={{ display: 'flex', flexDirection: 'row', height: 75 }}>
+                <div
+                  className={numerodegluticoes == 2 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setnumerodegluticoes(2)}
+                >
+                  LÍQUIDO
+                </div>
+                <div
+                  className={numerodegluticoes == 1 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setnumerodegluticoes(1)}
+                >
+                  PASTOSO/SÓLIDO
+                </div>
+              </div>
+
+              <div className="title2center">RESÍDUO ORAL</div>
+              <div style={{ display: 'flex', flexDirection: 'row', height: 75 }}>
+                <div
+                  className={residuooral == 2 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setresiduooral(2)}
+                >
+                  LÍQUIDO
+                </div>
+                <div
+                  className={residuooral == 1 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setresiduooral(1)}
+                >
+                  PASTOSO/SÓLIDO
+                </div>
+              </div>
+
+              <div className="title2center">ELEVAÇÃO LARÍNGEA</div>
+              <div style={{ display: 'flex', flexDirection: 'row', height: 75 }}>
+                <div
+                  className={elevacaolaringea == 2 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setelevacaolaringea(2)}
+                >
+                  LÍQUIDO
+                </div>
+                <div
+                  className={elevacaolaringea == 1 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setelevacaolaringea(1)}
+                >
+                  PASTOSO/SÓLIDO
+                </div>
+              </div>
+
+              <div className="title2center">TOSSE</div>
+              <div style={{ display: 'flex', flexDirection: 'row', height: 75 }}>
+                <div
+                  className={tosse == 2 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => settosse(2)}
+                >
+                  LÍQUIDO
+                </div>
+                <div
+                  className={tosse == 1 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => settosse(1)}
+                >
+                  PASTOSO/SÓLIDO
+                </div>
+              </div>
+
+              <div className="title2center">ENGASGO</div>
+              <div style={{ display: 'flex', flexDirection: 'row', height: 75 }}>
+                <div
+                  className={engasgo == 2 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setengasgo(2)}
+                >
+                  LÍQUIDO
+                </div>
+                <div
+                  className={engasgo == 1 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setengasgo(1)}
+                >
+                  PASTOSO/SÓLIDO
+                </div>
+              </div>
+
+              <div className="title2center">AUSCULTA CERVICAL LIMPA</div>
+              <div style={{ display: 'flex', flexDirection: 'row', height: 75 }}>
+                <div
+                  className={auscultacervicallimpa == 2 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setauscultacervicallimpa(2)}
+                >
+                  LÍQUIDO
+                </div>
+                <div
+                  className={auscultacervicallimpa == 1 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setauscultacervicallimpa(1)}
+                >
+                  PASTOSO/SÓLIDO
+                </div>
+              </div>
+
+              <div className="title2center">QUALIDADE VOCAL ADEQUADA</div>
+              <div style={{ display: 'flex', flexDirection: 'row', height: 75 }}>
+                <div
+                  className={qualidadevocaladequada == 2 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setqualidadevocaladequada(2)}
+                >
+                  LÍQUIDO
+                </div>
+                <div
+                  className={qualidadevocaladequada == 1 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setqualidadevocaladequada(1)}
+                >
+                  PASTOSO/SÓLIDO
+                </div>
+              </div>
+
+              <div className="title2center">SATURAÇÃO DE OXIGÊNIO</div>
+              <div style={{ display: 'flex', flexDirection: 'row', height: 75 }}>
+                <div
+                  className={sato2 == 2 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setsato2(2)}
+                >
+                  LÍQUIDO
+                </div>
+                <div
+                  className={sato2 == 1 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setsato2(1)}
+                >
+                  PASTOSO/SÓLIDO
+                </div>
+              </div>
+
+              <div className="title2center">CIANOSE</div>
+              <div style={{ display: 'flex', flexDirection: 'row', height: 75 }}>
+                <div
+                  className={cianose == 2 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setcianose(2)}
+                >
+                  LÍQUIDO
+                </div>
+                <div
+                  className={cianose == 1 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setcianose(1)}
+                >
+                  PASTOSO/SÓLIDO
+                </div>
+              </div>
+
+              <div className="title2center">BRONCOESPASMO</div>
+              <div style={{ display: 'flex', flexDirection: 'row', height: 75 }}>
+                <div
+                  className={broncoespasmo == 2 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setbroncoespasmo(2)}
+                >
+                  LÍQUIDO
+                </div>
+                <div
+                  className={broncoespasmo == 1 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setbroncoespasmo(1)}
+                >
+                  PASTOSO/SÓLIDO
+                </div>
+              </div>
+
+              <div className="title2center">FREQUÊNCIA CARDÍACA</div>
+              <div style={{ display: 'flex', flexDirection: 'row', height: 75 }}>
+                <div
+                  className={fc == 2 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setfc(2)}
+                >
+                  LÍQUIDO
+                </div>
+                <div
+                  className={fc == 1 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setfc(1)}
+                >
+                  PASTOSO/SÓLIDO
+                </div>
+              </div>
+
+              <div className="title2center">FREQUÊNCIA RESPIRATÓRIA</div>
+              <div style={{ display: 'flex', flexDirection: 'row', height: 75 }}>
+                <div
+                  className={fr == 2 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setfr(2)}
+                >
+                  LÍQUIDO
+                </div>
+                <div
+                  className={fr == 1 ? 'red-button' : 'blue-button'}
+                  style={{ width: 200 }}
+                  onClick={() => setfr(1)}
+                >
+                  PASTOSO/SÓLIDO
+                </div>
+              </div>
+
             </div>
           </div>
         </div>

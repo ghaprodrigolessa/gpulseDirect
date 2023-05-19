@@ -231,24 +231,25 @@ function AnamneseFisio() {
             </div>
           </div>
 
-          <div style={{ fontSize: 14, textAlign: 'center', padding: 10, fontWeight: 'bold', alignSelf: 'center' }}>AVALIAÇÃO INICIAL</div>
+          <div className="title2center" style={{ fontSize: 16, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>ANAMNESE FISIOTERÁPICA</div>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <EvolucaoTexto idcampo={63} campo={'QUEIXA PRINCIPAL'} obrigatorio={1} tipo={'textarea'} lenght={500} width={500}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={63} campo={'QUEIXA PRINCIPAL'} obrigatorio={1} tipo={'textarea'} lenght={500} width={'60vw'}></EvolucaoTexto>
             <EvolucaoSelecaoSimples idcampo={4} campo={'DOR'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoTexto idcampo={64} campo={'EVA'} obrigatorio={1} tipo={'input'} lenght={2} width={125}></EvolucaoTexto>
             <EvolucaoTexto idcampo={65} campo={'LOCAL DA DOR'} obrigatorio={1} tipo={'input'} lenght={2} width={125}></EvolucaoTexto>
             <EvolucaoSelecaoSimples idcampo={66} campo={'PREVIAMENTE INDEPENDENTE'} obrigatorio={1}></EvolucaoSelecaoSimples>
-            <EvolucaoTexto idcampo={67} campo={'HISTÓRIA DA DOENÇA ATUAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={500}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={67} campo={'HISTÓRIA DA DOENÇA ATUAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
             <EvolucaoSelecaoMultipla idcampo={68} campo={'DOENÇAS ASSOCIADAS'} obrigatorio={1}></EvolucaoSelecaoMultipla>
             <EvolucaoTexto idcampo={69} campo={'GLASGOW'} obrigatorio={1} tipo={'input'} lenght={2} width={125}></EvolucaoTexto>
             <EvolucaoSelecaoSimples idcampo={6} campo={'COMPREENSÃO'} obrigatorio={1}></EvolucaoSelecaoSimples>
 
-            <div style={{ fontSize: 14, textAlign: 'center', padding: 10, fontWeight: 'bold', alignSelf: 'center' }}>DADOS VITAIS</div>
+            <div className="title2center" style={{ width: '100%', fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>DADOS VITAIS</div>
             <EvolucaoTexto idcampo={70} campo={'FR'} obrigatorio={1} tipo={'input'} lenght={3} width={125}></EvolucaoTexto>
             <EvolucaoTexto idcampo={71} campo={'FC'} obrigatorio={1} tipo={'input'} lenght={3} width={125}></EvolucaoTexto>
             <EvolucaoTexto idcampo={72} campo={'SPO2'} obrigatorio={1} tipo={'input'} lenght={2} width={125}></EvolucaoTexto>
             <EvolucaoTexto idcampo={73} campo={'PA'} obrigatorio={1} tipo={'input'} lenght={7} width={125}></EvolucaoTexto>
 
+            <div className="title2center" style={{ width: '100%', fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>AVALIAÇÃO RESPIRATÓRIA</div>
             <EvolucaoSelecaoSimples idcampo={11} campo={'VIA DE ENTRADA DE AR'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoSelecaoSimples idcampo={12} campo={'EXPANSIBILIDADE'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoSelecaoSimples idcampo={13} campo={'SIMETRIA TORÁCICA'} obrigatorio={1}></EvolucaoSelecaoSimples>
@@ -266,6 +267,7 @@ function AnamneseFisio() {
             <EvolucaoTexto idcampo={30} campo={'PEEP'} obrigatorio={1} tipo={"input"} length={3} width={100}></EvolucaoTexto>
             <EvolucaoTexto idcampo={31} campo={'FI'} obrigatorio={1} tipo={"input"} length={3} width={100}></EvolucaoTexto>
 
+            <div className="title2center" style={{ width: '100%', fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>AVALIAÇÃO MOTORA</div>
             <EvolucaoSelecaoMultipla idcampo={22} campo={'ALTERAÇÕES NEUROMUSCULARES'} obrigatorio={1}></EvolucaoSelecaoMultipla>
             <EvolucaoSelecaoMultipla idcampo={23} campo={'ALTERAÇÕES ORTOPÉDICAS'} obrigatorio={1}></EvolucaoSelecaoMultipla>
             <EvolucaoTexto idcampo={24} campo={'LOCAL DA ARTRODESE'} obrigatorio={1} tipo={"input"} length={300} width={300}></EvolucaoTexto>
@@ -284,7 +286,7 @@ function AnamneseFisio() {
 
             <EvolucaoSelecaoMultipla idcampo={74} campo={'PROGNÓSTICO'} obrigatorio={1}></EvolucaoSelecaoMultipla>
             <EvolucaoSelecaoSimples idcampo={75} campo={'LOCAL DO ATENDIMENTO'} obrigatorio={1}></EvolucaoSelecaoSimples>
-            <EvolucaoTexto idcampo={76} campo={'OBSERVAÇÕES'} obrigatorio={1} tipo={"input"} length={2000} width={300}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={76} campo={'OBSERVAÇÕES'} obrigatorio={1} tipo={"textarea"} length={2000} width={'60vw'}></EvolucaoTexto>
 
           </div>
 

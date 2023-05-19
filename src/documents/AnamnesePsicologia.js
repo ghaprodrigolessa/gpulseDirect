@@ -228,8 +228,9 @@ function AnamnesePsicologia() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <EvolucaoTexto idcampo={176} campo={'DOENÇA DE BASE'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={500}></EvolucaoTexto>
-            <EvolucaoTexto idcampo={177} campo={'SÚMULA DE AVALIAÇÃO, EXAME PSÍQUICO E ESTADO AFETIVO GERAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'90%'}></EvolucaoTexto>
+          <div className="title2center" style={{ width: '100%', fontSize: 16, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>ANAMNESE DA PSICOLOGIA</div>
+            <EvolucaoTexto idcampo={176} campo={'DOENÇA DE BASE'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={177} campo={'SÚMULA DE AVALIAÇÃO, EXAME PSÍQUICO E ESTADO AFETIVO GERAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
             <EvolucaoSelecaoSimples idcampo={129} campo={'ESTADO CIVIL'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoSelecaoSimples idcampo={130} campo={'POSSUI FILHOS'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoSelecaoMultipla idcampo={178} campo={'PARTICIPAÇÃO DA FAMÍLIA'} obrigatorio={1}></EvolucaoSelecaoMultipla>
@@ -237,9 +238,9 @@ function AnamnesePsicologia() {
             <EvolucaoSelecaoSimples idcampo={135} campo={'ETILISTA'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoSelecaoSimples idcampo={134} campo={'TABAGISTA'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoSelecaoSimples idcampo={179} campo={'DROGAS ILÍCITAS'} obrigatorio={1}></EvolucaoSelecaoSimples>
-            <EvolucaoTexto idcampo={180} campo={'INFORMAÇÕES ADICIONAIS'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={500}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={180} campo={'INFORMAÇÕES ADICIONAIS'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
             <EvolucaoSelecaoMultipla idcampo={181} campo={'HISTÓRIA DE SUPORTE'} obrigatorio={1}></EvolucaoSelecaoMultipla>
-            <EvolucaoTexto idcampo={182} campo={'HISTÓRIA DE SUPORTE - OUTRAS INFORMAÇÕES'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={500}></EvolucaoTexto>
+            <EvolucaoTexto idcampo={182} campo={'HISTÓRIA DE SUPORTE - OUTRAS INFORMAÇÕES'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
             <EvolucaoSelecaoSimples idcampo={183} campo={'ESTADO DE ALERTA'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoSelecaoSimples idcampo={184} campo={'COMUNICAÇÃO'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoSelecaoSimples idcampo={185} campo={'ATENÇÃO'} obrigatorio={1}></EvolucaoSelecaoSimples>
