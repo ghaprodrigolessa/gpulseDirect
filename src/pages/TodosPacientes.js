@@ -513,7 +513,6 @@ function TodosPacientes() {
         if (pegapelonome != '' && pegaidpelobox == '' && pegaidpeloassistente == '') {
           setarrayatendimentos(todosatendimentos.filter(item => item.nm_paciente.includes(searchpaciente)));
           setarrayatendimentosclassified(todosatendimentos.filter(item => item.nm_paciente.includes(searchpaciente)));
-          loadPacientePorNome(searchpaciente);
           // filtrando pelo box/leito do paciente.
         } else if (pegapelonome == '' && pegaidpelobox != '' && pegaidpeloassistente == '') {
           setarrayatendimentos(todosatendimentos.filter(item => item.Leito.descricao.includes(searchpaciente)));
@@ -528,6 +527,7 @@ function TodosPacientes() {
           document.getElementById("inputFilterPaciente").value = searchpaciente;
           document.getElementById("inputFilterPaciente").focus();
         }
+        loadLucasApi(searchpaciente);
         // document.getElementById("inputFilterPaciente").value = searchpaciente;
         // document.getElementById("inputFilterPaciente").focus();
       }
@@ -537,8 +537,10 @@ function TodosPacientes() {
   var htmlhistoricodeatendimentos = process.env.REACT_APP_API_LUQUINHAS
   // filtrando atendimentos de pacientes fora do atendimento atual.
   const [atendimentosencerrados, setatendimentosencerrados] = useState([]);
-  const loadPacientePorNome = (prontuario) => {
-    axios.get(htmlhistoricodeatendimentos + '?attendance_id=' + prontuario).then((response) => {
+  const loadLucasApi = (prontuario) => {
+    console.log('PEGA PORRA');
+    axios.get('http://192.168.100.6:5000/attendances/?attendance_id=' + parseInt(prontuario)).then((response) => {
+      console.log('API LUCAS CONSUMIDA');
       setatendimentosencerrados(response.data);
     })
   }
