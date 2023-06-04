@@ -13,7 +13,6 @@ import novo from '../images/novo.svg';
 
 import Signature from './Signature';
 
-import Modelo from '../documents/Modelo'
 import AnamneseFisio from '../documents/AnamneseFisio';
 import AnamneseFono from '../documents/AnamneseFono';
 import AnamnesePsicologia from '../documents/AnamnesePsicologia';
@@ -166,8 +165,6 @@ function Evolucao(
           <OpcoesRegistrosInterdisciplinares></OpcoesRegistrosInterdisciplinares>
           <div id="FILTRO E VIEW DO DOCUMENTO ESTRUTURADO"
             style={{
-              // display: 'flex',
-              // display: selectedcategoria == 0 ? 'none' : 'flex',
               display: tipodocumento != '' ? 'flex' : 'none',
               justifyContent: 'center',
               flexDirection: 'column',
@@ -179,15 +176,12 @@ function Evolucao(
               backgroundColor: '#f2f2f2'
             }}>
             <ShowFilterRegistroInterdisciplinar></ShowFilterRegistroInterdisciplinar>
-            <div id="VIEW DO DOCUMENTO ESTRUTURADO" style={{ height: '50vh' }}>
-              <div style={{ display: tipodocumento == '' ? 'flex' : 'none', width: '70vw', height: '50vh', flexDirection: 'column', justifyContent: 'center', marginRight: 10 }}>
+            <div id="VIEW DO DOCUMENTO ESTRUTURADO" style={{ height: '55vh' }}>
+              <div style={{ display: tipodocumento == '' ? 'flex' : 'none', width: '70vw', height: '58vh', flexDirection: 'column', justifyContent: 'center', marginRight: 10 }}>
                 <div className="title2center">{'SELECIONE UM DOCUMENTO PARA VISUALIZAÇÃO'}</div>
               </div>
-              <div style={{ display: tipodocumento != '' && iddocumento != 0 ? 'flex' : 'none', width: '70vw', height: '50vh', flexDirection: 'column', justifyContent: 'center', marginRight: 10 }}>
-                <div
-                  onMouseLeave={() => {
-                  }}
-                >
+              <div style={{ display: tipodocumento != '' && iddocumento != 0 ? 'flex' : 'none', width: '70vw', height: '58vh', flexDirection: 'column', justifyContent: 'center', marginRight: 10 }}>
+                <div>
                   <AnamneseFisio></AnamneseFisio>
                   <AnamneseFono></AnamneseFono>
                   <AnamnesePsicologia></AnamnesePsicologia>
@@ -782,7 +776,6 @@ function Evolucao(
                 margin: 5, marginTop: 0, marginBottom: 0,
                 padding: 10,
                 opacity: item.status == 2 ? 0.3 : 1,
-                // backgroundColor: arraycategoriaprofissional.filter(valor => valor.conselho == item.conselho).map(item => item.cor),
               }}
             >
               <div id="botões"
@@ -815,7 +808,7 @@ function Evolucao(
 
                   title="COPIAR EVOLUÇÃO."
                   style={{
-                    display: 'flex',
+                    display: item.conselho == conselhousuario ? 'flex' : 'none',
                     marginTop: 0,
                     marginBottom: window.innerWidth < 800 ? 5 : 0,
                     marginLeft: 5
@@ -1067,6 +1060,35 @@ function Evolucao(
     });
   }
 
+  // inserir registro de resumo de plano terapêutico quando criamos ou copiamos um documento.
+  /*
+  const insertValorResumoPlanoTerapeutico = () => {
+    let valor =
+      'OBJETIVOS SECUNDÁRIOS ATIVOS:'
+      +
+      objetivos.filter(item => item.statusobjetivo == 1 && item.tipoobjetivo == 2).map(item => '\n' + item.objetivo) +
+      '\n\n'
+      +
+      'METAS ATIVAS:'
+      +
+      metas.filter(item => item.status == 0).map(item => '\n' + item.meta);
+
+    var obj = {
+      idpct: idpaciente,
+      idatendimento: idatendimento,
+      data: moment(),
+      idcampo: 206,
+      idopcao: 678,
+      opcao: 'RESUMO PLANO TERAPÊUTICO',
+      valor: valor,
+      idevolucao: iddocumento
+    }
+    console.log(obj);
+    axios.post('http://192.168.100.6:3333/insert_evolucao_valor', obj).then(() => {
+    });
+  }
+  */
+
   // renderização do componente.
   var htmlinsertdocumento = process.env.REACT_APP_API_CLONE_INSERTEVOLUCAO;
   return (
@@ -1104,7 +1126,7 @@ function Evolucao(
             ></input>
             <div className="green-button"
               title="NOVO DOCUMENTO."
-              style={{ display: conselhousuario == conselho ? 'flex' : 'none', margin: 0, marginLeft: 5 }}
+              style={{ display: conselhousuario == conselho && tipodocumento != '' ? 'flex' : 'none', margin: 0, marginLeft: 5 }}
               onClick={() => {
                 setstatusdocumento(0);
                 var botoes = document.getElementById('LISTA DE EVOLUÇÕES').getElementsByClassName("red-button");
@@ -1169,7 +1191,7 @@ function Evolucao(
               ></img>
             </div>
             <div className="green-button"
-              style={{ display: conselhousuario != conselho ? 'flex' : 'none', margin: 0, marginLeft: 5, opacity: 0.3, backgroundColor: 'grey' }}
+              style={{ display: conselhousuario != conselho || tipodocumento == '' ? 'flex' : 'none', margin: 0, marginLeft: 5, opacity: 0.3, backgroundColor: 'grey' }}
               onClick={() =>
                 toast(1, '#ec7063', 'NÃO É PERMITIDO CRIAR DOCUMENTO EM OUTRA CATEGORIA PROFISSIONAL.')
               }

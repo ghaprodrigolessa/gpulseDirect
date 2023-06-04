@@ -1,30 +1,24 @@
 /* eslint eqeqeq: "off" */
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, View } from '@react-pdf/renderer';
 import moment from 'moment';
 import axios from 'axios';
 import Context from '../Context';
 
-function EvolucaoSelecaoSimples({ idcampo, campo, obrigatorio }) {
+function EvolucaoSelecaoSimples({ idcampo, campo, obrigatorio, width }) {
 
   const {
     idpaciente, idatendimento,
     iddocumento,
     camposopcoes,
-    camposvalores, setcamposvalores,
-    statusdocumento, setstatusdocumento,
-    idselecteddocumento,
-    selectedcampo, setselectedcampo,
-    printdocumento, setprintdocumento,
-    registros_atuais, setregistros_atuais,
-    selectedcategoria,
+    statusdocumento,
+    printdocumento,
+    registros_atuais,
   } = useContext(Context)
 
   const [registros, setregistros] = useState([]);
   const [random, setrandom] = useState(null);
   useEffect(() => {
     if (statusdocumento != null) {
-      // console.log('RENDERIZOU - EVOLUÇÃO SIMPLES');
       setregistros(registros_atuais);
       setrandom(Math.random());
     }
@@ -112,7 +106,7 @@ function EvolucaoSelecaoSimples({ idcampo, campo, obrigatorio }) {
           }}
           style={{
             display: 'flex', flexDirection: 'row',
-            justifyContent: 'center', flexWrap: 'wrap'
+            justifyContent: 'center', flexWrap: 'wrap',
           }}>
           {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
             var x = registros.filter(valor => valor.idevolucao == iddocumento && valor.idcampo == idcampo && valor.idopcao == item.id).map(item => item.valor);
@@ -157,6 +151,7 @@ function EvolucaoSelecaoSimples({ idcampo, campo, obrigatorio }) {
           padding: 5,
           margin: 2.5,
           pageBreakInside: 'avoid',
+          width: width,
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -178,7 +173,7 @@ function EvolucaoSelecaoSimples({ idcampo, campo, obrigatorio }) {
             }}
           >
             {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
-              var x = registros.filter(valor => valor.idcampo == item.idcampo).map(item => item.valor);
+              var x = registros.filter(valor => valor.idcampo == item.idcampo && valor.opcao == item.opcao).map(item => item.valor);
               return (
                 <div id={'print_opcao' + random}
                   className={x == item.opcao ? 'red-button' : 'blue-button'}

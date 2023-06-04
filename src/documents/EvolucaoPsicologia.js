@@ -8,6 +8,7 @@ import EvolucaoSelecaoSimples from '../components/EvolucaoSelecaoSimples';
 import EvolucaoSelecaoMultipla from '../components/EvolucaoSelecaoMultipla';
 import EvolucaoTexto from '../components/EvolucaoTexto';
 import imprimir from '../images/imprimir.svg';
+import { gravaResumoPlanoTerapeutico } from '../components/gravaResumoPlanoTerapeutico';
 
 function EvolucaoPsicologia() {
 
@@ -31,6 +32,7 @@ function EvolucaoPsicologia() {
     setstatusdocumento,
     idpaciente,
     selectedcategoria,
+    objetivos, metas,
   } = useContext(Context);
 
   let camposusados = [199, 200, 201, 202];
@@ -45,6 +47,7 @@ function EvolucaoPsicologia() {
         if (statusdocumento == -2) {
           console.log('COPIA VALOR DA EVOLUÇÃO SELECIONADA');
           camposusados.map(item => x.filter(valor => valor.idcampo == item && valor.idevolucao == idselecteddocumento).map(item => copiaValor(item)));
+          gravaResumoPlanoTerapeutico(idpaciente, idatendimento, iddocumento, objetivos, metas);
           setTimeout(() => {
             axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
               var x = [0, 1];
@@ -66,10 +69,11 @@ function EvolucaoPsicologia() {
               var lastevolution = y.sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).filter(item => item.conselho == conselho && item.evolucao == tipodocumento).slice(-1);
               lastid = lastevolution.map(item => item.id).pop();
               console.log(lastid);
-              console.log('ANTIGOS!')
+              gravaResumoPlanoTerapeutico(idpaciente, idatendimento, iddocumento, objetivos, metas);
               camposusados.map(item => registros_antigos.filter(valor => valor.idcampo == item && valor.idevolucao == lastid - 1).map(item => insertValor(item, item.idcampo, item.idopcao, item.valor)));
             });
           } else {
+            gravaResumoPlanoTerapeutico(idpaciente, idatendimento, iddocumento, objetivos, metas);
             camposusados.map(item => camposopcoes.filter(valor => valor.idcampo == item).map(item => insertValor(item, item.idcampo, item.id, null)));
           }
           setTimeout(() => {
@@ -233,6 +237,8 @@ function EvolucaoPsicologia() {
             <EvolucaoTexto idcampo={200} campo={'SÚMULA DO ACOLHIMENTO, EXAME PSÍQUICO E ESTADO AFETIVO GERAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
             <EvolucaoSelecaoMultipla idcampo={201} campo={'FINALIZAÇÃO'} obrigatorio={1}></EvolucaoSelecaoMultipla>
             <EvolucaoTexto idcampo={202} campo={'OBSERVAÇÕES'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
+
+            <EvolucaoTexto idcampo={206} campo={'RESUMO DO PLANO TERAPÊUTICO PARA A ESPECIALIDADE:'} obrigatorio={1} tipo={"textarea"} length={10} width={'60vw'}></EvolucaoTexto>
           </div>
 
           <div id="assinatura"

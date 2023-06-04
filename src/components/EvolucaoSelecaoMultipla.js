@@ -4,16 +4,14 @@ import moment from 'moment';
 import axios from 'axios';
 import Context from '../Context';
 
-function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio }) {
+function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio, width }) {
 
   const {
     idpaciente, idatendimento,
-    iddocumento, tipodocumento,
-    statusdocumento, setstatusdocumento,
-    camposopcoes, camposvalores,
-    setcamposvalores,
-    idselecteddocumento,
-    printdocumento, setprintdocumento,
+    iddocumento,
+    statusdocumento,
+    camposopcoes,
+    printdocumento,
     registros_atuais
   } = useContext(Context)
 
@@ -25,22 +23,6 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio }) {
       setrandom(Math.random());
     }
   }, [registros_atuais, statusdocumento]);
-
-  const insertValor = (item, valor) => {
-    // inserindo registro.  
-    var obj = {
-      idpct: idpaciente,
-      idatendimento: idatendimento,
-      data: moment(),
-      idcampo: idcampo,
-      idopcao: item.id,
-      opcao: item.opcao,
-      valor: valor,
-      idevolucao: iddocumento // id do documento recém-criado.
-    }
-    console.log(obj);
-    axios.post('http://192.168.100.6:3333/insert_evolucao_valor', obj);
-  }
 
   const updateValor = (item, valor) => {
     axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
@@ -149,6 +131,7 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio }) {
           padding: 5,
           margin: 2.5,
           pageBreakInside: 'avoid',
+          width: width
         }}>
         <div className='title2center'
           style={{
@@ -166,7 +149,7 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio }) {
             justifyContent: 'center', flexWrap: 'wrap'
           }}>
           {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
-            var x = registros_atuais.filter(valor => valor.opcao == item.opcao).map(item => item.valor);
+            var x = registros.filter(valor => valor.opcao == item.opcao).map(item => item.valor);
             return (
               <div id={'opcao' + item.id + random}
                 className={x == 'SIM' ? 'red-button' : 'blue-button'}

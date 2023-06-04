@@ -64,22 +64,17 @@ azul claro 3: #c5bfd2
   background-color: var(--cor2);
 }
 
-/* OCULTANDO CABEÇALHO E RODAPÉ PARA IMPRESSÃO */
-
-@media print {
-  #Header,
-  #Footer {
-    display: none !important;
-  }
-  .noprint {
-    display: none !important;
-  }
-  #page,
-  #page * {
-    page-break-inside: avoid;
-    visibility: visible;
-  }
+table.report-container {
+  page-break-after: always;
 }
+thead.report-header {
+  display: table-header-group;
+}
+tfoot.report-footer {
+  display: table-header-group;
+}
+
+/* OCULTANDO CABEÇALHO E RODAPÉ PARA IMPRESSÃO */
 
 /* CONTAINERS */
 
@@ -5176,7 +5171,7 @@ input::-webkit-inner-spin-button {
   .noprint {
     display: none !important;
   }
-  
+
   .red-button {
     display: flex;
     flex-direction: column;

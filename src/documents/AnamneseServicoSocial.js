@@ -8,6 +8,7 @@ import salvar from '../images/salvar.svg';
 import EvolucaoSelecaoSimples from '../components/EvolucaoSelecaoSimples';
 import EvolucaoTexto from '../components/EvolucaoTexto';
 import imprimir from '../images/imprimir.svg';
+import { gravaResumoPlanoTerapeutico } from '../components/gravaResumoPlanoTerapeutico';
 
 function AnamneseServicoSocial() {
 
@@ -31,6 +32,7 @@ function AnamneseServicoSocial() {
     setstatusdocumento,
     idpaciente,
     selectedcategoria,
+    objetivos, metas,
   } = useContext(Context);
 
   let camposusados = [123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 205]
@@ -45,6 +47,7 @@ function AnamneseServicoSocial() {
         if (statusdocumento == -2) {
           console.log('COPIA VALOR DA EVOLUÇÃO SELECIONADA');
           camposusados.map(item => x.filter(valor => valor.idcampo == item && valor.idevolucao == idselecteddocumento).map(item => copiaValor(item)));
+          gravaResumoPlanoTerapeutico(idpaciente, idatendimento, iddocumento, objetivos, metas);
           setTimeout(() => {
             axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
               var x = [0, 1];
@@ -66,10 +69,12 @@ function AnamneseServicoSocial() {
               var lastevolution = y.sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).filter(item => item.conselho == conselho && item.evolucao == tipodocumento).slice(-1);
               lastid = lastevolution.map(item => item.id).pop();
               console.log(lastid);
-              console.log('ANTIGOS!')
+              gravaResumoPlanoTerapeutico(idpaciente, idatendimento, iddocumento, objetivos, metas);
               camposusados.map(item => registros_antigos.filter(valor => valor.idcampo == item && valor.idevolucao == lastid - 1).map(item => insertValor(item, item.idcampo, item.idopcao, item.valor)));
+              gravaResumoPlanoTerapeutico(idpaciente, idatendimento, iddocumento, objetivos, metas);
             });
           } else {
+            gravaResumoPlanoTerapeutico(idpaciente, idatendimento, iddocumento, objetivos, metas);
             camposusados.map(item => camposopcoes.filter(valor => valor.idcampo == item).map(item => insertValor(item, item.idcampo, item.id, null)));
           }
           setTimeout(() => {
@@ -424,6 +429,8 @@ function AnamneseServicoSocial() {
           </div>
         </div>
         <EvolucaoTexto idcampo={205} campo={'ESCALA DE GIJON'} obrigatorio={1} tipo={'card'} lenght={10} width={150} valor_escala={score}></EvolucaoTexto>
+
+        <EvolucaoTexto idcampo={206} campo={'RESUMO DO PLANO TERAPÊUTICO PARA A ESPECIALIDADE:'} obrigatorio={1} tipo={"textarea"} length={10} width={'60vw'}></EvolucaoTexto>
       </div>
     );
   };

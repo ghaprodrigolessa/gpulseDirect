@@ -8,10 +8,10 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width, valor
 
   const {
     idpaciente, idatendimento,
-    iddocumento, idselecteddocumento,
-    camposopcoes, camposvalores,
-    setcamposvalores, printdocumento,
-    statusdocumento, setstatusdocumento,
+    iddocumento,
+    camposopcoes,
+    printdocumento,
+    statusdocumento,
     registros_atuais,
   } = useContext(Context)
 
@@ -91,7 +91,7 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width, valor
             justifyContent: 'center', flexWrap: 'wrap', alignContent: 'center',
           }}>
           {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
-            var x = registros_atuais.filter(valor => valor.idcampo == item.idcampo).map(item => item.valor);
+            var x = registros.filter(valor => valor.idcampo == item.idcampo).map(item => item.valor);
             if (tipo == "textarea") {
               return (
                 <div style={{ position: 'relative' }}
@@ -123,8 +123,8 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width, valor
                       alignSelf: 'center',
                       height: 100,
                       width: width,
-                      maxWidth: '',
-                      minWidth: '',
+                      maxWidth: width,
+                      minWidth: width,
                       margin: 2.5,
                     }}
                     onKeyUp={() => {
@@ -239,7 +239,6 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width, valor
           borderWidth: 1,
           padding: 5,
           margin: 2.5,
-          // width: width,
           pageBreakInside: 'avoid',
         }}
       >
@@ -268,7 +267,7 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width, valor
                       alignSelf: 'center',
                       height: '',
                       minHeight: 100,
-                      width: width,
+                      width: width - 10,
                       backgroundColor: 'rgb(0, 0, 0, 0.2)',
                       borderRadius: 5,
                       padding: 5,
@@ -290,7 +289,7 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width, valor
                     fontFamily: 'Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
                     fontSize: 10,
                   }}>
-                  <div>{valor_escala}</div>
+                  <div>{x}</div>
                 </div>
               )
             } else {
@@ -302,7 +301,7 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width, valor
                       style={{
                         alignSelf: 'center',
                         height: 19,
-                        width: width - 15,
+                        width: width - 10,
                         backgroundColor: 'rgb(0, 0, 0, 0.1)',
                         borderRadius: 5,
                         padding: 5,
