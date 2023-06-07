@@ -28,8 +28,6 @@ export const PrintDocument = () => {
             display: tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFITO' ? 'flex' : 'none',
             flexDirection: 'row',
             justifyContent: 'space-between', flexWrap: 'wrap',
-            padding: 10,
-            width: 920,
           }}>
           <div className="title2center" style={{ width: '100%', fontSize: 16, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>EVOLUÇÃO FISIOTERÁPICA</div>
           <div className="title2center" style={{ marginTop: 10, width: '100%', fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>AVALIAÇÃO INICIAL</div>
@@ -82,22 +80,18 @@ export const PrintDocument = () => {
           <EvolucaoTexto idcampo={49} campo={'OBSERVAÇÕES'} obrigatorio={1} tipo={"textarea"} length={2000} width={900}></EvolucaoTexto>
           <div style={{ marginTop: 10, fontSize: 14, textAlign: 'center', padding: 20, fontWeight: 'bold', alignSelf: 'center', width: '100%' }}>UTILIZAÇÃO DE DISPOSITIVOS RESPIRATÓRIOS</div>
           <EvolucaoSelecaoSimples idcampo={50} campo={'DISPOSITIVO RESPIRATÓRIO'} obrigatorio={1} width={900}></EvolucaoSelecaoSimples>
-
           <EvolucaoSelecaoSimples idcampo={51} campo={'INDICAÇÃO DE DESMAME O2'} obrigatorio={1} width={235}></EvolucaoSelecaoSimples>
           <EvolucaoSelecaoSimples idcampo={54} campo={'CRITÉRIOS DE EXCLUSÃO O2'} obrigatorio={1} width={635}></EvolucaoSelecaoSimples>
           <EvolucaoSelecaoSimples idcampo={57} campo={'DESMAME O2 EFETIVADO'} obrigatorio={1} width={435}></EvolucaoSelecaoSimples>
           <EvolucaoTexto idcampo={58} campo={'DATA DE DESMAME O2'} obrigatorio={1} tipo={"date"} length={10} width={435}></EvolucaoTexto>
-
           <EvolucaoSelecaoSimples idcampo={52} campo={'INDICAÇÃO DE DESMAME TQT'} obrigatorio={1} width={135}></EvolucaoSelecaoSimples>
           <EvolucaoSelecaoSimples idcampo={55} campo={'CRITÉRIOS DE EXCLUSÃO TQT'} obrigatorio={1} width={735}></EvolucaoSelecaoSimples>
           <EvolucaoSelecaoSimples idcampo={59} campo={'DESMAME TQT EFETIVADO'} obrigatorio={1} width={435}></EvolucaoSelecaoSimples>
           <EvolucaoTexto idcampo={60} campo={'DATA DE DESMAME TQT'} obrigatorio={1} tipo={"date"} length={10} width={435}></EvolucaoTexto>
-
           <EvolucaoSelecaoSimples idcampo={53} campo={'INDICAÇÃO DE DESMAME VM'} obrigatorio={1} width={135}></EvolucaoSelecaoSimples>
           <EvolucaoSelecaoSimples idcampo={56} campo={'CRITÉRIOS DE EXCLUSÃO VM'} obrigatorio={1} width={735}></EvolucaoSelecaoSimples>
           <EvolucaoSelecaoSimples idcampo={61} campo={'DESMAME VM EFETIVADO'} obrigatorio={1} width={435}></EvolucaoSelecaoSimples>
           <EvolucaoTexto idcampo={62} campo={'DATA DE DESMAME VM'} obrigatorio={1} tipo={"date"} length={10} width={435}></EvolucaoTexto>
-
           <EvolucaoTexto idcampo={206} campo={'RESUMO DO PLANO TERAPÊUTICO PARA A ESPECIALIDADE:'} obrigatorio={1} tipo={"textarea"} length={2000} width={900}></EvolucaoTexto>
         </div>
       </div>
@@ -111,8 +105,6 @@ export const PrintDocument = () => {
             display: tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFONO' ? 'flex' : 'none',
             flexDirection: 'row',
             justifyContent: 'space-between', flexWrap: 'wrap',
-            padding: 10,
-            width: 920,
           }}>
           <div id="CORPO DO DOCUMENTO - EVOLUÇÃO ESTRUTURADA - CREFONO"
             style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap' }}>
@@ -159,6 +151,179 @@ export const PrintDocument = () => {
             <EvolucaoTexto idcampo={48} campo={'DISCUSSÃO INTERDISCIPLINAR'} obrigatorio={1} tipo={"textarea"} length={2000} width={905}></EvolucaoTexto>
             <EvolucaoTexto idcampo={206} campo={'RESUMO DO PLANO TERAPÊUTICO PARA A ESPECIALIDADE:'} obrigatorio={1} tipo={"textarea"} length={10} width={905}></EvolucaoTexto>
           </div>
+        </div>
+      </div>
+    )
+  }
+  function CorpoEvolucaoPsico() {
+    return (
+      <div style={{ fontFamily: 'Helvetica', width: '100%' }}>
+        <div
+          style={{
+            display: tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CRP' ? 'flex' : 'none',
+            flexDirection: 'row',
+            justifyContent: 'space-between', flexWrap: 'wrap',
+          }}>
+          <EvolucaoSelecaoMultipla idcampo={199} campo={'JUSTIFICATIVA DO ATENDIMENTO'} obrigatorio={1}></EvolucaoSelecaoMultipla>
+          <EvolucaoTexto idcampo={200} campo={'SÚMULA DO ACOLHIMENTO, EXAME PSÍQUICO E ESTADO AFETIVO GERAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={905}></EvolucaoTexto>
+          <EvolucaoSelecaoMultipla idcampo={201} campo={'FINALIZAÇÃO'} obrigatorio={1} width={905}></EvolucaoSelecaoMultipla>
+          <EvolucaoTexto idcampo={202} campo={'OBSERVAÇÕES'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={905}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={206} campo={'RESUMO DO PLANO TERAPÊUTICO PARA A ESPECIALIDADE:'} obrigatorio={1} tipo={"textarea"} length={10} width={905}></EvolucaoTexto>
+        </div>
+      </div>
+    )
+  }
+  function CorpoEvolucaoSocial() {
+    return (
+      <div style={{ fontFamily: 'Helvetica', width: '100%' }}>
+        <div
+          style={{
+            display: tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CRESS' ? 'flex' : 'none',
+            flexDirection: 'row',
+            justifyContent: 'space-between', flexWrap: 'wrap',
+          }}>
+          <EvolucaoSelecaoSimples idcampo={146} campo={'FREQUÊNCIA DE ATENDIMENTO'} obrigatorio={1} width={905}></EvolucaoSelecaoSimples>
+          <EvolucaoSelecaoMultipla idcampo={147} campo={'TIPO DE ATENDIMENTO'} obrigatorio={1} width={905}></EvolucaoSelecaoMultipla>
+          <EvolucaoTexto idcampo={148} campo={'EVOLUÇÃO DA ASSISTÊNCIA SOCIAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={905}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={206} campo={'RESUMO DO PLANO TERAPÊUTICO PARA A ESPECIALIDADE:'} obrigatorio={1} tipo={"textarea"} length={10} width={905}></EvolucaoTexto>
+        </div>
+      </div>
+    )
+  }
+  function CorpoEvolucaoTo() {
+    return (
+      <div style={{ fontFamily: 'Helvetica', width: '100%' }}>
+        <div
+          style={{
+            display: tipodocumento == 'EVOLUÇÃO ESTRUTURADA - TO' ? 'flex' : 'none',
+            flexDirection: 'row',
+            justifyContent: 'space-between', flexWrap: 'wrap',
+          }}>
+          <div className="title2center" style={{ width: '100%', fontSize: 16, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>EVOLUÇÃO DA TERAPIA OCUPACIONAL</div>
+          <EvolucaoSelecaoSimples idcampo={149} campo={'LOCAL DO ATENDIMENTO'} obrigatorio={1}></EvolucaoSelecaoSimples>
+          <EvolucaoSelecaoSimples idcampo={150} campo={'ACOMPANHANTE PRESENTE'} obrigatorio={1}></EvolucaoSelecaoSimples>
+          <EvolucaoTexto idcampo={151} campo={'NOME DO ACOMPANHANTE'} obrigatorio={1} tipo={'input'} lenght={200} width={520}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={67} campo={'HISTÓRIA DA DOENÇA ATUAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={905}></EvolucaoTexto>
+          <EvolucaoSelecaoMultipla idcampo={22} campo={'ALTERAÇÕES MOTORAS'} obrigatorio={1} width={905}></EvolucaoSelecaoMultipla>
+          <EvolucaoSelecaoMultipla idcampo={92} campo={'ALTERAÇÕES DA FALA'} obrigatorio={1} width={905}></EvolucaoSelecaoMultipla>
+          <EvolucaoSelecaoSimples idcampo={152} campo={'APRESENTAÇÃO'} obrigatorio={1} width={905}></EvolucaoSelecaoSimples>
+          <div className="title2center" style={{ marginTop: 10, width: '100%', fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>CONDUTA</div>
+          <EvolucaoSelecaoMultipla idcampo={153} campo={'INTERVENÇÕES RESTAURADORAS DAS FUNÇÕES DO CORPO'} obrigatorio={1} width={905}></EvolucaoSelecaoMultipla>
+          <EvolucaoTexto idcampo={154} campo={'OUTRAS INTERVENÇÕES RESTAURADORAS DAS FUNÇÕES DO CORPO'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={905}></EvolucaoTexto>
+          <EvolucaoSelecaoMultipla idcampo={155} campo={'ATIVIDADE E PARTICIPAÇÃO'} obrigatorio={1} width={905}></EvolucaoSelecaoMultipla>
+          <EvolucaoTexto idcampo={156} campo={'OUTRAS ATIVIDADES E PARTICIPAÇÕES'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={905}></EvolucaoTexto>
+          <EvolucaoSelecaoMultipla idcampo={157} campo={'FATORES AMBIENTAIS'} obrigatorio={1} width={905}></EvolucaoSelecaoMultipla>
+          <EvolucaoTexto idcampo={158} campo={'OUTROS FATORES AMBIENTAIS'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={905}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={159} campo={'OBSERVAÇÕES - TERAPIA OCUPACIONAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={905}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={48} campo={'DISCUSSÃO INTERDISCIPLINAR'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={905}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={160} campo={'TRANSIÇÃO DE CUIDADOS - TERAPIA OCUPACIONAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={905}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={206} campo={'RESUMO DO PLANO TERAPÊUTICO PARA A ESPECIALIDADE:'} obrigatorio={1} tipo={"textarea"} length={10} width={905}></EvolucaoTexto>
+        </div>
+      </div>
+    )
+  }
+  function CorpoAnamneseTo() {
+    return (
+      <div style={{ fontFamily: 'Helvetica', width: '100%' }}>
+        <div
+          style={{
+            display: tipodocumento == 'ANAMNESE - TO' ? 'flex' : 'none',
+            flexDirection: 'row',
+            justifyContent: 'space-between', flexWrap: 'wrap',
+          }}>
+          <div className="title2center" style={{ width: '100%', fontSize: 16, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>ANAMNESE DA TERAPIA OCUPACIONAL</div>
+          <EvolucaoSelecaoSimples idcampo={150} campo={'ACOMPANHANTE PRESENTE'} obrigatorio={1}></EvolucaoSelecaoSimples>
+          <EvolucaoTexto idcampo={151} campo={'NOME DO ACOMPANHANTE'} obrigatorio={1} tipo={'input'} lenght={200} width={550}></EvolucaoTexto>
+          <EvolucaoSelecaoSimples idcampo={161} campo={'GÊNERO'} obrigatorio={1}></EvolucaoSelecaoSimples>
+          <EvolucaoSelecaoSimples idcampo={129} campo={'ESTADO CIVIL'} obrigatorio={1} width={905}></EvolucaoSelecaoSimples>
+          <EvolucaoSelecaoSimples idcampo={128} campo={'ESCOLARIDADE'} obrigatorio={1}></EvolucaoSelecaoSimples>
+          <EvolucaoSelecaoSimples idcampo={162} campo={'DOMINÂNCIA'} obrigatorio={1} width={340}></EvolucaoSelecaoSimples>
+          <EvolucaoSelecaoSimples idcampo={163} campo={'OCUPAÇÃO'} obrigatorio={1} width={540}></EvolucaoSelecaoSimples>
+          <EvolucaoTexto idcampo={164} campo={'PROFISSÃO'} obrigatorio={1} tipo={'input'} lenght={200} width={440}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={165} campo={'NATURALIDADE'} obrigatorio={1} tipo={'input'} lenght={200} width={440}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={166} campo={'CIDADE'} obrigatorio={1} tipo={'input'} lenght={200} width={440}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={167} campo={'BAIRRO'} obrigatorio={1} tipo={'input'} lenght={200} width={440}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={137} campo={'MORA COM QUEM?'} obrigatorio={1} tipo={'input'} lenght={200} width={440}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={136} campo={'PRINCIPAL CUIDADOR'} obrigatorio={1} tipo={'input'} lenght={200} width={440}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={168} campo={'MOTIVO DA INTERNAÇÃO'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={905}></EvolucaoTexto>
+          <EvolucaoSelecaoMultipla idcampo={169} campo={'MOBILIDADE PRÉVIA'} obrigatorio={1}></EvolucaoSelecaoMultipla>
+          <EvolucaoSelecaoSimples idcampo={170} campo={'ATIVIDADES BÁSICAS DE VIDA DIÁRIA'} obrigatorio={1} width={905}></EvolucaoSelecaoSimples>
+          <EvolucaoSelecaoSimples idcampo={171} campo={'ATIVIDADES INSTRUMENTAIS DE VIDA DIÁRIA'} obrigatorio={1} width={905}></EvolucaoSelecaoSimples>
+          <EvolucaoSelecaoSimples idcampo={152} campo={'APRESENTAÇÃO'} obrigatorio={1} width={905}></EvolucaoSelecaoSimples>
+          <EvolucaoSelecaoMultipla idcampo={22} campo={'ALTERAÇÕES MOTORAS'} obrigatorio={1} width={905}></EvolucaoSelecaoMultipla>
+          <EvolucaoSelecaoMultipla idcampo={92} campo={'ALTERAÇÕES DA FALA'} obrigatorio={1} width={905}></EvolucaoSelecaoMultipla>
+          <EvolucaoTexto idcampo={40} campo={'AMPLITUDE DE MOVIMENTO'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={905}></EvolucaoTexto>
+          <EvolucaoSelecaoMultipla idcampo={172} campo={'PELE'} obrigatorio={1} width={905}></EvolucaoSelecaoMultipla>
+          <EvolucaoSelecaoMultipla idcampo={173} campo={'CONDUTA'} obrigatorio={1} width={905}></EvolucaoSelecaoMultipla>
+          <EvolucaoSelecaoMultipla idcampo={174} campo={'FUNCIONALIDADE ATUAL'} obrigatorio={1} width={905}></EvolucaoSelecaoMultipla>
+          <EvolucaoTexto idcampo={175} campo={'OBSERVAÇÕES'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={905}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={206} campo={'RESUMO DO PLANO TERAPÊUTICO PARA A ESPECIALIDADE:'} obrigatorio={1} tipo={"textarea"} length={10} width={905}></EvolucaoTexto>
+        </div>
+      </div>
+    )
+  }
+
+  function CorpoAnamneseFisio() {
+    return (
+      <div style={{ fontFamily: 'Helvetica', width: '100%' }}>
+        <div
+          style={{
+            display: tipodocumento == 'ANAMNESE - CREFITO' ? 'flex' : 'none',
+            flexDirection: 'row',
+            justifyContent: 'space-between', flexWrap: 'wrap',
+          }}>
+          <div className="title2center" style={{ fontSize: 16, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center', width: '100%' }}>ANAMNESE FISIOTERÁPICA</div>
+          <EvolucaoTexto idcampo={63} campo={'QUEIXA PRINCIPAL'} obrigatorio={1} tipo={'textarea'} lenght={500} width={905}></EvolucaoTexto>
+          <EvolucaoSelecaoSimples idcampo={4} campo={'DOR'} obrigatorio={1}></EvolucaoSelecaoSimples>
+          <EvolucaoTexto idcampo={64} campo={'EVA'} obrigatorio={1} tipo={'input'} lenght={2} width={125}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={65} campo={'LOCAL DA DOR'} obrigatorio={1} tipo={'input'} lenght={2} width={450}></EvolucaoTexto>
+          <EvolucaoSelecaoSimples idcampo={66} campo={'PREVIAMENTE INDEPENDENTE'} obrigatorio={1}></EvolucaoSelecaoSimples>
+          <EvolucaoTexto idcampo={67} campo={'HISTÓRIA DA DOENÇA ATUAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={905}></EvolucaoTexto>
+          <EvolucaoSelecaoMultipla idcampo={68} campo={'DOENÇAS ASSOCIADAS'} obrigatorio={1} width={420}></EvolucaoSelecaoMultipla>
+          <EvolucaoTexto idcampo={69} campo={'GLASGOW'} obrigatorio={1} tipo={'input'} lenght={2} width={260}></EvolucaoTexto>
+          <EvolucaoSelecaoSimples idcampo={6} campo={'COMPREENSÃO'} obrigatorio={1}></EvolucaoSelecaoSimples>
+          <div className="title2center" style={{ marginTop: 10, width: '100%', fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>DADOS VITAIS</div>
+          <EvolucaoTexto idcampo={70} campo={'FR'} obrigatorio={1} tipo={'input'} lenght={3} width={210}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={71} campo={'FC'} obrigatorio={1} tipo={'input'} lenght={3} width={210}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={72} campo={'SPO2'} obrigatorio={1} tipo={'input'} lenght={2} width={210}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={73} campo={'PA'} obrigatorio={1} tipo={'input'} lenght={7} width={210}></EvolucaoTexto>
+          <div className="title2center" style={{ marginTop: 10, width: '100%', fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>AVALIAÇÃO RESPIRATÓRIA</div>
+          <EvolucaoSelecaoSimples idcampo={11} campo={'VIA DE ENTRADA DE AR'} obrigatorio={1}></EvolucaoSelecaoSimples>
+          <EvolucaoSelecaoSimples idcampo={12} campo={'EXPANSIBILIDADE'} obrigatorio={1}></EvolucaoSelecaoSimples>
+          <EvolucaoSelecaoSimples idcampo={13} campo={'SIMETRIA TORÁCICA'} obrigatorio={1}></EvolucaoSelecaoSimples>
+          <EvolucaoSelecaoSimples idcampo={14} campo={'ESFORÇO RESPIRATÓRIO'} obrigatorio={1}></EvolucaoSelecaoSimples>
+          <EvolucaoSelecaoSimples idcampo={15} campo={'RITMO RESPIRATÓRIO'} obrigatorio={1}></EvolucaoSelecaoSimples>
+          <EvolucaoSelecaoMultipla idcampo={16} campo={'AUSCULTA RESPIRATÓRIA'} obrigatorio={1} width={905}></EvolucaoSelecaoMultipla>
+          <EvolucaoSelecaoMultipla idcampo={17} campo={'TOSSE'} obrigatorio={1} width={905}></EvolucaoSelecaoMultipla>
+          <EvolucaoSelecaoMultipla idcampo={18} campo={'SECREÇÃO'} obrigatorio={1} width={905}></EvolucaoSelecaoMultipla>
+          <EvolucaoSelecaoMultipla idcampo={19} campo={'OXIGENOTERAPIA'} obrigatorio={1} width={440}></EvolucaoSelecaoMultipla>
+          <EvolucaoTexto idcampo={20} campo={'FLUXO'} obrigatorio={2} tipo={"input"} length={3} width={440}></EvolucaoTexto>
+          <EvolucaoSelecaoSimples idcampo={21} campo={'VENTILAÇÃO MECÂNICA'} obrigatorio={1} width={240}></EvolucaoSelecaoSimples>
+          <EvolucaoTexto idcampo={27} campo={'MODO'} obrigatorio={1} tipo={"input"} length={3} width={100}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={28} campo={'PRESSÃO'} obrigatorio={1} tipo={"input"} length={3} width={100}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={29} campo={'VOLUME'} obrigatorio={1} tipo={"input"} length={3} width={100}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={30} campo={'PEEP'} obrigatorio={1} tipo={"input"} length={3} width={100}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={31} campo={'FI'} obrigatorio={1} tipo={"input"} length={3} width={100}></EvolucaoTexto>
+          <div className="title2center" style={{ marginTop: 10, width: '100%', fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>AVALIAÇÃO MOTORA</div>
+          <EvolucaoSelecaoMultipla idcampo={22} campo={'ALTERAÇÕES NEUROMUSCULARES'} obrigatorio={1} width={905}></EvolucaoSelecaoMultipla>
+          <EvolucaoSelecaoMultipla idcampo={23} campo={'ALTERAÇÕES ORTOPÉDICAS'} obrigatorio={1} width={280}></EvolucaoSelecaoMultipla>
+          <EvolucaoTexto idcampo={24} campo={'LOCAL DA ARTRODESE'} obrigatorio={1} tipo={"input"} length={300} width={280}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={26} campo={'LOCAL DA OSTEOSSÍNTESE'} obrigatorio={1} tipo={"input"} length={300} width={280}></EvolucaoTexto>
+          <EvolucaoSelecaoSimples idcampo={32} campo={'MOBILIDADE NO LEITO'} obrigatorio={1} width={905}></EvolucaoSelecaoSimples>
+          <EvolucaoSelecaoSimples idcampo={33} campo={'CONTROLE CERVICAL'} obrigatorio={1} width={240}></EvolucaoSelecaoSimples>
+          <EvolucaoSelecaoSimples idcampo={34} campo={'CONTROLE DE TRONCO'} obrigatorio={1}  width={240}></EvolucaoSelecaoSimples>
+          <EvolucaoSelecaoSimples idcampo={35} campo={'TRANSFERÊNCIA'} obrigatorio={1} width={360}></EvolucaoSelecaoSimples>
+          <EvolucaoSelecaoSimples idcampo={36} campo={'MARCHA'} obrigatorio={1} width={440}></EvolucaoSelecaoSimples>
+          <EvolucaoSelecaoSimples idcampo={37} campo={'DISPOSITIVO'} obrigatorio={1} width={440}></EvolucaoSelecaoSimples>
+          <EvolucaoSelecaoMultipla idcampo={38} campo={'EQUILÍBRIO'} obrigatorio={1} width={240}></EvolucaoSelecaoMultipla>
+          <EvolucaoTexto idcampo={39} campo={'FORÇA MUSCULAR'} obrigatorio={1} tipo={"input"} length={300} width={300}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={40} campo={'AMPLITUDE DE MOVIMENTO'} obrigatorio={1} tipo={"input"} length={300} width={300}></EvolucaoTexto>
+          <EvolucaoSelecaoSimples idcampo={41} campo={'CONTROLE ESFINCTERIANO URINÁRIO'} obrigatorio={1} width={440}></EvolucaoSelecaoSimples>
+          <EvolucaoSelecaoSimples idcampo={42} campo={'CONTROLE ESFINCTERIANO FECAL'} obrigatorio={1} width={440}></EvolucaoSelecaoSimples>
+          <EvolucaoSelecaoMultipla idcampo={74} campo={'PROGNÓSTICO'} obrigatorio={1} width={905}></EvolucaoSelecaoMultipla>
+          <EvolucaoSelecaoSimples idcampo={75} campo={'LOCAL DO ATENDIMENTO'} obrigatorio={1} width={905}></EvolucaoSelecaoSimples>
+          <EvolucaoTexto idcampo={76} campo={'OBSERVAÇÕES'} obrigatorio={1} tipo={"textarea"} length={2000} width={905}></EvolucaoTexto>
+          <EvolucaoTexto idcampo={206} campo={'RESUMO DO PLANO TERAPÊUTICO PARA A ESPECIALIDADE:'} obrigatorio={1} tipo={"textarea"} length={10} width={905}></EvolucaoTexto>
         </div>
       </div>
     )
@@ -254,12 +419,18 @@ export const PrintDocument = () => {
           </td>
         </tr>
       </tfoot>
-      <tbody className="report-content">
+      <tbody>
         <tr>
-          <td className="report-content-cell">
+          <td>
             <div>
               <CorpoEvolucaoFisio></CorpoEvolucaoFisio>
               <CorpoEvolucaoFono></CorpoEvolucaoFono>
+              <CorpoEvolucaoPsico></CorpoEvolucaoPsico>
+              <CorpoEvolucaoSocial></CorpoEvolucaoSocial>
+              <CorpoEvolucaoTo></CorpoEvolucaoTo>
+              <CorpoAnamneseFisio></CorpoAnamneseFisio>
+
+              <CorpoAnamneseTo></CorpoAnamneseTo>
             </div>
           </td>
         </tr>

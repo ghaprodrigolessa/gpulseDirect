@@ -516,7 +516,7 @@ function Evolucao(
         if (z.length > 0) {
           z = y.sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).filter(item => item.conselho == conselho && item.evolucao == tipodocumento);
           // selecionando o documento na lista de documentos.         
-          // console.log('###' + z.map(item => item.id))
+          console.log('###' + z.map(item => item.id).slice(-1).pop());
           setiddocumento(z.map(item => item.id).slice(-1).pop());
           setdatadocumento(z.map(item => item.data).slice(-1).pop());
           setstatusdocumento(z.map(item => item.status).slice(-1).pop());
@@ -742,7 +742,8 @@ function Evolucao(
         className="scroll"
         style={{
           scrollBehavior: 'smooth',
-          width: '100%', height: '60vh', minHeight: '60vh',
+          width: '25vw', minWidth: '25vw',
+          height: '60vh', minHeight: '60vh',
           marginTop: 10,
           backgroundColor: '#f2f2f2', borderColor: '#f2f2f2'
         }}
@@ -1143,13 +1144,13 @@ function Evolucao(
                   conselho: conselhousuario.toString(),
                 };
                 axios.post(htmlinsertdocumento, obj).then(() => {
+                  loadEvolucoesGpulse(conselho, tipodocumento, null);
                   setTimeout(() => {
                     setstatusdocumento(-1);
                     setTimeout(() => {
                       setstatusdocumento(0);
-                    }, 1000);
-                  }, 1000);
-                  loadEvolucoesGpulse(conselho, tipodocumento, null);
+                    }, 2000);
+                  }, 2000);
                   if (conselho == 'CREFITO' && tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFITO') {
                     setviewdocumento(51);
                   } else if (conselho == 'CREFITO' && tipodocumento == 'MODELO DE DOCUMENTO') {

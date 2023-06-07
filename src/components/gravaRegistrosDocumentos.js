@@ -53,6 +53,7 @@ export const gravaRegistrosDocumentos = (
     var x = [0, 1];
     x = response.data.rows;
     setregistros_antigos(x.filter(item => item.idevolucao < iddocumento));
+    
     if (statusdocumento == -2) {
       console.log('COPIA VALOR DA EVOLUÇÃO SELECIONADA');
       camposusados.map(item => x.filter(valor => valor.idcampo == item && valor.idevolucao == idselecteddocumento).map(item => copiaValor(item)));
@@ -66,6 +67,7 @@ export const gravaRegistrosDocumentos = (
         });
       }, 1000);
     } else if (statusdocumento == -1 && iddocumento != 0 && x.filter(item => item.idevolucao == iddocumento).length == 0) {
+      // transportar esse código direto para o botão nova evolução?
       console.log('CRIANDO PRIMEIROS VALORES');
       gravaResumoPlanoTerapeutico(idpaciente, idatendimento, iddocumento, objetivos, metas);
       camposusados.map(item => camposopcoes.filter(valor => valor.idcampo == item).map(item => insertValor(item, item.idcampo, item.id, null)));

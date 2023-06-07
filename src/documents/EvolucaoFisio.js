@@ -19,9 +19,8 @@ function EvolucaoFisio() {
     conselho,
     tipodocumento,
     camposopcoes,
-    setcamposvalores,
     setregistros_atuais,
-    registros_antigos, setregistros_antigos,
+    setregistros_antigos,
     iddocumento,
     idselecteddocumento,
     setstatusdocumento,
@@ -202,7 +201,7 @@ function EvolucaoFisio() {
             </div>
           </div>
         </div>
-      </div >
+      </div>
     )
   };
 
@@ -216,7 +215,7 @@ function EvolucaoFisio() {
       setprintdocumento(1);
       setTimeout(() => {
         let printdocument = document.getElementById("PRINTDOCUMENT - EVOLUÇÃO ESTRUTURADA - CREFITO").innerHTML;
-        var a = window.open('  ', '  ', 'width=' + '1024px' + ', height=' + '800px');;
+        var a = window.open('  ', '  ', 'width=' + '1024px' + ', height=' + '800px');
         a.document.write('<html>');
         a.document.write(printdocument);
         a.document.write('</html>');
