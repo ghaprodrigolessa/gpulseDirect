@@ -1,136 +1,60 @@
 /* eslint eqeqeq: "off" */
 import React, { useContext, useEffect, useState } from 'react';
+import axios from 'axios';
 import Context from '../Context';
-import axios from 'axios'
-import moment from 'moment';
-import logo from '../images/paulodetarso_logo.png';
+import imprimir from '../images/imprimir.svg';
 import salvar from '../images/salvar.svg';
+import moment from 'moment';
+import EvolucaoSelecaoMultipla from '../components/EvolucaoSelecaoMultipla';
 import EvolucaoSelecaoSimples from '../components/EvolucaoSelecaoSimples';
 import EvolucaoTexto from '../components/EvolucaoTexto';
-import imprimir from '../images/imprimir.svg';
-import { gravaResumoPlanoTerapeutico } from '../components/gravaResumoPlanoTerapeutico';
+import { PrintDocument } from './PrintDocument';
+import { gravaRegistrosDocumentos } from '../components/gravaRegistrosDocumentos';
 
 function AnamneseServicoSocial() {
 
   // recuperando estados globais (Context.API).
   const {
     statusdocumento,
-    printdocumento, setprintdocumento,
     idatendimento,
-    nomeunidade, box,
-    datadocumento,
-    nomepaciente, nomemae, dn,
-    nomeusuario, conselho,
+    conselho,
     tipodocumento,
-    camposopcoes, setcamposopcoes,
-    camposvalores, setcamposvalores,
-    registros_atuais, setregistros_atuais,
-    registros_antigos, setregistros_antigos,
-    idcampo, setidcampo,
+    camposopcoes,
+    setregistros_atuais,
+    setregistros_antigos,
     iddocumento,
     idselecteddocumento,
     setstatusdocumento,
     idpaciente,
+    objetivos,
+    metas,
     selectedcategoria,
-    objetivos, metas,
+    printdocumento,
+    setprintdocumento,
   } = useContext(Context);
 
   let camposusados = [123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 205]
 
   useEffect(() => {
     if (tipodocumento == 'ANAMNESE - CRESS' && conselho == 'CRESS') {
-      axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
-        var x = [0, 1];
-        x = response.data.rows;
-        setregistros_antigos(x.filter(item => item.evolucao == 'ANAMNESE - CRESS' && item.idevolucao < iddocumento));
-        setcamposvalores(x.rows);
-        if (statusdocumento == -2) {
-          console.log('COPIA VALOR DA EVOLUÇÃO SELECIONADA');
-          camposusados.map(item => x.filter(valor => valor.idcampo == item && valor.idevolucao == idselecteddocumento).map(item => copiaValor(item)));
-          gravaResumoPlanoTerapeutico(idpaciente, idatendimento, iddocumento, objetivos, metas);
-          setTimeout(() => {
-            axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
-              var x = [0, 1];
-              x = response.data.rows;
-              setregistros_atuais(x.filter(item => item.idevolucao == iddocumento));
-              setstatusdocumento(0);
-            });
-          }, 1000);
-        } else if (statusdocumento == -1 && iddocumento != 0) {
-          console.log('CRIA VALOR NOVO');
-          if (registros_antigos.length > 0) {
-            var lastid = null;
-            var htmlghapevolucoes = process.env.REACT_APP_API_CLONE_EVOLUCOES;
-            axios.get(htmlghapevolucoes + idpaciente).then((response) => {
-              var x = [0, 1];
-              var y = [0, 1];
-              x = response.data;
-              y = x.rows;
-              var lastevolution = y.sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).filter(item => item.conselho == conselho && item.evolucao == tipodocumento).slice(-1);
-              lastid = lastevolution.map(item => item.id).pop();
-              console.log(lastid);
-              gravaResumoPlanoTerapeutico(idpaciente, idatendimento, iddocumento, objetivos, metas);
-              camposusados.map(item => registros_antigos.filter(valor => valor.idcampo == item && valor.idevolucao == lastid - 1).map(item => insertValor(item, item.idcampo, item.idopcao, item.valor)));
-              gravaResumoPlanoTerapeutico(idpaciente, idatendimento, iddocumento, objetivos, metas);
-            });
-          } else {
-            gravaResumoPlanoTerapeutico(idpaciente, idatendimento, iddocumento, objetivos, metas);
-            camposusados.map(item => camposopcoes.filter(valor => valor.idcampo == item).map(item => insertValor(item, item.idcampo, item.id, null)));
-          }
-          setTimeout(() => {
-            axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
-              var x = [0, 1];
-              x = response.data.rows;
-              setregistros_atuais(x.filter(item => item.idevolucao == iddocumento));
-              setstatusdocumento(0);
-            });
-          }, 1000);
-        } else if (statusdocumento > -1) {
-          setregistros_atuais([]);
-          console.log('RECUPERANDO VALOR DO DOCUMENTO');
-          axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
-            var x = [0, 1];
-            x = response.data.rows;
-            setregistros_atuais(x.filter(item => item.idevolucao == iddocumento));
-          });
-        }
-      });
+      {
+        gravaRegistrosDocumentos(
+          camposusados,
+          statusdocumento,
+          idatendimento,
+          camposopcoes,
+          setregistros_atuais,
+          setregistros_antigos,
+          iddocumento,
+          idselecteddocumento,
+          setstatusdocumento,
+          idpaciente,
+          objetivos,
+          metas,
+        )
+      };
     }
   }, [statusdocumento, tipodocumento, selectedcategoria]);
-
-  const insertValor = (item, idcampo, idopcao, valor) => {
-    var obj = {
-      idpct: idpaciente,
-      idatendimento: idatendimento,
-      data: moment(),
-      idcampo: idcampo,
-      idopcao: idopcao,
-      opcao: item.opcao,
-      valor: valor,
-      idevolucao: iddocumento
-    }
-    console.log(obj);
-    axios.post('http://192.168.100.6:3333/insert_evolucao_valor', obj).then(() => {
-    });
-  }
-
-  const copiaValor = (item) => {
-    // inserindo registro.  
-    var obj = {
-      idpct: idpaciente,
-      idatendimento: idatendimento,
-      data: moment(),
-      idcampo: item.idcampo,
-      idopcao: item.idopcao,
-      opcao: item.opcao,
-      valor: item.valor,
-      idevolucao: iddocumento // id do documento recém-criado.
-    }
-    console.log(obj);
-    axios.post('http://192.168.100.6:3333/insert_evolucao_valor', obj).then(() => {
-      // loadCamposValores();
-    });
-  }
 
   // ESCALA DE GIJÓN (showescala = 9).
   function Gijon() {
@@ -207,7 +131,7 @@ function AnamneseServicoSocial() {
             <div className="title5">{'ESCALA DE GIJÓN'}</div>
             <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
               <button className="green-button"
-                onClick={() => {insertGijon(); updateGijonValor()}}
+                onClick={() => { insertGijon(); updateGijonValor() }}
               >
                 <img
                   alt=""
@@ -486,62 +410,12 @@ function AnamneseServicoSocial() {
             pointerEvents: statusdocumento == 1 || statusdocumento == 2 ? 'none' : 'auto',
             fontFamily: 'Helvetica',
           }}>
-          <div fixed={true} id="CABEÇALHO" style={{
-            display: printdocumento == 1 ? 'flex' : 'none',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            padding: 2.5,
-            borderColor: 'black',
-            borderWidth: 1,
-            borderRadius: 5,
-            fontFamily: 'Helvetica',
-            margin: 2.5,
-            marginTop: 5,
-            height: 130,
-          }}>
-            <div id='logo + nome do hospital + id do documento'
-              style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
-              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start' }}>
-                <img id="logo"
-                  alt=""
-                  src={logo}
-                  style={{
-                    margin: 0,
-                    width: 80, height: 60,
-                    alignSelf: 'center',
-                  }}
-                ></img>
-                <div id="nome do hospital"
-                  style={{ fontSize: 18, textAlign: 'center', padding: 20, fontWeight: 'bold', alignSelf: 'center' }}>
-                  {'CLÍNICA DE TRANSIÇÃO PAULO DE TARSO'}
-                </div>
-              </div>
-              <div id="id do documento"
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column', justifyContent: 'center', padding: 5, backgroundColor: '#f2f2f2', borderRadius: 5, margin: 5, alignSelf: 'center'
-                }}>
-                <div style={{ fontSize: 10, margin: 2.5, marginTop: 0, textAlign: 'right' }}>{'ATENDIMENTO: ' + idatendimento}</div>
-                <div style={{ fontSize: 10, margin: 2.5, textAlign: 'right' }}>{nomeunidade + ' - ' + box}</div>
-                <div style={{ fontSize: 10, margin: 2.5, marginBottom: 0, textAlign: 'right' }}>{'EMITIDO EM: ' + moment(datadocumento).format('DD/MM/YYYY - HH:mm')}</div>
-              </div>
-            </div>
-            <div id="nome do paciente + id do paciente">
-              <div style={{ fontSize: 14, margin: 5, fontWeight: 'bold' }}>{'PACIENTE: ' + nomepaciente}</div>
-              <div style={{ fontSize: 10, margin: 5, marginTop: 0, marginBottom: 0 }}>{'MÃE: ' + nomemae}</div>
-              <div style={{ flexDirection: 'row', margin: 5, marginTop: 2.5 }}>
-                <div style={{ fontSize: 10, margin: 0 }}>{'DN: ' + dn + ' (' + moment().diff(moment(dn, 'DD/MM/YYYY'), 'years') + ' ANOS)'}</div>
-              </div>
-            </div>
-          </div>
-
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
             <div className="title2center" style={{ width: '100%', fontSize: 16, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>ANAMNESE DO SERVIÇO SOCIAL</div>
             <div className="title2center" style={{ width: '100%', fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>ANAMNESE SOCIAL REALIZADA COM:</div>
             <EvolucaoTexto idcampo={123} campo={'NOME DO ACOMPANHANTE'} obrigatorio={1} tipo={'input'} lenght={200} width={500}></EvolucaoTexto>
             <EvolucaoTexto idcampo={124} campo={'GRAU DE PARENTESCO'} obrigatorio={1} tipo={'input'} lenght={200} width={500}></EvolucaoTexto>
             <EvolucaoTexto idcampo={125} campo={'CONTATO DO ACOMPANHANTE'} obrigatorio={1} tipo={'input'} lenght={200} width={500}></EvolucaoTexto>
-
             <EvolucaoSelecaoSimples idcampo={126} campo={'RELIGIÃO'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoTexto idcampo={127} campo={'OUTRA RELIGIÃO'} obrigatorio={1} tipo={'input'} lenght={200} width={500}></EvolucaoTexto>
             <EvolucaoSelecaoSimples idcampo={128} campo={'GRAU DE INSTRUÇÃO'} obrigatorio={1}></EvolucaoSelecaoSimples>\
@@ -552,7 +426,6 @@ function AnamneseServicoSocial() {
             <EvolucaoSelecaoSimples idcampo={133} campo={'REPRESENTANTE LEGAL'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoSelecaoSimples idcampo={134} campo={'TABAGISTA'} obrigatorio={1}></EvolucaoSelecaoSimples>
             <EvolucaoSelecaoSimples idcampo={135} campo={'ETILISTA'} obrigatorio={1}></EvolucaoSelecaoSimples>
-
             <div className="title2center" style={{ width: '100%', fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>{'COMPOSIÇÃO FAMILIAR (COM QUEM O PACIENTE RESIDE)'}</div>
             <EvolucaoTexto idcampo={136} campo={'NOME DO PARENTE DE REFERÊNCIA'} obrigatorio={1} tipo={'input'} lenght={200} width={500}></EvolucaoTexto>
             <EvolucaoTexto idcampo={137} campo={'GRAU DE PARENTESCO'} obrigatorio={1} tipo={'input'} lenght={200} width={500}></EvolucaoTexto>
@@ -565,45 +438,40 @@ function AnamneseServicoSocial() {
             <EvolucaoTexto idcampo={144} campo={'ENDEREÇO PÓS ALTA'} obrigatorio={1} tipo={'input'} lenght={2000} width={500}></EvolucaoTexto>
             <EvolucaoTexto idcampo={145} campo={'OBSERVAÇÕES - ANAMNESE DO SERVIÇO SOCIAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
           </div>
-
           <Gijon></Gijon>
-
-          <div id="assinatura"
-            style={{
-              display: printdocumento == 1 ? 'flex' : 'none',
-              flexDirection: 'column',
-              justifyContent: 'center', alignSelf: 'center', width: '100%',
-              alignContent: 'center', textAlign: 'center',
-              marginTop: 20,
-            }}>
-            <div style={{ fontSize: 10, margin: 5 }}>{'DOCUMENTO ASSINADO DIGITALMENTE POR:'}</div>
-            <div style={{ fontSize: 14, margin: 2.5, fontWeight: 'bold' }}>{nomeusuario}</div>
-            <div style={{ fontSize: 14, margin: 2.5, fontWeight: 'bold' }}>{conselho}</div>
-          </div>
-
         </div>
       </div >
     )
   };
 
   function printDiv() {
-    setprintdocumento(1);
-    setTimeout(() => {
-      var divContents = document.getElementById("FORMULÁRIO - ANAMNESE SOCIAL").innerHTML;
-      var a = window.open();
-      a.document.write('<html>');
-      a.document.write(divContents);
-      a.document.write('</body></html>');
-      a.print();
-      a.close();
-      setprintdocumento(0);
-    }, 1000);
+    console.log('PREPARANDO REGISTROS ATUAIS PARA IMPRESSÃO');
+    axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
+      var x = [0, 1];
+      x = response.data.rows;
+      setregistros_atuais(x.filter(item => item.idevolucao == iddocumento));
+      console.log(x.filter(item => item.idevolucao == iddocumento).length);
+      setprintdocumento(1);
+      setTimeout(() => {
+        let printdocument = document.getElementById("PRINTDOCUMENT - ANAMNESE - CRESS").innerHTML;
+        var a = window.open('  ', '  ', 'width=' + '1024px' + ', height=' + '800px');
+        a.document.write('<html>');
+        a.document.write(printdocument);
+        a.document.write('</html>');
+        a.print();
+        a.close();
+        setprintdocumento(0);
+      }, 1000);
+    });
   }
 
   // renderização dos componentes.
   return (
     <div style={{ display: tipodocumento == 'ANAMNESE - CRESS' && conselho == 'CRESS' && statusdocumento != null ? 'flex' : 'none' }}>
       <Form></Form>
+      <div id='PRINTDOCUMENT - ANAMNESE - CRESS' style={{ display: 'none' }}>
+        <PrintDocument></PrintDocument>
+      </div>
     </div>
   )
 }

@@ -1147,9 +1147,11 @@ function Evolucao(
                   loadEvolucoesGpulse(conselho, tipodocumento, null);
                   setTimeout(() => {
                     setstatusdocumento(-1);
+                    
                     setTimeout(() => {
-                      setstatusdocumento(0);
+                      // setstatusdocumento(0);
                     }, 2000);
+
                   }, 2000);
                   if (conselho == 'CREFITO' && tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFITO') {
                     setviewdocumento(51);

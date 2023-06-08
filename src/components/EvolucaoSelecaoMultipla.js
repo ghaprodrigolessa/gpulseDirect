@@ -42,6 +42,7 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio, width }) {
         valor: valor,
         idevolucao: iddocumento
       }
+      console.log(id);
       console.log(obj);
       axios.post('http://192.168.100.6:3333/update_evolucao_valor/' + id, obj);
     });
