@@ -473,6 +473,21 @@ export const PrintDocument = () => {
       </div>
     )
   }
+  function CorpoEvolucaoLivre() {
+    return (
+      <div style={{ fontFamily: 'Helvetica', width: '100%' }}>
+        <div
+          style={{
+            display: tipodocumento != 0 && tipodocumento.includes('LIVRE') == true ? 'flex' : 'none',
+            flexDirection: 'row',
+            justifyContent: 'space-between', flexWrap: 'wrap',
+          }}>
+          <div className="title2center" style={{ width: '100%', fontSize: 16, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>EVOLUÇÃO LIVRE</div>
+          <EvolucaoTexto idcampo={207} campo={'EVOLUÇÃO LIVRE'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={905}></EvolucaoTexto>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <table className="report-container">
@@ -578,6 +593,7 @@ export const PrintDocument = () => {
               <CorpoAnamnesePsico></CorpoAnamnesePsico>
               <CorpoAnamneseSocial></CorpoAnamneseSocial>
               <CorpoAnamneseTo></CorpoAnamneseTo>
+              <CorpoEvolucaoLivre></CorpoEvolucaoLivre>
             </div>
           </td>
         </tr>

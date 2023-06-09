@@ -4,12 +4,11 @@ import axios from 'axios';
 import Context from '../Context';
 import imprimir from '../images/imprimir.svg';
 import EvolucaoSelecaoMultipla from '../components/EvolucaoSelecaoMultipla';
-import EvolucaoSelecaoSimples from '../components/EvolucaoSelecaoSimples';
 import EvolucaoTexto from '../components/EvolucaoTexto';
 import { PrintDocument } from './PrintDocument';
 import { gravaRegistrosDocumentos } from '../components/gravaRegistrosDocumentos';
 
-function EvolucaoServicoSocial() {
+function EvolucaoLivre() {
 
   // recuperando estados globais (Context.API).
   const {
@@ -31,10 +30,10 @@ function EvolucaoServicoSocial() {
     setprintdocumento,
   } = useContext(Context);
 
-  let camposusados = [146, 147, 148]
+  let camposusados = [199, 200, 201, 202];
 
   useEffect(() => {
-    if (tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CRESS' && conselho == 'CRESS') {
+    if (tipodocumento != 0 && tipodocumento.includes('LIVRE') == true) {
       {
         gravaRegistrosDocumentos(
           camposusados,
@@ -57,7 +56,7 @@ function EvolucaoServicoSocial() {
   function Form() {
     return (
       <div className="scroll"
-        id="FORMULÁRIO - EVOLUÇÃO SOCIAL"
+        id="FORMULÁRIO - EVOLUÇÃO LIVRE"
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -105,13 +104,13 @@ function EvolucaoServicoSocial() {
             pointerEvents: statusdocumento == 1 || statusdocumento == 2 ? 'none' : 'auto',
             fontFamily: 'Helvetica',
           }}>
-          <div id="CORPO DO DOCUMENTO - EVOLUÇÃO ESTRUTURADA - CRESS"
-            style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <div className="title2center" style={{ width: '100%', fontSize: 16, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>EVOLUÇÃO DO SERVIÇO SOCIAL</div>
-            <EvolucaoSelecaoSimples idcampo={146} campo={'FREQUÊNCIA DE ATENDIMENTO'} obrigatorio={1}></EvolucaoSelecaoSimples>
-            <EvolucaoSelecaoMultipla idcampo={147} campo={'TIPO DE ATENDIMENTO'} obrigatorio={1}></EvolucaoSelecaoMultipla>
-            <EvolucaoTexto idcampo={148} campo={'EVOLUÇÃO DA ASSISTÊNCIA SOCIAL'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
-            <EvolucaoTexto idcampo={206} campo={'RESUMO DO PLANO TERAPÊUTICO PARA A ESPECIALIDADE:'} obrigatorio={1} tipo={"textarea"} length={10} width={'60vw'}></EvolucaoTexto>
+          <div id="CORPO DO DOCUMENTO - EVOLUÇÃO LIVRE"
+            style={{
+              display: 'flex', flexDirection: 'row',
+              justifyContent: 'space-between', flexWrap: 'wrap'
+            }}>
+            <div className="title2center" style={{ width: '100%', fontSize: 16, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>EVOLUÇÃO LIVRE</div>
+            <EvolucaoTexto idcampo={207} campo={'EVOLUÇÃO LIVRE'} obrigatorio={1} tipo={'textarea'} lenght={2000} width={'60vw'}></EvolucaoTexto>
           </div>
         </div>
       </div>
@@ -127,8 +126,8 @@ function EvolucaoServicoSocial() {
       console.log(x.filter(item => item.idevolucao == iddocumento).length);
       setprintdocumento(1);
       setTimeout(() => {
-        let printdocument = document.getElementById("PRINTDOCUMENT - EVOLUÇÃO ESTRUTURADA - CRESS").innerHTML;
-        var a = window.open('  ', '  ', 'width=' + '1024px' + ', height=' + '800px');
+        let printdocument = document.getElementById("PRINTDOCUMENT - EVOLUÇÃO LIVRE").innerHTML;
+        var a = window.open('  ', '  ', 'width=' + '1024px' + ', height=' + '800px');;
         a.document.write('<html>');
         a.document.write(printdocument);
         a.document.write('</html>');
@@ -139,16 +138,15 @@ function EvolucaoServicoSocial() {
     });
   }
 
-
   // renderização dos componentes.
   return (
-    <div style={{ display: tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CRESS' && conselho == 'CRESS' && statusdocumento != null ? 'flex' : 'none' }}>
+    <div style={{ display: tipodocumento != 0 && tipodocumento.includes('LIVRE') == true && statusdocumento != null ? 'flex' : 'none' }}>
       <Form></Form>
-      <div id='PRINTDOCUMENT - EVOLUÇÃO ESTRUTURADA - CRESS' style={{ display: 'none' }}>
+      <div id='PRINTDOCUMENT - EVOLUÇÃO LIVRE' style={{ display: 'none' }}>
         <PrintDocument></PrintDocument>
       </div>
     </div>
   )
 }
 
-export default EvolucaoServicoSocial;
+export default EvolucaoLivre;

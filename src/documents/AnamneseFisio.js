@@ -167,7 +167,7 @@ function AnamneseFisio() {
 
   function printDiv() {
     console.log('PREPARANDO REGISTROS ATUAIS PARA IMPRESSÃO');
-    axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
+    axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
       var x = [0, 1];
       x = response.data.rows;
       setregistros_atuais(x.filter(item => item.idevolucao == iddocumento));

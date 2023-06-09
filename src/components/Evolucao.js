@@ -23,6 +23,7 @@ import EvolucaoFono from '../documents/EvolucaoFono';
 import EvolucaoPsicologia from '../documents/EvolucaoPsicologia';
 import EvolucaoServicoSocial from '../documents/EvolucaoServicoSocial';
 import EvolucaoTerapiaOcupacional from '../documents/EvolucaoTerapiaOcupacional';
+import EvolucaoLivre from '../documents/EvolucaoLivre';
 
 function Evolucao(
   {
@@ -103,7 +104,7 @@ function Evolucao(
   // carregando todos os valores de seleção de campos registrados no banco de dados.
   var htmlcamposvalores = process.env.REACT_EVOLUCAO_VALORES
   const loadCamposValores = () => {
-    axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
+    axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
       console.log('CARREGANDO VALORES DE CAMPOS');
       var x = [0, 1];
       x = response.data;
@@ -192,6 +193,7 @@ function Evolucao(
                   <EvolucaoPsicologia></EvolucaoPsicologia>
                   <EvolucaoServicoSocial></EvolucaoServicoSocial>
                   <EvolucaoTerapiaOcupacional></EvolucaoTerapiaOcupacional>
+                  <EvolucaoLivre></EvolucaoLivre>
                 </div>
               </div>
             </div>
@@ -1038,7 +1040,7 @@ function Evolucao(
   // copiando valores de campos ao criar nova evolução.
   const copiaValores = () => {
     // recuperando valores.
-    axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
+    axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
       var x = [0, 1];
       var y = [0, 1];
       x = response.data;
@@ -1147,7 +1149,7 @@ function Evolucao(
                   loadEvolucoesGpulse(conselho, tipodocumento, null);
                   setTimeout(() => {
                     setstatusdocumento(-1);
-                    
+
                     setTimeout(() => {
                       // setstatusdocumento(0);
                     }, 2000);
@@ -1209,6 +1211,9 @@ function Evolucao(
                 }}
               ></img>
             </div>
+          </div>
+          <div className='title2center' style={{ margin: 10 }}>
+            {tipodocumento == 0 ? '' : tipodocumento}
           </div>
           <ListaDeDocumentos></ListaDeDocumentos>
           <Signature></Signature>

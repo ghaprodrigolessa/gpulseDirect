@@ -16,6 +16,7 @@ import back from '../images/back.svg';
 import foto from '../images/3x4.jpg';
 import info from '../images/info.svg';
 import lupabranca from '../images/lupabranca.svg';
+import document from '../images/document.svg';
 import deletar from '../images/deletar.svg';
 import scales from '../images/scales.svg'
 // importando componentes de sobreposição.
@@ -1044,20 +1045,6 @@ function Prontuario() {
                       }}
                     >
                     </img>
-                    <button
-                      id="EVOLUÇÃO"
-                      onClick={() => setstateprontuario(35)}
-                      className='blue-button'
-                      title='CLIQUE PARA EVOLUIR.'
-                      style={{
-                        padding: 10,
-                        margin: 2.5,
-                        width: 50,
-                        height: 50,
-                      }}
-                    >
-                      {'E'}
-                    </button>
                     <DetalhesPaciente></DetalhesPaciente>
                   </div>
                 </div>
@@ -1194,6 +1181,25 @@ function Prontuario() {
               justifyContent: 'center',
             }}
           >
+            <div
+              className='grey-button'
+              title='DOCUMENTOS.'
+              onClick={() => setstateprontuario(35)}
+              style={{
+                display: 'flex',
+                bottom: 20, left: 20,
+              }}>
+              <img
+                alt=""
+                src={document}
+                style={{
+                  display: 'flex',
+                  margin: 5,
+                  height: 30,
+                  width: 30,
+                }}
+              ></img>
+            </div>
             <div
               className={stateprontuario == 20 ? 'red-button' : 'grey-button'}
               title='ESCALAS.'

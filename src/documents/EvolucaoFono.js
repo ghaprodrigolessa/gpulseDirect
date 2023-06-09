@@ -93,7 +93,7 @@ function EvolucaoFono() {
       axios.post(htmlghapinsertescala, obj);
     }
     const updateFoisValor = () => {
-      axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
+      axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
         var x = [0, 1];
         x = response.data.rows;
         var id = x
