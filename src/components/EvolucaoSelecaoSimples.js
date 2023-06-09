@@ -25,7 +25,7 @@ function EvolucaoSelecaoSimples({ idcampo, campo, obrigatorio, width }) {
   }, [registros_atuais, statusdocumento]);
 
   const updateValor = (item, opcao, valor) => {
-    axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
+    axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
       var x = [0, 1];
       x = response.data.rows;
       var id = x

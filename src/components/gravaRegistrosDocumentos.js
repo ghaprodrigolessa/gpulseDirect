@@ -49,7 +49,7 @@ export const gravaRegistrosDocumentos = (
     axios.post('http://192.168.100.6:3333/insert_evolucao_valor', obj);
   }
 
-  axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
+  axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
     var x = [0, 1];
     x = response.data.rows;
     setregistros_antigos(x.filter(item => item.idevolucao < iddocumento));
@@ -59,7 +59,7 @@ export const gravaRegistrosDocumentos = (
       camposusados.map(item => x.filter(valor => valor.idcampo == item && valor.idevolucao == idselecteddocumento).map(item => copiaValor(item)));
       gravaResumoPlanoTerapeutico(idpaciente, idatendimento, iddocumento, objetivos, metas);
       setTimeout(() => {
-        axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
+        axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
           var x = [0, 1];
           x = response.data.rows;
           setregistros_atuais(x.filter(item => item.idevolucao == iddocumento));
@@ -94,7 +94,7 @@ export const gravaRegistrosDocumentos = (
     } else if (statusdocumento > -1) {
       setregistros_atuais([]);
       console.log('RECUPERANDO VALOR DO DOCUMENTO');
-      axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
+      axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
         var x = [0, 1];
         x = response.data.rows;
         setregistros_atuais(x.filter(item => item.idevolucao == iddocumento));

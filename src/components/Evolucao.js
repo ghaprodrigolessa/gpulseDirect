@@ -519,6 +519,7 @@ function Evolucao(
           z = y.sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).filter(item => item.conselho == conselho && item.evolucao == tipodocumento);
           // selecionando o documento na lista de documentos.         
           console.log('###' + z.map(item => item.id).slice(-1).pop());
+          console.log('ATENDIMENTO: ' + idatendimento);
           setiddocumento(z.map(item => item.id).slice(-1).pop());
           setdatadocumento(z.map(item => item.data).slice(-1).pop());
           setstatusdocumento(z.map(item => item.status).slice(-1).pop());
