@@ -1213,7 +1213,7 @@ function Evolucao(
               ></img>
             </div>
           </div>
-          <div className='title2center' style={{ margin: 10 }}>
+          <div className='title2center' style={{ margin: 10, marginBottom: 0 }}>
             {tipodocumento == 0 ? '' : tipodocumento}
           </div>
           <ListaDeDocumentos></ListaDeDocumentos>
