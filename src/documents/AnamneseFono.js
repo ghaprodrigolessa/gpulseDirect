@@ -219,13 +219,13 @@ function AnamneseFono() {
     const [broncoespasmo, setbroncoespasmo] = useState(0);
     const [fc, setfc] = useState(0);
     const [fr, setfr] = useState(0);
-    const insertPard = () => {
 
+    const insertPard = () => {
       setpardscore(
         escapeoralanterior + tempotransitooraladequado + refluxonasal +
         numerodegluticoes + residuooral + elevacaolaringea + tosse +
-        engasgo + auscultacervicallimpa + qualidadevocaladequada + sato2 +
-        cianose + broncoespasmo + fc + fr);
+        engasgo + auscultacervicallimpa + qualidadevocaladequada + parseInt(document.getElementById('inputPardSao2').value) +
+        cianose + broncoespasmo + parseInt(document.getElementById('inputPardFc').value) + parseInt(document.getElementById('inputPardFr').value));
 
       var significado = '';
       if (pardscore < 5) {
@@ -259,7 +259,7 @@ function AnamneseFono() {
       })
     }
     const updatePardValor = () => {
-      axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
+      axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
         var x = [0, 1];
         x = response.data.rows;
         var id = x
@@ -357,7 +357,7 @@ function AnamneseFono() {
                 <div className="title2center">REFLUXO NASAL</div>
                 <div style={{ display: 'flex', flexDirection: 'row', height: 75, width: '100%', justifyContent: 'center' }}>
                   <div
-                    className={refluxonasal == 1 ? 'red-button' : 'blue-button'}
+                    className={refluxonasal == 2 ? 'red-button' : 'blue-button'}
                     style={{ width: 200 }}
                     onClick={() => setrefluxonasal(2)}
                   >
@@ -499,22 +499,19 @@ function AnamneseFono() {
                 </div>
 
                 <div className="title2center">SATURAÇÃO DE OXIGÊNIO</div>
-                <div style={{ display: 'flex', flexDirection: 'row', height: 75, width: '100%', justifyContent: 'center' }}>
-                  <div
-                    className={sato2 == 2 ? 'red-button' : 'blue-button'}
-                    style={{ width: 200 }}
-                    onClick={() => setsato2(2)}
-                  >
-                    LÍQUIDO
-                  </div>
-                  <div
-                    className={sato2 == 1 ? 'red-button' : 'blue-button'}
-                    style={{ width: 200 }}
-                    onClick={() => setsato2(1)}
-                  >
-                    PASTOSO/SÓLIDO
-                  </div>
-                </div>
+                <input
+                  id='inputPardSao2'
+                  autoComplete="off"
+                  className="input"
+                  placeholder="SAO2"
+                  onFocus={(e) => {
+                    (e.target.placeholder = '');
+                  }}
+                  onBlur={(e) => (e.target.placeholder = 'SAO2')}
+                  title={"SAO2"}
+                  type="number"
+                  maxLength={3}
+                ></input>
 
                 <div className="title2center">CIANOSE</div>
                 <div style={{ display: 'flex', flexDirection: 'row', height: 75, width: '100%', justifyContent: 'center' }}>
@@ -553,40 +550,33 @@ function AnamneseFono() {
                 </div>
 
                 <div className="title2center">FREQUÊNCIA CARDÍACA</div>
-                <div style={{ display: 'flex', flexDirection: 'row', height: 75, width: '100%', justifyContent: 'center' }}>
-                  <div
-                    className={fc == 2 ? 'red-button' : 'blue-button'}
-                    style={{ width: 200 }}
-                    onClick={() => setfc(2)}
-                  >
-                    LÍQUIDO
-                  </div>
-                  <div
-                    className={fc == 1 ? 'red-button' : 'blue-button'}
-                    style={{ width: 200 }}
-                    onClick={() => setfc(1)}
-                  >
-                    PASTOSO/SÓLIDO
-                  </div>
-                </div>
-
+                <input
+                  id='inputPardFc'
+                  autoComplete="off"
+                  className="input"
+                  placeholder="FR"
+                  onFocus={(e) => {
+                    (e.target.placeholder = '');
+                  }}
+                  onBlur={(e) => (e.target.placeholder = 'FC')}
+                  title={"FC"}
+                  type="number"
+                  maxLength={3}
+                ></input>
                 <div className="title2center">FREQUÊNCIA RESPIRATÓRIA</div>
-                <div style={{ display: 'flex', flexDirection: 'row', height: 75, width: '100%', justifyContent: 'center' }}>
-                  <div
-                    className={fr == 2 ? 'red-button' : 'blue-button'}
-                    style={{ width: 200 }}
-                    onClick={() => setfr(2)}
-                  >
-                    LÍQUIDO
-                  </div>
-                  <div
-                    className={fr == 1 ? 'red-button' : 'blue-button'}
-                    style={{ width: 200 }}
-                    onClick={() => setfr(1)}
-                  >
-                    PASTOSO/SÓLIDO
-                  </div>
-                </div>
+                <input
+                  id='inputPardFr'
+                  autoComplete="off"
+                  className="input"
+                  placeholder="FR"
+                  onFocus={(e) => {
+                    (e.target.placeholder = '');
+                  }}
+                  onBlur={(e) => (e.target.placeholder = 'FR')}
+                  title={"FR"}
+                  type="number"
+                  maxLength={2}
+                ></input>
 
               </div>
             </div>
@@ -699,7 +689,7 @@ function AnamneseFono() {
 
   function printDiv() {
     console.log('PREPARANDO REGISTROS ATUAIS PARA IMPRESSÃO');
-    axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/').then((response) => {
+    axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
       var x = [0, 1];
       x = response.data.rows;
       setregistros_atuais(x.filter(item => item.idevolucao == iddocumento));

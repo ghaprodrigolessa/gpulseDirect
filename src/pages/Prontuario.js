@@ -559,7 +559,6 @@ function Prontuario() {
                                 arraylistescalas.filter(valor => valor.cd_escala == item.cd_escala)
                                   .sort((a, b) => moment(a.data) < moment(b.data) ? 1 : -1).slice(-5)
                                   .map(item => item.valor_resultado),
-                            // label: arraylistescalas.filter(valor => valor.cd_escala == item.cd_escala).map(item => moment(item.data).format('DD/MM/YY')),
                             borderColor: '#BB8FCE',
                             pointBackgroundColor: '#BB8FCE',
                             fill: 'false'
@@ -673,8 +672,9 @@ function Prontuario() {
                       display: item.cd_escala == 15 ? 'flex' : 'none',
                       flexDirection: 'column', justifyContent: 'center',
                       width: '100%',
-                      height: 250,
-                      padding: 10
+                      height: 500,
+                      padding: 10,
+                      // backgroundColor: 'red',
                     }}>
                     <Line
                       ref={myChartRef}
@@ -750,7 +750,7 @@ function Prontuario() {
                                 fontSize: 10,
                                 display: true,
                                 suggestedMin: 0,
-                                suggestedMax: 100,
+                                suggestedMax: 200,
                                 fontColor: '#61636e',
                                 fontWeight: 'bold',
                               },
@@ -784,7 +784,7 @@ function Prontuario() {
                         },
                         title: {
                           display: false,
-                          text: 'PPS',
+                          text: '',
                         },
                         legend: {
                           display: true,
