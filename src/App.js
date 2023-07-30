@@ -327,6 +327,9 @@ function App() {
   const [registros_antigos, setregistros_antigos] = useState([]);
   const [idcampo, setidcampo] = useState(0);
 
+  const [manipularegistros, setmanipularegistros] = useState(0);
+  const [poolevolucoes, setpoolevolucoes] = useState([]);
+
   // assinatura digital de documentos / certificado digital.
   const [signature, setsignature] = useState(0);
 
@@ -513,6 +516,8 @@ function App() {
         registros_antigos, setregistros_antigos,
         idcampo, setidcampo,
 
+        manipularegistros, setmanipularegistros,
+        poolevolucoes, setpoolevolucoes, // registros de evoluções.
 
         // assinatura digital.
         signature, setsignature,

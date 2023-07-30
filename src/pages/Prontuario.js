@@ -1322,12 +1322,6 @@ function Prontuario() {
     }, time);
   }
 
-  // SIDEBAR
-  const showSideBar = (e) => {
-    if (e.pageX < 20) {
-      document.getElementById("sidebar").className = "pacientes-menu-in";
-    }
-  }
   // selecionando um paciente da lista e atualizando a tela corrida.
   const selectPaciente = (item) => {
     setidpaciente(item.cd_paciente);
@@ -1337,82 +1331,12 @@ function Prontuario() {
     carga();
 
   };
-  // SIDEBAR ANIMADA COM LISTA DE PACIENTES.
-  function SideBar() {
-    return (
-      <div
-        id="sidebar"
-        className="pacientes-menu-out"
-        onMouseOver={() => document.getElementById("sidebar").className = "pacientes-menu-in"}
-        onMouseOut={() => document.getElementById("sidebar").className = "pacientes-menu-out"}
-        style={{
-          display: idunidade != 0 && window.innerWidth > 800 ? 'flex' : 'none',
-          width: window.innerWidth > 1000 ? '35%' : '50vw',
-          minWidth: window.innerWidth > 1000 ? '35%' : '50vw',
-          position: 'absolute',
-          top: 0, bottom: 0,
-          padding: 10, paddingLeft: 0,
-          zIndex: 50,
-        }
-        }>
-        <div
-          className="widget"
-          style={{
-            flexDirection: 'column', justifyContent: 'center', margin: 0,
-            borderRadius: 5, borderTopLeftRadius: 0, borderBottomLeftRadius: 0,
-            width: '100%',
-            height: '100%',
-            padding: 10, paddingLeft: 0,
-            boxShadow: '0px 2px 10px 5px rgba(0, 0, 0, 0.5)',
-          }}
-        >
-          <div className="title2" style={{ color: "#ffffff" }}>{nomeunidade != undefined ? 'LISTA DE PACIENTES:  ' + nomeunidade : 'LISTA DE PACIENTES'}</div>
-          <div className="scroll"
-            style={{
-              backgroundColor: 'white',
-              height: '100%', width: '100%',
-              justifyContent: 'flex-start', borderTopLeftRadius: 0, borderBottomLeftRadius: 0, paddingLeft: 7.5
-            }}>
-            {todosatendimentos.filter(item => item.Leito.unidade.id == idunidade).sort(((a, b) => a.Leito.descricao > b.Leito.descricao ? 1 : -1)).map(item => (
-              <div
-                key={item.id}
-                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
-              >
-                <button className="grey-button"
-                  style={{ backgroundColor: 'grey', minWidth: 80, width: 80, marginRight: 10, display: item.box !== '' ? 'flex' : 'none' }}>
-                  {item.Leito.descricao}
-                </button>
-                <button
-                  onClick={() => selectPaciente(item)}
-                  className='blue-button'
-                  title={
-                    'STATUS: ' +
-                    item.status +
-                    '. CLIQUE PARA EVOLUIR.'
-                  }
-                  style={{
-                    padding: 10,
-                    margin: 2.5,
-                    width: '100%',
-                    height: 50,
-                  }}
-                >
-                  {item.nm_paciente}
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div >
-    )
-  }
-
+  
   // RENDERIZAÇÃO DO COMPONENTE PRONTUÁRIO.
   return (
     <div
       className="main fade-in"
       id="PRINCIPAL"
-      onMouseMove={(e) => { showSideBar(e) }}
     >
       <LoadPrincipal></LoadPrincipal>
       <div id="POPUPS">
@@ -1447,7 +1371,6 @@ function Prontuario() {
           <CategoriaSelector></CategoriaSelector>
           <EscalasAssistenciais></EscalasAssistenciais>
         </div>
-        <SideBar></SideBar>
       </div>
     </div>
   );

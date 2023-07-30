@@ -28,7 +28,7 @@ export const gravaRegistrosDocumentos = (
       valor: valor,
       idevolucao: iddocumento
     }
-    console.log(obj);
+    // console.log(obj);
     axios.post('http://192.168.100.6:3333/insert_evolucao_valor', obj).then(() => {
     });
   }
@@ -45,10 +45,11 @@ export const gravaRegistrosDocumentos = (
       valor: item.valor,
       idevolucao: iddocumento // id do documento recém-criado.
     }
-    console.log(obj);
+    // console.log(obj);
     axios.post('http://192.168.100.6:3333/insert_evolucao_valor', obj);
   }
 
+  console.log('ATIVADA A FUNÇÃO GRAVAREGISTRODOCUMENTOS');
   axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
     var x = [0, 1];
     x = response.data.rows;
@@ -91,6 +92,7 @@ export const gravaRegistrosDocumentos = (
         */
       }
       ));
+      setstatusdocumento(0)
     } else if (statusdocumento > -1) {
       setregistros_atuais([]);
       console.log('RECUPERANDO VALOR DO DOCUMENTO');

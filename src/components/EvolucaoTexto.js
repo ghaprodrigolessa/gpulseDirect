@@ -6,44 +6,42 @@ import Context from '../Context';
 
 function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width, valor_escala }) {
 
-  const {
-    idpaciente, idatendimento,
-    iddocumento,
-    camposopcoes,
-    printdocumento,
-    statusdocumento,
-    registros_atuais,
-  } = useContext(Context)
-
-  const [registros, setregistros] = useState([]);
-  const [random, setrandom] = useState(null);
-  useEffect(() => {
-    if (statusdocumento != null) {
-      setregistros(registros_atuais);
-      setrandom(Math.random());
-    }
-  }, [registros_atuais, statusdocumento]);
-
-  const updateValor = (item, valor) => {
+  
+  const updateValor = (item, opcao, valor) => {
     axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
       var x = [0, 1];
       x = response.data.rows;
-      var id = x
-        .filter(valor => valor.idevolucao == iddocumento && valor.idcampo == idcampo)
-        .sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).slice(-1).map(item => item.id);
-      // atualizando registro.  
-      var obj = {
-        idpct: idpaciente,
-        idatendimento: idatendimento,
-        data: moment(),
-        idcampo: idcampo,
-        idopcao: item.id,
-        opcao: campo,
-        valor: valor,
-        idevolucao: iddocumento
+      // já existe um registro deste campo estruturado para o documento.
+      if (x
+        .filter(valor => valor.idevolucao == iddocumento && valor.idatendimento == idatendimento && valor.idcampo == idcampo).length > 0) {
+        var id = x
+          .filter(valor => valor.idevolucao == iddocumento && valor.idatendimento == idatendimento && valor.idcampo == idcampo)
+          .sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).slice(-1).map(item => item.id);
+        var obj = {
+          idpct: idpaciente,
+          idatendimento: idatendimento,
+          data: moment(),
+          idcampo: idcampo,
+          idopcao: item.id,
+          opcao: opcao,
+          valor: valor,
+          idevolucao: iddocumento
+        }
+        axios.post('http://192.168.100.6:3333/update_evolucao_valor/' + id, obj);
+      } else {
+        // inserindo o registro de campo.
+        var obj = {
+          idpct: idpaciente,
+          idatendimento: idatendimento,
+          data: moment(),
+          idcampo: idcampo,
+          idopcao: item.id,
+          opcao: item.opcao,
+          valor: valor,
+          idevolucao: iddocumento
+        }
+        axios.post('http://192.168.100.6:3333/insert_evolucao_valor', obj);
       }
-      console.log(obj);
-      axios.post('http://192.168.100.6:3333/update_evolucao_valor/' + id, obj);
     });
   }
 
@@ -79,7 +77,6 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width, valor
           borderWidth: 5,
           padding: 10,
           margin: 5,
-          // width: width,
           alignSelf: 'center'
         }}
       >
@@ -91,7 +88,6 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width, valor
             justifyContent: 'center', flexWrap: 'wrap', alignContent: 'center',
           }}>
           {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
-            var x = registros.filter(valor => valor.idcampo == item.idcampo).map(item => item.valor);
             if (tipo == "textarea") {
               return (
                 <div style={{ position: 'relative' }}
@@ -130,7 +126,7 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width, valor
                     onKeyUp={() => {
                       clearTimeout(timeout);
                       timeout = setTimeout(() => {
-                        updateValor(item, document.getElementById('opcao' + item.id + random).value.toUpperCase())
+                        updateValor(item, item.opcao, document.getElementById('opcao' + item.id + random).value.toUpperCase())
                       }, 2000);
                     }}
                   ></textarea>
@@ -167,7 +163,7 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width, valor
                           document.getElementById('opcao' + item.id + random).value = '';
                         } else {
                           document.getElementById('opcao' + item.id + random).value = moment(date).format('DD/MM/YYYY');
-                          updateValor(item, document.getElementById('opcao' + item.id + random).value);
+                          updateValor(item, item.opcao, document.getElementById('opcao' + item.id + random).value);
                         }
                       }, 3000);
                     }}
@@ -217,7 +213,7 @@ function EvolucaoTexto({ idcampo, campo, obrigatorio, tipo, length, width, valor
                     onKeyUp={() => {
                       clearTimeout(timeout);
                       timeout = setTimeout(() => {
-                        updateValor(item, document.getElementById('opcao' + item.id + random).value.toUpperCase())
+                        updateValor(item, item.opcao, document.getElementById('opcao' + item.id + random).value.toUpperCase())
                       }, 2000);
                     }}
                   ></input>

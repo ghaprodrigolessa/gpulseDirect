@@ -64,6 +64,55 @@ azul claro 3: #c5bfd2
   background-color: var(--cor2);
 }
 
+.espaço {
+  position: fixed;
+  height: 150px;
+}
+
+/* REPETINDO CABEÇALHO E RODAPÉ PARA IMPRESSÃO */
+/* Styles go here */
+.page-header,
+.page-header-space {
+  height: 100px;
+}
+
+.page-footer,
+.page-footer-space {
+  height: 50px;
+}
+
+.page-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  border-top: 1px solid black; /* for demo */
+  background: yellow; /* for demo */
+}
+
+.page-header {
+  position: fixed;
+  top: 0mm;
+  width: 100%;
+  border-bottom: 1px solid black; /* for demo */
+  background: yellow; /* for demo */
+}
+
+.page {
+  page-break-after: always;
+}
+
+@page {
+  margin: 20mm;
+}
+
+.noprint {
+  display: flex !important;
+}
+
+.print {
+  display: none !important;
+}
+
 table.report-container {
   page-break-after: always;
 }
@@ -74,7 +123,78 @@ tfoot.report-footer {
   display: table-header-group;
 }
 
-/* OCULTANDO CABEÇALHO E RODAPÉ PARA IMPRESSÃO */
+@media print {
+  .page-header,
+  .page-header-space {
+    height: 100px;
+  }
+
+  .page-footer,
+  .page-footer-space {
+    height: 100px;
+  }
+
+  .page-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .page-header {
+    position: fixed;
+    top: 0mm;
+    width: 100%;
+  }
+
+  .page {
+    page-break-after: always;
+  }
+  thead {
+    display: table-header-group;
+  }
+  tfoot {
+    display: table-footer-group;
+  }
+
+  button {
+    display: none;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  .noprint {
+    display: none !important;
+  }
+
+  .print {
+    display: flex !important;
+  }
+
+  .red-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #ffffff;
+    font-weight: bold;
+    min-width: 50px;
+    min-height: 50px;
+    background-color: #ec7063;
+    border: none;
+    border-color: transparent;
+    border-radius: 5px;
+    outline: none;
+    box-shadow: transparent;
+    margin: 2.5px;
+    padding: 0px;
+    cursor: default;
+    box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.3);
+    transition: 200ms ease-in-out;
+  }
+}
 
 /* CONTAINERS */
 
@@ -5164,34 +5284,5 @@ input::-webkit-inner-spin-button {
     display: none;
     left: -50vw;
     transition: 0.5s;
-  }
-}
-
-@media print {
-  .noprint {
-    display: none !important;
-  }
-
-  .red-button {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: #ffffff;
-    font-weight: bold;
-    min-width: 50px;
-    min-height: 50px;
-    background-color: #ec7063;
-    border: none;
-    border-color: transparent;
-    border-radius: 5px;
-    outline: none;
-    box-shadow: transparent;
-    margin: 2.5px;
-    padding: 0px;
-    cursor: default;
-    box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.3);
-    transition: 200ms ease-in-out;
   }
 }

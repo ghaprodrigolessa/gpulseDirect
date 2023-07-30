@@ -13,17 +13,20 @@ import novo from '../images/novo.svg';
 
 import Signature from './Signature';
 
+/*
 import AnamneseFisio from '../documents/AnamneseFisio';
 import AnamneseFono from '../documents/AnamneseFono';
 import AnamnesePsicologia from '../documents/AnamnesePsicologia';
 import AnamneseServicoSocial from '../documents/AnamneseServicoSocial';
 import AnamneseTerapiaOcupacional from '../documents/AnamneseTerapiaOcupacional';
 import EvolucaoFisio from '../documents/EvolucaoFisio';
-import EvolucaoFono from '../documents/EvolucaoFono';
 import EvolucaoPsicologia from '../documents/EvolucaoPsicologia';
 import EvolucaoServicoSocial from '../documents/EvolucaoServicoSocial';
 import EvolucaoTerapiaOcupacional from '../documents/EvolucaoTerapiaOcupacional';
 import EvolucaoLivre from '../documents/EvolucaoLivre';
+*/
+
+import EvolucaoFono from '../documents/EvolucaoFono';
 
 function Evolucao(
   {
@@ -103,7 +106,8 @@ function Evolucao(
 
   // carregando todos os valores de seleção de campos registrados no banco de dados.
   var htmlcamposvalores = process.env.REACT_EVOLUCAO_VALORES
-  const loadCamposValores = () => {
+  const loadCamposValores = (iddocumento) => {
+    console.log('ID DOCUMENTO: ' + iddocumento);
     axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
       console.log('CARREGANDO VALORES DE CAMPOS');
       var x = [0, 1];
@@ -181,21 +185,7 @@ function Evolucao(
               <div style={{ display: tipodocumento == '' ? 'flex' : 'none', width: '70vw', height: '58vh', flexDirection: 'column', justifyContent: 'center', marginRight: 10 }}>
                 <div className="title2center">{'SELECIONE UM DOCUMENTO PARA VISUALIZAÇÃO'}</div>
               </div>
-              <div style={{ display: tipodocumento != '' && iddocumento != 0 ? 'flex' : 'none', width: '70vw', height: '58vh', flexDirection: 'column', justifyContent: 'center', marginRight: 10 }}>
-                <div>
-                  <AnamneseFisio></AnamneseFisio>
-                  <AnamneseFono></AnamneseFono>
-                  <AnamnesePsicologia></AnamnesePsicologia>
-                  <AnamneseServicoSocial></AnamneseServicoSocial>
-                  <AnamneseTerapiaOcupacional></AnamneseTerapiaOcupacional>
-                  <EvolucaoFisio></EvolucaoFisio>
-                  <EvolucaoFono></EvolucaoFono>
-                  <EvolucaoPsicologia></EvolucaoPsicologia>
-                  <EvolucaoServicoSocial></EvolucaoServicoSocial>
-                  <EvolucaoTerapiaOcupacional></EvolucaoTerapiaOcupacional>
-                  <EvolucaoLivre></EvolucaoLivre>
-                </div>
-              </div>
+              <EvolucaoFono></EvolucaoFono>
             </div>
           </div>
         </div >
@@ -203,7 +193,7 @@ function Evolucao(
     } else {
       return null;
     }
-  }, [stateprontuario, listevolucoes, arrayevolucao, selectedcategoria, tipodocumento, iddocumento, statusdocumento, arraycategoriaprofissional, viewdocumento]);
+  }, [arrayevolucao, selectedcategoria, tipodocumento, iddocumento, statusdocumento, arraycategoriaprofissional, viewdocumento]);
 
   // opções de registros interdisciplinares por categoria profissional.
   function OpcoesRegistrosInterdisciplinares() {
@@ -510,6 +500,7 @@ function Evolucao(
           newstatus = 2
         }
         setiddocumento(item.id);
+        loadCamposValores(item.id);
         setusuariodocumento(item.idprofissional);
         setstatusdocumento(newstatus);
         setdatadocumento(item.data);
@@ -523,6 +514,7 @@ function Evolucao(
           setiddocumento(z.map(item => item.id).slice(-1).pop());
           setdatadocumento(z.map(item => item.data).slice(-1).pop());
           setstatusdocumento(z.map(item => item.status).slice(-1).pop());
+          loadCamposValores(z.map(item => item.id).slice(-1).pop());
           setTimeout(() => {
             document.getElementById("tag do profissional" + z.slice(-1).map(item => item.id)).className = "red-button";
           }, 500);
@@ -695,7 +687,7 @@ function Evolucao(
               document.getElementById("categoriaprofissional" + item.id).className = "red-button"
               setselectedcategoria(item.id);
               setconselho(item.conselho);
-              settipodocumento('');
+              settipodocumento(0);
               setviewdocumento(0);
               setstatusdocumento(null);
             }}
@@ -1039,60 +1031,6 @@ function Evolucao(
   }
 
   // copiando valores de campos ao criar nova evolução.
-  const copiaValores = () => {
-    // recuperando valores.
-    axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
-      var x = [0, 1];
-      var y = [0, 1];
-      x = response.data;
-      y = x.rows;
-      y.filter(valor => valor.idevolucao == iddocumento).map(valor => {
-        var obj = {
-          idpct: idpaciente,
-          idatendimento: idatendimento,
-          data: moment(),
-          idcampo: valor.idcampo,
-          idopcao: valor.idopcao,
-          opcao: valor.opcao,
-          valor: valor.valor,
-          idevolucao: iddocumento + 1
-        }
-        axios.post('http://192.168.100.6:3333/insert_evolucao_valor', obj).then(() => {
-          loadCamposValores();
-        });
-      });
-    });
-  }
-
-  // inserir registro de resumo de plano terapêutico quando criamos ou copiamos um documento.
-  /*
-  const insertValorResumoPlanoTerapeutico = () => {
-    let valor =
-      'OBJETIVOS SECUNDÁRIOS ATIVOS:'
-      +
-      objetivos.filter(item => item.statusobjetivo == 1 && item.tipoobjetivo == 2).map(item => '\n' + item.objetivo) +
-      '\n\n'
-      +
-      'METAS ATIVAS:'
-      +
-      metas.filter(item => item.status == 0).map(item => '\n' + item.meta);
-
-    var obj = {
-      idpct: idpaciente,
-      idatendimento: idatendimento,
-      data: moment(),
-      idcampo: 206,
-      idopcao: 678,
-      opcao: 'RESUMO PLANO TERAPÊUTICO',
-      valor: valor,
-      idevolucao: iddocumento
-    }
-    console.log(obj);
-    axios.post('http://192.168.100.6:3333/insert_evolucao_valor', obj).then(() => {
-    });
-  }
-  */
-
   // renderização do componente.
   var htmlinsertdocumento = process.env.REACT_APP_API_CLONE_INSERTEVOLUCAO;
   return (
@@ -1152,7 +1090,7 @@ function Evolucao(
                     setstatusdocumento(-1);
 
                     setTimeout(() => {
-                      // setstatusdocumento(0);
+                      setstatusdocumento(0);
                     }, 2000);
 
                   }, 2000);

@@ -12,40 +12,70 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio, width }) {
     statusdocumento,
     camposopcoes,
     printdocumento,
-    registros_atuais
-  } = useContext(Context)
+    registros_atuais,
+  } = useContext(Context);
 
-  const [registros, setregistros] = useState([]);
   const [random, setrandom] = useState(null);
+  console.log("SELEÇÃO MÚLTIPLA!!")
   useEffect(() => {
     if (statusdocumento != null) {
-      setregistros(registros_atuais);
       setrandom(Math.random());
     }
-  }, [registros_atuais, statusdocumento]);
+  }, [statusdocumento]);
 
-  const updateValor = (item, valor) => {
+  const updateValor = (item, valor, id) => {
     axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
       var x = [0, 1];
       x = response.data.rows;
-      var id = x
-        .filter(valor => valor.idevolucao == iddocumento && valor.idcampo == idcampo && valor.opcao == item.opcao)
-        .sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).slice(-1).map(item => item.id);
-      // atualizando registro.  
-      var obj = {
-        idpct: idpaciente,
-        idatendimento: idatendimento,
-        data: moment(),
-        idcampo: idcampo,
-        idopcao: item.id,
-        opcao: item.opcao,
-        valor: valor,
-        idevolucao: iddocumento
+      if (x
+        .filter(valor => valor.idevolucao == iddocumento && valor.idatendimento == idatendimento && valor.idcampo == item.idcampo && valor.idopcao == item.id).length > 0) {
+        // atualizando registro.  
+        var obj = {
+          idpct: idpaciente,
+          idatendimento: idatendimento,
+          data: moment(),
+          idcampo: idcampo,
+          idopcao: item.id,
+          opcao: item.opcao,
+          valor: valor,
+          idevolucao: iddocumento
+        }
+        console.log('ATUALIZAR');
+        console.log(obj);
+        axios.post('http://192.168.100.6:3333/update_evolucao_valor/' + id, obj).then(() => {
+          setTimeout(() => {
+            if (valor == 'SIM') {
+              document.getElementById('opcao' + item.id + random).className = 'red-button';
+            } else {
+              document.getElementById('opcao' + item.id + random).className = 'blue-button';
+            }
+          }, 500);
+        });
+      } else {
+        // inserindo o registro de campo.
+        var obj = {
+          idpct: idpaciente,
+          idatendimento: idatendimento,
+          data: moment(),
+          idcampo: idcampo,
+          idopcao: item.id,
+          opcao: item.opcao,
+          valor: valor,
+          idevolucao: iddocumento
+        }
+        axios.post('http://192.168.100.6:3333/insert_evolucao_valor', obj).then(() => {
+          console.log('INSERIR:');
+          console.log(obj);
+          setTimeout(() => {
+            if (valor == 'SIM') {
+              document.getElementById('opcao' + item.id + random).className = 'red-button';
+            } else {
+              document.getElementById('opcao' + item.id + random).className = 'blue-button';
+            }
+          }, 500);
+        });
       }
-      console.log(id);
-      console.log(obj);
-      axios.post('http://192.168.100.6:3333/update_evolucao_valor/' + id, obj);
-    });
+    })
   }
 
   // alerta para campo obrigatório em branco.
@@ -61,6 +91,68 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio, width }) {
           borderRadius: 50,
         }}>
         {'!'}
+      </div>
+    )
+  }
+
+  function FormMulti() {
+    const [x, setx] = useState(registros_atuais.filter(valor => valor.idevolucao == iddocumento));
+    return (
+      <div>
+        {
+          camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
+            var y = x.filter(valor => valor.idcampo == item.idcampo && valor.idopcao == item.id).map(valor => valor.valor);
+            return (
+              <div id={'opcao' + item.id + random}
+                className={y == 'SIM' ? 'red-button' : 'blue-button'}
+                title={y}
+                style={{ paddingLeft: 10, paddingRight: 10 }}
+                onClick={() => {
+                  if (y == 'NÃO') {
+                    y = 'SIM';
+                    updateValor(item, 'SIM', x.filter(valor => valor.idcampo == item.idcampo && valor.idopcao == item.id).map(valor => valor.id));
+                  } else {
+                    y = 'NÃO';
+                    updateValor(item, 'NÃO', x.filter(valor => valor.idcampo == item.idcampo && valor.idopcao == item.id).map(valor => valor.id));
+                  }
+                }}
+              >
+                {item.opcao}
+              </div>
+            )
+          }
+          )
+        }
+      </div>
+    )
+  }
+
+  function PrintMulti() {
+    return (
+      <div>
+        {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
+          var x = registros_atuais.filter(valor => valor.opcao == item.opcao).map(item => item.valor);
+          return (
+            <div id={'opcao' + item.id + random}
+              className={x == 'SIM' ? 'red-button' : 'blue-button'}
+              style={{
+                paddingLeft: 5, paddingRight: 5,
+                backgroundColor: x == 'SIM' ? 'rgb(0, 0, 0, 0.2)' : 'transparent',
+                borderRadius: 5,
+                margin: 2.5,
+                padding: 5,
+                maxWidth: 200,
+                color: x == 'SIM' ? 'black' : 'grey',
+                fontFamily: 'Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
+                fontSize: 10,
+                textAlign: 'center',
+              }}
+            >
+              {item.opcao}
+            </div>
+          )
+        }
+        )}
       </div>
     )
   }
@@ -96,29 +188,7 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio, width }) {
             display: 'flex', flexDirection: 'row',
             justifyContent: 'center', flexWrap: 'wrap',
           }}>
-          {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
-            var x = registros_atuais.filter(valor => valor.idevolucao == iddocumento && valor.opcao == item.opcao).map(item => item.valor);
-            return (
-              <div id={'opcao' + item.id + random}
-                className={x == 'SIM' ? 'red-button' : 'blue-button'}
-                style={{ paddingLeft: 10, paddingRight: 10 }}
-                onClick={() => {
-                  if (x == 'NÃO' || x == '') {
-                    document.getElementById('opcao' + item.id + random).className = 'red-button';
-                    updateValor(item, 'SIM', item.opcao);
-                    x = 'SIM'
-                  } else {
-                    document.getElementById('opcao' + item.id + random).className = 'blue-button';
-                    updateValor(item, 'NÃO', item.opcao);
-                    x = 'NÃO';
-                  }
-                }}
-              >
-                {item.opcao}
-              </div>
-            )
-          }
-          )}
+          <FormMulti></FormMulti>
         </div>
       </div>
       <div id='print'
@@ -149,29 +219,7 @@ function EvolucaoSelecaoMultipla({ idcampo, campo, obrigatorio, width }) {
             display: 'flex', flexDirection: 'row',
             justifyContent: 'center', flexWrap: 'wrap'
           }}>
-          {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
-            var x = registros.filter(valor => valor.opcao == item.opcao).map(item => item.valor);
-            return (
-              <div id={'opcao' + item.id + random}
-                className={x == 'SIM' ? 'red-button' : 'blue-button'}
-                style={{
-                  paddingLeft: 5, paddingRight: 5,
-                  backgroundColor: x == 'SIM' ? 'rgb(0, 0, 0, 0.2)' : 'transparent',
-                  borderRadius: 5,
-                  margin: 2.5,
-                  padding: 5,
-                  maxWidth: 200,
-                  color: x == 'SIM' ? 'black' : 'grey',
-                  fontFamily: 'Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
-                  fontSize: 10,
-                  textAlign: 'center',
-                }}
-              >
-                {item.opcao}
-              </div>
-            )
-          }
-          )}
+          <PrintMulti></PrintMulti>
         </div>
       </div>
     </div>
