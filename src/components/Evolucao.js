@@ -19,7 +19,7 @@ import AnamneseFono from '../documents/AnamneseFono';
 import AnamnesePsicologia from '../documents/AnamnesePsicologia';
 import AnamneseServicoSocial from '../documents/AnamneseServicoSocial';
 import AnamneseTerapiaOcupacional from '../documents/AnamneseTerapiaOcupacional';
-import EvolucaoFisio from '../documents/EvolucaoFisio';
+
 import EvolucaoPsicologia from '../documents/EvolucaoPsicologia';
 import EvolucaoServicoSocial from '../documents/EvolucaoServicoSocial';
 import EvolucaoTerapiaOcupacional from '../documents/EvolucaoTerapiaOcupacional';
@@ -27,6 +27,8 @@ import EvolucaoLivre from '../documents/EvolucaoLivre';
 */
 
 import EvolucaoFono from '../documents/EvolucaoFono';
+import EvolucaoFisio from '../documents/EvolucaoFisio';
+import { gravaResumoPlanoTerapeutico } from './gravaResumoPlanoTerapeutico';
 
 function Evolucao(
   {
@@ -74,6 +76,8 @@ function Evolucao(
     camposvalores, setcamposvalores,
     setprintdocumento,
     registros_atuais, setregistros_atuais,
+
+    objetivos, metas,
 
   } = useContext(Context)
 
@@ -186,6 +190,7 @@ function Evolucao(
                 <div className="title2center">{'SELECIONE UM DOCUMENTO PARA VISUALIZAÇÃO'}</div>
               </div>
               <EvolucaoFono></EvolucaoFono>
+              <EvolucaoFisio></EvolucaoFisio>
             </div>
           </div>
         </div >
@@ -506,6 +511,7 @@ function Evolucao(
         setdatadocumento(item.data);
         document.getElementById("tag do profissional" + item.id).className = "red-button";
       } else {
+        // evolução nova.
         if (z.length > 0) {
           z = y.sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).filter(item => item.conselho == conselho && item.evolucao == tipodocumento);
           // selecionando o documento na lista de documentos.         
@@ -514,12 +520,14 @@ function Evolucao(
           setiddocumento(z.map(item => item.id).slice(-1).pop());
           setdatadocumento(z.map(item => item.data).slice(-1).pop());
           setstatusdocumento(z.map(item => item.status).slice(-1).pop());
-          loadCamposValores(z.map(item => item.id).slice(-1).pop());
+          gravaResumoPlanoTerapeutico(idpaciente, idatendimento, z.map(item => item.id).slice(-1).pop(), objetivos, metas);
           setTimeout(() => {
-            document.getElementById("tag do profissional" + z.slice(-1).map(item => item.id)).className = "red-button";
-          }, 500);
+            loadCamposValores(z.map(item => item.id).slice(-1).pop());
+            setTimeout(() => {
+              document.getElementById("tag do profissional" + z.slice(-1).map(item => item.id)).className = "red-button";
+            }, 500);
+          }, 1000);
         } else {
-
         }
       }
     });
@@ -565,7 +573,6 @@ function Evolucao(
     });
   }
   // copiando uma evolução.
-  var htmlinsertevolucao = process.env.REACT_APP_API_CLONE_INSERTEVOLUCAO;
   const copiarEvolucao = (item) => {
     setstatusdocumento(0);
     setidselecteddocumento(item.id);
@@ -738,9 +745,11 @@ function Evolucao(
         style={{
           scrollBehavior: 'smooth',
           width: '25vw', minWidth: '25vw',
-          height: '60vh', minHeight: '60vh',
+          height: tipodocumento != 0 ? '55vh' : '60vh',
+          minHeight: tipodocumento != 0 ? '55vh' : '60vh',
           marginTop: 10,
-          backgroundColor: '#f2f2f2', borderColor: '#f2f2f2'
+          backgroundColor: '#f2f2f2', borderColor: '#f2f2f2',
+          alignSelf: 'center',
         }}
       >
         {arraylistghapevolucoes.sort((a, b) => moment(a.data) < moment(b.data) ? 1 : -1).map((item) => (
@@ -754,7 +763,6 @@ function Evolucao(
                 setiddocumento(item.id);
                 setstatusdocumento(item.status);
                 setdatadocumento(item.data);
-                // loadEvolucoesGpulse(conselho, tipodocumento, item);
                 setTimeout(() => {
                   var botoes = document.getElementById("LISTA DE EVOLUÇÕES").getElementsByClassName("red-button");
                   for (var i = 0; i < botoes.length; i++) {
@@ -1045,9 +1053,11 @@ function Evolucao(
           <ShowRegistrosInterdisciplinares></ShowRegistrosInterdisciplinares>
         </div>
         <div
+          id="LISTA DE DOCUMENTOS"
           style={{
             display: 'flex',
-            flexDirection: 'column', justifyContent: 'center', height: '60vh'
+            flexDirection: 'column', justifyContent: 'center', height: 'calc(60vh - 20px)',
+            alignContent: 'center', alignSelf: 'center', alignContent: 'center'
           }}>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
             <input
@@ -1151,7 +1161,7 @@ function Evolucao(
               ></img>
             </div>
           </div>
-          <div className='title2center' style={{ margin: 10, marginBottom: 0 }}>
+          <div className='title2center' style={{ margin: 0, marginTop: 5, marginBottom: -5, width: 200 }}>
             {tipodocumento == 0 ? '' : tipodocumento}
           </div>
           <ListaDeDocumentos></ListaDeDocumentos>

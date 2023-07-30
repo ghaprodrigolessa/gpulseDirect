@@ -8,9 +8,9 @@ import salvar from '../images/salvar.svg';
 import logo from '../images/paulodetarso_logo.png';
 
 // viewdocumento 111(form), 112(pdf), 113(busy).
-function EvolucaoFono() {
+function EvolucaoFisio() {
 
-  console.log('EVOLUÇÃO FONO!!!')
+  console.log('EVOLUÇÃO FISIO!!!')
   // recuperando estados globais (Context.API).
   const {
     statusdocumento,
@@ -38,7 +38,7 @@ function EvolucaoFono() {
 
   // funções para montagem dos campos estruturados do documento.
   const evolucaoSelecaoSimples = (idcampo, campo, obrigatorio, width) => {
-    if (tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFONO') {
+    if (tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFITO') {
       const updateValor = (item, opcao, valor) => {
         axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
           var x = [0, 1];
@@ -65,7 +65,7 @@ function EvolucaoFono() {
               console.log('ID:' + id);
               console.log(obj);
               setTimeout(() => {
-                var botoes = document.getElementById("campo" + campo + random).getElementsByClassName("red-button");
+                var botoes = document.getElementById("campo" + random).getElementsByClassName("red-button");
                 for (var i = 0; i < botoes.length; i++) {
                   botoes.item(i).className = "blue-button";
                 }
@@ -88,7 +88,7 @@ function EvolucaoFono() {
               // loadCamposValores();
               console.log(obj);
               setTimeout(() => {
-                var botoes = document.getElementById("campo" + campo + random).getElementsByClassName("red-button");
+                var botoes = document.getElementById("campo" + random).getElementsByClassName("red-button");
                 for (var i = 0; i < botoes.length; i++) {
                   botoes.item(i).className = "blue-button";
                 }
@@ -102,7 +102,7 @@ function EvolucaoFono() {
       const alertaEmBranco = () => {
         return (
           <div
-            id={"alerta" + campo + random}
+            id={"alerta" + random}
             className='red-button fade-in'
             title='CAMPO EM BRANCO!'
             style={{
@@ -130,19 +130,18 @@ function EvolucaoFono() {
               borderWidth: 5,
               padding: 2.5,
               margin: 2.5,
-              breakInside: 'avoid',
             }}
           >
             {alertaEmBranco()}
             <div
-              id={"campo" + campo + random}
+              id={"campo" + random}
               onMouseLeave={() => {
                 if (
                   obrigatorio == 1 &&
-                  document.getElementById("campo" + campo + random).getElementsByClassName("red-button").length < 1) {
-                  document.getElementById("alerta" + campo + random).style.display = 'flex';
+                  document.getElementById("campo" + random).getElementsByClassName("red-button").length < 1) {
+                  document.getElementById("alerta" + random).style.display = 'flex';
                 } else {
-                  document.getElementById("alerta" + campo + random).style.display = 'none';
+                  document.getElementById("alerta" + random).style.display = 'none';
                 }
               }}
               style={{
@@ -189,8 +188,8 @@ function EvolucaoFono() {
                 borderColor: 'black',
                 borderStyle: 'solid',
                 borderWidth: 1,
-                padding: 2.5,
-                margin: 2.5,
+                padding: 2,
+                margin: 1.5,
                 width: width,
                 pageBreakInside: 'avoid',
               }}
@@ -219,8 +218,8 @@ function EvolucaoFono() {
                       style={{
                         backgroundColor: registros_atuais.filter(valor => valor.idevolucao == iddocumento && valor.idcampo == item.idcampo).map(valor => valor.valor) == item.opcao ? 'rgb(0, 0, 0, 0.1)' : 'transparent',
                         borderRadius: 5,
-                        padding: 2.5,
-                        margin: 2.5,
+                        margin: 1.5,
+                        padding: 1.5,
                         maxWidth: 200,
                         color: registros_atuais.filter(valor => valor.idevolucao == iddocumento && valor.idcampo == item.idcampo).map(valor => valor.valor) == item.opcao ? 'black' : 'grey',
                         fontSize: 10,
@@ -242,7 +241,7 @@ function EvolucaoFono() {
   }
 
   const evolucaoSelecaoMultipla = (idcampo, campo, obrigatorio, width) => {
-    if (tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFONO') {
+    if (tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFITO') {
       const updateValor = (item, valor, id) => {
         axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
           var x = [0, 1];
@@ -303,7 +302,7 @@ function EvolucaoFono() {
       const alertaEmBranco = () => {
         return (
           <div
-            id={"alerta" + campo + random}
+            id={"alerta" + random}
             className='red-button fade-in'
             title='CAMPO EM BRANCO!'
             style={{
@@ -331,19 +330,18 @@ function EvolucaoFono() {
               borderWidth: 5,
               padding: 2.5,
               margin: 2.5,
-              breakInside: 'avoid',
             }}
           >
             {alertaEmBranco()}
             <div
-              id={"campo" + campo + random}
+              id={"campo" + random}
               onMouseLeave={() => {
                 if (
                   obrigatorio == 1 &&
-                  document.getElementById("campo" + campo + random).getElementsByClassName("red-button").length < 1) {
-                  document.getElementById("alerta" + campo + random).style.display = 'flex';
+                  document.getElementById("campo" + random).getElementsByClassName("red-button").length < 1) {
+                  document.getElementById("alerta" + random).style.display = 'flex';
                 } else {
-                  document.getElementById("alerta" + campo + random).style.display = 'none';
+                  document.getElementById("alerta" + random).style.display = 'none';
                 }
               }}
               style={{
@@ -387,8 +385,8 @@ function EvolucaoFono() {
                 borderColor: 'black',
                 borderStyle: 'solid',
                 borderWidth: 1,
-                padding: 2.5,
-                margin: 2.5,
+                padding: 2,
+                margin: 1.5,
                 width: width,
                 pageBreakInside: 'avoid',
               }}
@@ -419,9 +417,9 @@ function EvolucaoFono() {
                           paddingLeft: 5, paddingRight: 5,
                           backgroundColor: registros_atuais.filter(valor => valor.idevolucao == iddocumento && valor.idcampo == item.idcampo && valor.idopcao == item.id).map(valor => valor.valor).pop() == 'SIM' ? 'rgb(0, 0, 0, 0.1)' : 'transparent',
                           borderRadius: 5,
+                          margin: 1.5,
+                          padding: 1.5,
                           maxWidth: 200,
-                          padding: 2.5,
-                          margin: 2.5,
                           color: registros_atuais.filter(valor => valor.idevolucao == iddocumento && valor.idcampo == item.idcampo && valor.idopcao == item.id).map(valor => valor.valor) == 'SIM' ? 'black' : 'grey',
                           fontSize: 10,
                           fontFamily: 'Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
@@ -443,7 +441,7 @@ function EvolucaoFono() {
   }
 
   const evolucaoTexto = (idcampo, campo, obrigatorio, tipo, length, width, valor_escala) => {
-    if (tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFONO') {
+    if (tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFITO') {
       const updateValor = (item, opcao, valor) => {
         axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
           var x = [0, 1];
@@ -485,7 +483,7 @@ function EvolucaoFono() {
       const alertaEmBranco = () => {
         return (
           <div
-            id={"alerta" + campo + random}
+            id={"alerta" + random}
             className='red-button fade-in'
             title='CAMPO EM BRANCO!'
             style={{
@@ -499,11 +497,7 @@ function EvolucaoFono() {
       }
       var timeout = null;
       return (
-        <div style={{
-          display: 'flex', flexDirection: 'column', justifyContent: 'center',
-          breakInside: 'avoid',
-          margin: 2.5, padding: 2.5,
-        }}>
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <div id={"form" + random}
             style={{
               display: printdocumento == 0 ? 'flex' : 'none',
@@ -535,9 +529,9 @@ function EvolucaoFono() {
                         if (
                           obrigatorio == 1 &&
                           document.getElementById('opcao' + item.id + random).value == '') {
-                          document.getElementById("alerta" + campo + random).style.display = 'flex';
+                          document.getElementById("alerta" + random).style.display = 'flex';
                         } else {
-                          document.getElementById("alerta" + campo + random).style.display = 'none';
+                          document.getElementById("alerta" + random).style.display = 'none';
                         }
                       }}
                     >
@@ -609,7 +603,6 @@ function EvolucaoFono() {
                         style={{
                           alignSelf: 'center',
                           width: width,
-                          padding: 2.5,
                           margin: 2.5,
                           borderStyle: 'none',
                           textAlign: 'center',
@@ -621,8 +614,7 @@ function EvolucaoFono() {
                   return (
                     <div className='blue-button'
                       style={{
-                        padding: 2.5,
-                        margin: 2.5,
+                        padding: 5,
                       }}>
                       <div>{valor_escala}</div>
                     </div>
@@ -647,7 +639,6 @@ function EvolucaoFono() {
                         defaultValue={x}
                         style={{
                           alignSelf: 'center',
-                          padding: 2.5,
                           margin: 2.5,
                           width: width,
                         }}
@@ -673,7 +664,7 @@ function EvolucaoFono() {
               borderColor: 'black',
               borderStyle: 'solid',
               borderWidth: 1,
-              padding: 2.5,
+              padding: 1,
               margin: 2.5,
               width: width,
               alignContent: 'center',
@@ -701,12 +692,11 @@ function EvolucaoFono() {
                       justifyContent: 'center',
                       backgroundColor: 'rgb(0, 0, 0, 0.1)',
                       borderRadius: 5,
+                      padding: 2.5,
+                      margin: 2.5,
                       width: width - 5,
                       minWidth: width - 5,
                       maxWidth: width - 5,
-                      padding: 2.5,
-                      margin: 2.5,
-                      minHeight: 100,
                       color: 'black',
                       fontFamily: 'Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
                       fontSize: 10,
@@ -723,11 +713,10 @@ function EvolucaoFono() {
                     style={{
                       backgroundColor: 'rgb(0, 0, 0, 0.1)',
                       width: 40, height: 40,
-                      padding: 2.5,
-                      margin: 2.5,
                       color: 'black',
                       fontFamily: 'Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
                       fontSize: 10,
+                      margin: 2.5
                     }}>
                     {x}
                   </div>
@@ -741,12 +730,12 @@ function EvolucaoFono() {
                       justifyContent: 'center',
                       backgroundColor: 'rgb(0, 0, 0, 0.1)',
                       borderRadius: 5,
+                      padding: 2.5,
+                      margin: 2.5,
                       width: width - 10,
                       minWidth: width - 5,
                       maxWidth: width - 5,
-                      padding: 2.5,
-                      margin: 2.5,
-                      height: 15,
+                      height: 12,
                       color: 'black',
                       fontFamily: 'Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
                       fontSize: 10,
@@ -763,146 +752,6 @@ function EvolucaoFono() {
         </div>
       );
     }
-  }
-
-
-  // ESCALA DE FOIS (showescala = 4).
-  function Fois() {
-    var htmlghapinsertescala = process.env.REACT_APP_API_CLONE_INSERTESCALA;
-    const [nivel, setnivel] = useState(registros_atuais.filter(item => item.idcampo == 203).map(item => item.valor));
-    const insertFois = () => {
-      var significado = '';
-      if (nivel == 1) {
-        significado = 'NADA POR VIA ORAL.';
-      } else if (nivel == 2) {
-        significado = 'DEPENDÊNCIA DE VIA ALTERNATIVA, MÍNIMA OFERTA DE VIA ORAL (ESTÍMULO GUSTATIVO).';
-      } else if (nivel == 3) {
-        significado = 'DEPENDÊNCIA DE VIA ALTERNATIVA, OFERTA DE UMA ÚNICA CONSISTÊNCIA POR VIA ORAL.';
-      } else if (nivel == 4) {
-        significado = 'VIA ORAL TOTAL, LIMITADA A UMA ÚNICA CONSISTÊNCIA.';
-      } else if (nivel == 5) {
-        significado = 'VIA ORAL TOTAL, COM MAIS DE UMA CONSISTÊNCIA, NECESSITANDO PREPARO ESPECIAL.';
-      } else if (nivel == 6) {
-        significado = 'VIA ORAL TOTAL, MAIS DE UMA CONSISTÊNCIA, LIMITAÇÕES OU RESTRIÇÕES ESPECÍFICAS.';
-      } else {
-        significado = 'VIA ORAL TOTAL, SEM RESTRIÇÕES';
-      }
-      var obj = {
-        idpct: idpaciente,
-        idatendimento: idatendimento,
-        data: moment(),
-        cd_escala: 4,
-        ds_escala: 'FOIS',
-        valor_resultado: nivel,
-        ds_resultado: significado,
-        idprofissional: 0,
-        status: 1,
-      }
-      axios.post(htmlghapinsertescala, obj);
-    }
-    const updateFoisValor = () => {
-      axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
-        var x = [0, 1];
-        x = response.data.rows;
-        var id = x
-          .filter(valor => valor.idevolucao == iddocumento && valor.idcampo == 203)
-          .sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).slice(-1).map(item => item.id);
-        // atualizando registro.  
-        var obj = {
-          idpct: idpaciente,
-          idatendimento: idatendimento,
-          data: moment(),
-          idcampo: 203,
-          idopcao: 675,
-          opcao: 'ESCALA - FOIS',
-          valor: nivel,
-          idevolucao: iddocumento
-        }
-        console.log(obj);
-        axios.post('http://192.168.100.6:3333/update_evolucao_valor/' + id, obj);
-      });
-    }
-    return (
-      <div>
-        <div className="menucontainer"
-          style={{ display: printdocumento == 1 ? 'none' : 'flex', marginTop: 20, marginBottom: 20 }}>
-          <div id="cabeçalho" className="cabecalho">
-            <div className="title5">{'ESCALA DE FOIS'}</div>
-            <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-              <button className="green-button"
-                onClick={() => { insertFois(); updateFoisValor() }}
-              >
-                <img
-                  alt=""
-                  src={salvar}
-                  style={{
-                    margin: 10,
-                    height: 30,
-                    width: 30,
-                  }}
-                ></img>
-              </button>
-            </div>
-          </div>
-          <div>
-            <div
-              className="corpo">
-              <div
-                className="scroll"
-                style={{
-                  display: 'flex', flexDirection: 'row', justifyContent: 'center',
-                  marginBottom: 5, flexWrap: 'wrap',
-                  width: '60vw', height: '50vh'
-                }}>
-                <button
-                  onClick={() => { setnivel(1) }}
-                  className={nivel == 1 ? "red-button" : "blue-button"}
-                  style={{ width: 200, height: 200, padding: 10 }}>
-                  NADA POR VIA ORAL
-                </button>
-                <button
-                  onClick={() => { setnivel(2) }}
-                  className={nivel == 2 ? "red-button" : "blue-button"}
-                  style={{ width: 200, height: 200, padding: 10 }}>
-                  DEPENDÊNCIA DE VIA ALTERNATIVA, MÍNIMA OFERTA DE VIA ORAL (ESTÍMULO GUSTATIVO).
-                </button>
-                <button
-                  onClick={() => { setnivel(3) }}
-                  className={nivel == 3 ? "red-button" : "blue-button"}
-                  style={{ width: 200, height: 200, padding: 10 }}>
-                  DEPENDÊNCIA DE VIA ALTERNATIVA, OFERTA DE UMA ÚNICA CONSISTÊNCIA POR VIA ORAL.
-                </button>
-                <button
-                  onClick={() => { setnivel(4) }}
-                  className={nivel == 4 ? "red-button" : "blue-button"}
-                  style={{ width: 200, height: 200, minHeight: 150, padding: 10 }}>
-                  VIA ORAL TOTAL, LIMITADA A UMA ÚNICA CONSISTÊNCIA.
-                </button>
-                <button
-                  onClick={() => { setnivel(5) }}
-                  className={nivel == 5 ? "red-button" : "blue-button"}
-                  style={{ width: 200, height: 200, padding: 10 }}>
-                  VIA ORAL TOTAL, MAIS DE UMA CONSISTÊNCIA, NECESSITANDO PREPARO ESPECIAL.
-                </button>
-                <button
-                  onClick={() => { setnivel(6) }}
-                  className={nivel == 6 ? "red-button" : "blue-button"}
-                  style={{ width: 200, height: 200, padding: 10 }}>
-                  VIA ORAL TOTAL, MAIS DE UMA CONSISTÊNCIA, LIMITAÇÕES OU RESTRIÇÕES ESPECÍFICAS.
-                </button>
-                <button
-                  onClick={() => { setnivel(7) }}
-                  className={nivel == 7 ? "red-button" : "blue-button"}
-                  style={{ width: 200, height: 200, padding: 10 }}>
-                  VIA ORAL TOTAL, SEM RESTRIÇÕES.
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    );
   }
 
   function Campos() {
@@ -961,7 +810,7 @@ function EvolucaoFono() {
             style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
             <div className="title2center" style={{ width: '100%', fontSize: 16, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>EVOLUÇÃO FONOAUDIOLÓGICA</div>
             <div className="title2center" style={{ width: '100%', fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>AVALIAÇÃO CLÍNICA</div>
-            {evolucaoSelecaoSimples(79, 'ESTADO DE ALERTA', 1, 600)}
+            {evolucaoSelecaoSimples(79, 'ESTADO DE ALERTA', 1, 100)}
             {evolucaoSelecaoSimples(80, 'ORIENTADO', 1)}
             {evolucaoSelecaoSimples(109, 'RESPIRAÇÃO ESPONTÂNEA', 1)}
             {evolucaoSelecaoSimples(81, 'DISPOSITIVOS', 1)}
@@ -989,8 +838,6 @@ function EvolucaoFono() {
             {evolucaoSelecaoSimples(107, 'CONSISTÊNCIA DO LÍQUIDO', 1)}
             {evolucaoSelecaoMultipla(116, 'MODO DE OFERTA', 1)}
             {evolucaoSelecaoMultipla(117, 'CONDUTA FONOAUDIOLÓGICA', 1)}
-            <div className="title2center" style={{ fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>ESCALA DE FOIS APÓS ABORDAGEM</div>
-            <Fois></Fois>
             {evolucaoSelecaoSimples(118, 'DESMAME DE VIA ALIMENTAR ALTERNATIVA EFETIVADO DURANTE ESTA INTERNAÇÃO', 1)}
             {evolucaoTexto(119, 'DATA DE EFETIVAÇÃO DO DESMAME DA VIA ALIMENTAR ALTERNATIVA', 1, 'date', 10, 150)}
             {evolucaoTexto(120, 'JUSTIFICATIVA PARA A NÃO EFETIVAÇÃO DO DESMAME DA VIA ALIMENTAR ALTERNATIVA', 1, 'textarea', 2000, '60vw')}
@@ -1089,7 +936,7 @@ function EvolucaoFono() {
 
   function Print() {
     return (
-      <div id="IMPRESSÃO - EVOLUÇÃO FONO" className="print">
+      <div id="IMPRESSÃO - EVOLUÇÃO FISIO" className="print">
         <table style={{ width: '100%' }}>
           <thead style={{ width: 140, width: '100%' }}>
             <tr style={{ width: 140, width: '100%' }}>
@@ -1132,7 +979,7 @@ function EvolucaoFono() {
       console.log(x.filter(item => item.idevolucao == iddocumento).length);
       setprintdocumento(1);
       setTimeout(() => {
-        let printdocument = document.getElementById("IMPRESSÃO - EVOLUÇÃO FONO").innerHTML;
+        let printdocument = document.getElementById("IMPRESSÃO - EVOLUÇÃO FISIO").innerHTML;
         var a = window.open('  ', '  ', 'width=' + '1024px' + ', height=' + '800px');
         a.document.write('<html>');
         a.document.write(printdocument);
@@ -1145,7 +992,7 @@ function EvolucaoFono() {
   // renderização dos componentes.
   return (
     <div style={{
-      display: tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFONO' && conselho == 'CREFONO' && statusdocumento != null ? 'flex' : 'none',
+      display: tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFITO' && conselho == 'CREFITO' && statusdocumento != null ? 'flex' : 'none',
       flexDirection: 'column', justifyContent: 'center',
     }}>
       <Campos></Campos>
@@ -1156,4 +1003,4 @@ function EvolucaoFono() {
   )
 }
 
-export default EvolucaoFono;
+export default EvolucaoFisio;
