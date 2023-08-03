@@ -111,7 +111,7 @@ function Evolucao(
   // carregando todos os valores de seleção de campos registrados no banco de dados.
   var htmlcamposvalores = process.env.REACT_EVOLUCAO_VALORES
   const loadCamposValores = (iddocumento) => {
-    console.log('ID DOCUMENTO: ' + iddocumento);
+    console.log('VALORES: ' + iddocumento);
     axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
       console.log('CARREGANDO VALORES DE CAMPOS');
       var x = [0, 1];
@@ -528,6 +528,7 @@ function Evolucao(
             }, 500);
           }, 1000);
         } else {
+          loadCamposValores(item.id);
         }
       }
     });
@@ -763,6 +764,7 @@ function Evolucao(
                 setiddocumento(item.id);
                 setstatusdocumento(item.status);
                 setdatadocumento(item.data);
+                loadCamposValores(item.id);
                 setTimeout(() => {
                   var botoes = document.getElementById("LISTA DE EVOLUÇÕES").getElementsByClassName("red-button");
                   for (var i = 0; i < botoes.length; i++) {
