@@ -27,6 +27,7 @@ function EvolucaoFono() {
     datadocumento,
     nomepaciente, nomemae, dn,
     nomeusuario,
+    conselhousuario,
   } = useContext(Context);
 
   const [random, setrandom] = useState(null);
@@ -151,13 +152,17 @@ function EvolucaoFono() {
                 justifyContent: 'center', flexWrap: 'wrap',
               }}>
               <div className='title2center'>{campo}</div>
-              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <div style={{
+                display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap',
+                pointerEvents: conselhousuario == 'CREFONO' ? 'auto' : 'none',
+              }}>
                 {camposopcoes.filter(item => item.idcampo == idcampo).map(item => (
                   <div id={'opcao' + item.id + random}
                     title={'opcao' + item.id + random}
                     className={registros_atuais.filter(valor => valor.idevolucao == iddocumento && valor.idcampo == item.idcampo).map(valor => valor.valor) == item.opcao ? 'red-button' : 'blue-button'}
                     style={{ paddingLeft: 10, paddingRight: 10 }}
                     onClick={() => {
+                      console.log(conselho);
                       registros_atuais.filter(valor => valor.idevolucao == iddocumento && valor.idcampo == item.idcampo).map(item => {
                         var obj = {
                           idpct: idpaciente,
@@ -210,6 +215,7 @@ function EvolucaoFono() {
                   flexDirection: 'row',
                   justifyContent: 'center',
                   flexWrap: 'wrap',
+                  pointerEvents: conselhousuario == 'CREFONO' ? 'auto' : 'none',
                 }}
               >
                 {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
@@ -352,7 +358,10 @@ function EvolucaoFono() {
                 justifyContent: 'center', flexWrap: 'wrap',
               }}>
               <div className='title2center'>{campo}</div>
-              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <div style={{
+                display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap',
+                pointerEvents: conselhousuario == 'CREFONO' ? 'auto' : 'none',
+              }}>
                 {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
                   let valor = registros_atuais.filter(valor => valor.idevolucao == iddocumento && valor.idcampo == item.idcampo && valor.idopcao == item.id).map(item => item.valor).pop();
                   let id = registros_atuais.filter(valor => valor.idevolucao == iddocumento && valor.idcampo == item.idcampo && valor.idopcao == item.id).map(item => item.id).pop();
@@ -409,6 +418,7 @@ function EvolucaoFono() {
                     flexDirection: 'row',
                     justifyContent: 'center',
                     flexWrap: 'wrap',
+                    pointerEvents: conselhousuario == 'CREFONO' ? 'auto' : 'none',
                   }}
                 >
                   {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
@@ -525,6 +535,7 @@ function EvolucaoFono() {
               style={{
                 display: 'flex', flexDirection: 'row',
                 justifyContent: 'center', flexWrap: 'wrap', alignContent: 'center',
+                pointerEvents: conselhousuario == 'CREFONO' ? 'auto' : 'none',
               }}>
               {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
                 var x = registros_atuais.filter(valor => valor.idcampo == item.idcampo).map(item => item.valor);

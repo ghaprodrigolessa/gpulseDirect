@@ -8,9 +8,9 @@ import salvar from '../images/salvar.svg';
 import logo from '../images/paulodetarso_logo.png';
 
 // viewdocumento 111(form), 112(pdf), 113(busy).
-function EvolucaoFisio() {
+function AnamneseTerapiaOcupacional() {
 
-  console.log('EVOLUÇÃO FISIO!!!')
+  console.log('ANAMNESE TERAPIA OCUPACIONAL!!!')
   // recuperando estados globais (Context.API).
   const {
     statusdocumento,
@@ -31,14 +31,14 @@ function EvolucaoFisio() {
 
   const [random, setrandom] = useState(null);
   useEffect(() => {
-    if (tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFITO') {
+    if (tipodocumento == 'ANAMNESE - TO') {
       setrandom(Math.random());
     }
   }, [tipodocumento]);
 
   // funções para montagem dos campos estruturados do documento.
   const evolucaoSelecaoSimples = (idcampo, campo, obrigatorio, width) => {
-    if (tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFITO') {
+    if (tipodocumento == 'ANAMNESE - TO') {
       const updateValor = (item, opcao, valor) => {
         axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
           var x = [0, 1];
@@ -149,12 +149,10 @@ function EvolucaoFisio() {
                 display: printdocumento == 0 ? 'flex' : 'none',
                 flexDirection: 'column',
                 justifyContent: 'center', flexWrap: 'wrap',
+                pointerEvents: conselhousuario == 'TO' ? 'auto' : 'none',
               }}>
               <div className='title2center'>{campo}</div>
-              <div style={{
-                display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap',
-                pointerEvents: conselhousuario == 'CREFITO' ? 'auto' : 'none',
-              }}>
+              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
                 {camposopcoes.filter(item => item.idcampo == idcampo).map(item => (
                   <div id={'opcao' + item.id + random}
                     title={'opcao' + item.id + random}
@@ -213,7 +211,7 @@ function EvolucaoFisio() {
                   flexDirection: 'row',
                   justifyContent: 'center',
                   flexWrap: 'wrap',
-                  pointerEvents: conselhousuario == 'CREFITO' ? 'auto' : 'none',
+                  pointerEvents: conselhousuario == 'TO' ? 'auto' : 'none',
                 }}
               >
                 {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
@@ -246,7 +244,7 @@ function EvolucaoFisio() {
   }
 
   const evolucaoSelecaoMultipla = (idcampo, campo, obrigatorio, width) => {
-    if (tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFITO') {
+    if (tipodocumento == 'ANAMNESE - TO') {
       const updateValor = (item, valor, id) => {
         axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
           var x = [0, 1];
@@ -358,7 +356,7 @@ function EvolucaoFisio() {
               <div className='title2center'>{campo}</div>
               <div style={{
                 display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap',
-                pointerEvents: conselhousuario == 'CREFITO' ? 'auto' : 'none',
+                pointerEvents: conselhousuario == 'TO' ? 'auto' : 'none',
               }}>
                 {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
                   let valor = registros_atuais.filter(valor => valor.idevolucao == iddocumento && valor.idcampo == item.idcampo && valor.idopcao == item.id).map(item => item.valor).pop();
@@ -416,7 +414,7 @@ function EvolucaoFisio() {
                     flexDirection: 'row',
                     justifyContent: 'center',
                     flexWrap: 'wrap',
-                    pointerEvents: conselhousuario == 'CREFITO' ? 'auto' : 'none',
+                    pointerEvents: conselhousuario == 'TO' ? 'auto' : 'none',
                   }}
                 >
                   {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
@@ -451,7 +449,7 @@ function EvolucaoFisio() {
   }
 
   const evolucaoTexto = (idcampo, campo, obrigatorio, tipo, length, width, valor_escala) => {
-    if (tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFITO') {
+    if (tipodocumento == 'ANAMNESE - TO') {
       const updateValor = (item, opcao, valor) => {
         axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
           var x = [0, 1];
@@ -533,7 +531,7 @@ function EvolucaoFisio() {
               style={{
                 display: 'flex', flexDirection: 'row',
                 justifyContent: 'center', flexWrap: 'wrap', alignContent: 'center',
-                pointerEvents: conselhousuario == 'CREFITO' ? 'auto' : 'none',
+                pointerEvents: conselhousuario == 'TO' ? 'auto' : 'none',
               }}>
               {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
                 var x = registros_atuais.filter(valor => valor.idcampo == item.idcampo).map(item => item.valor);
@@ -777,7 +775,7 @@ function EvolucaoFisio() {
   function Campos() {
     return (
       <div className="scroll"
-        id="FORMULÁRIO - EVOLUÇÃO ESTRUTURADA - CREFITO"
+        id="FORMULÁRIO - ANAMNESE - TO"
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -826,92 +824,35 @@ function EvolucaoFisio() {
             pointerEvents: statusdocumento == 1 || statusdocumento == 2 ? 'none' : 'auto',
             fontFamily: 'Helvetica', alignContent: 'center', alignItems: 'center',
           }}>
-          <div id="CORPO DO DOCUMENTO - EVOLUÇÃO ESTRUTURADA - CREFITO"
+          <div id="CORPO DO DOCUMENTO - ANAMNESE - TO"
             style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <div className="title2center" style={{ width: '100%', fontSize: 16, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>EVOLUÇÃO DA FISIOTERAPIA</div>
-            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-              <div className="title2center" style={{ width: '100%', fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>AVALIAÇÃO INICIAL</div>
-              {evolucaoSelecaoSimples(4, 'DOR', 1)}
-              {evolucaoSelecaoSimples(4, 'VIGÍLIA', 1)}
-              {evolucaoSelecaoSimples(6, 'COMPREENSÃO', 1)}
-              {evolucaoSelecaoSimples(7, 'ADESÃO AO ATENDIMENTO', 1)}
-              {evolucaoSelecaoSimples(8, 'ACOMPANHADO', 1)}
-              {evolucaoTexto(9, 'NOME DO ACOMPANHANTE', 1, "input", 300, 300)}
-              {evolucaoSelecaoSimples(10, 'POSIÇÃO NO LEITO', 1)}
-            </div>
-            <div className="title2center" style={{ width: '100%', fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>AVALIAÇÃO RESPIRATÓRIA</div>
-            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-              {evolucaoSelecaoSimples(11, 'VIA DE ENTRADA DE AR', 1)}
-              {evolucaoSelecaoSimples(12, 'EXPANSIBILIDADE', 1)}
-              {evolucaoSelecaoSimples(13, 'SIMETRIA TORÁCICA', 1)}
-              {evolucaoSelecaoSimples(14, 'ESFORÇO RESPIRATÓRIO', 1)}
-              {evolucaoSelecaoSimples(15, 'RITMO RESPIRATÓRIO', 1)}
-              {evolucaoSelecaoMultipla(16, 'AUSCULTA RESPIRATÓRIA', 1)}
-              {evolucaoSelecaoMultipla(17, 'TOSSE', 1)}
-              {evolucaoSelecaoMultipla(18, 'SECREÇÃO', 1)}
-              {evolucaoSelecaoMultipla(19, 'OXIGENOTERAPIA', 1)}
-              {evolucaoTexto(20, 'FLUXO', 1, "input", 3, 150)}
-              {evolucaoSelecaoSimples(21, 'VENTILAÇÃO MECÂNICA', 1)}
-              {evolucaoTexto(27, 'MODO', 1, "input", 3, 100)}
-              {evolucaoTexto(28, 'PRESSÃO', 1, "input", 3, 100)}
-              {evolucaoTexto(29, 'VOLUME', 1, "input", 3, 100)}
-              {evolucaoTexto(30, 'PEEP', 1, "input", 3, 100)}
-              {evolucaoTexto(31, 'FI', 1, "input", 3, 100)}
-            </div>
-            <div className="title2center" style={{ width: '100%', fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>AVALIAÇÃO MOTORA</div>
-            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-              {evolucaoSelecaoMultipla(22, 'ALTERAÇÕES NEUROMUSCULARES', 1)}
-              {evolucaoSelecaoMultipla(23, 'ALTERAÇÕES ORTOPÉDICAS', 1)}
-              {evolucaoTexto(24, 'LOCAL DA ARTRODESE', 1, "input", 300, 300)}
-              {evolucaoTexto(26, 'LOCAL DA OSTEOSSÍNTESE', 1, "input", 300, 300)}
-              {evolucaoSelecaoSimples(32, 'MOBILIDADE NO LEITO', 1)}
-              {evolucaoSelecaoSimples(33, 'CONTROLE CERVICAL', 1)}
-              {evolucaoSelecaoSimples(34, 'CONTROLE DE TRONCO', 1)}
-              {evolucaoSelecaoSimples(35, 'TRANSFERÊNCIA', 1)}
-              {evolucaoSelecaoSimples(36, 'MARCHA', 1)}
-              {evolucaoSelecaoSimples(37, 'DISPOSITIVO', 1)}
-              {evolucaoSelecaoMultipla(38, 'EQUILÍBRIO', 1)}
-              {evolucaoTexto(39, 'FORÇA MUSCULAR', 1, "input", 300, 300)}
-              {evolucaoTexto(40, 'AMPLITUDE DE MOVIMENTO', 1, "input", 300, 300)}
-              {evolucaoSelecaoSimples(41, 'CONTROLE ESFINCTERIANO URINÁRIO', 1)}
-              {evolucaoSelecaoSimples(42, 'CONTROLE ESFINCTERIANO FECAL', 1)}
-              {evolucaoSelecaoMultipla(43, 'CONDUTA - FISIOTERAPIA MOTORA', 1)}
-              {evolucaoTexto(44, 'OUTRAS CONDUTAS - MOTORA', 1, "textarea", 2000, 600)}
-              {evolucaoSelecaoMultipla(45, 'CONDUTA - FISIOTERAPIA RESPIRATÓRIA', 1)}
-              {evolucaoTexto(46, 'OUTRAS CONDUTAS - RESPIRATÓRIA', 1, "textarea", 2000, 600)}
-              {evolucaoTexto(47, 'TRANSIÇÃO DE CUIDADOS', 1, "textarea", 2000, 600)}
-              {evolucaoTexto(48, 'DISCUSSÃO INTERDISCIPLINAR', 1, "textarea", 2000, 600)}
-              {evolucaoTexto(49, 'OBSERVAÇÕES', 1, "textarea", 2000, 600)}
-            </div>
-            <div style={{ fontSize: 14, textAlign: 'center', padding: 20, fontWeight: 'bold', alignSelf: 'center' }}>UTILIZAÇÃO DE DISPOSITIVOS RESPIRATÓRIOS</div>
-            {evolucaoSelecaoSimples(50, 'DISPOSITIVO RESPIRATÓRIO', 1)}
-            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                {evolucaoSelecaoSimples(51, 'INDICAÇÃO DE DESMAME O2', 1)}
-                {evolucaoSelecaoSimples(54, 'CRITÉRIOS DE EXCLUSÃO O2', 1)}
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                {evolucaoSelecaoSimples(57, 'DESMAME O2 EFETIVADO', 1)}
-                {evolucaoTexto(58, 'DATA DE DESMAME O2', 1, "date", 10, 250)}
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                {evolucaoSelecaoSimples(52, 'INDICAÇÃO DE DESMAME TQT', 1)}
-                {evolucaoSelecaoSimples(55, 'CRITÉRIOS DE EXCLUSÃO TQT', 1)}
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                {evolucaoSelecaoSimples(59, 'DESMAME TQT EFETIVADO', 1)}
-                {evolucaoTexto(60, 'DATA DE DESMAME TQT', 1, "date", 10, 250)}
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                {evolucaoSelecaoSimples(53, 'INDICAÇÃO DE DESMAME VM', 1)}
-                {evolucaoSelecaoSimples(56, 'CRITÉRIOS DE EXCLUSÃO VM', 1)}
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                {evolucaoSelecaoSimples(61, 'DESMAME VM EFETIVADO', 1)}
-                {evolucaoTexto(62, 'DATA DE DESMAME VM', 1, "date", 10, 250)}
-              </div>
-            </div>
-            {evolucaoTexto(206, 'RESUMO DO PLANO TERAPÊUTICO PARA A ESPECIALIDADE:', 1, "textarea", 20000, '60vw')}
+            <div className="title2center" style={{ width: '100%', fontSize: 16, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>ANAMNESE DA TERAPIA OCUPACIONAL</div>
+            {evolucaoSelecaoSimples(150, 'ACOMPANHANTE PRESENTE', 1)}
+            {evolucaoTexto(151, 'NOME DO ACOMPANHANTE', 1, 'input', 200, 500)}
+            {evolucaoSelecaoSimples(161, 'GÊNERO', 1)}
+            {evolucaoSelecaoSimples(129, 'ESTADO CIVIL', 1)}
+            {evolucaoSelecaoSimples(128, 'ESCOLARIDADE', 1)}
+            {evolucaoSelecaoSimples(162, 'DOMINÂNCIA', 1)}
+            {evolucaoSelecaoSimples(163, 'OCUPAÇÃO', 1)}
+            {evolucaoTexto(164, 'PROFISSÃO', 1, 'input', 200, 500)}
+            {evolucaoTexto(165, 'NATURALIDADE', 1, 'input', 200, 500)}
+            {evolucaoTexto(166, 'CIDADE', 1, 'input', 200, 500)}
+            {evolucaoTexto(167, 'BAIRRO', 1, 'input', 200, 500)}
+            {evolucaoTexto(137, 'MORA COM QUEM?', 1, 'input', 200, 500)}
+            {evolucaoTexto(136, 'PRINCIPAL CUIDADOR', 1, 'input', 200, 500)}
+            {evolucaoTexto(168, 'MOTIVO DA INTERNAÇÃO', 1, 'textarea', 2000, '60vw')}
+            {evolucaoSelecaoMultipla(169, 'MOBILIDADE PRÉVIA', 1)}
+            {evolucaoSelecaoSimples(170, 'ATIVIDADES BÁSICAS DE VIDA DIÁRIA', 1)}
+            {evolucaoSelecaoSimples(171, 'ATIVIDADES INSTRUMENTAIS DE VIDA DIÁRIA', 1)}
+            {evolucaoSelecaoSimples(152, 'APRESENTAÇÃO', 1)}
+            {evolucaoSelecaoMultipla(22, 'ALTERAÇÕES MOTORAS', 1)}
+            {evolucaoSelecaoMultipla(92, 'ALTERAÇÕES DA FALA', 1)}
+            {evolucaoTexto(40, 'AMPLITUDE DE MOVIMENTO', 1, 'textarea', 2000, '60vw')}
+            {evolucaoSelecaoMultipla(172, 'PELE', 1)}
+            {evolucaoSelecaoMultipla(173, 'CONDUTA', 1)}
+            {evolucaoSelecaoMultipla(174, 'FUNCIONALIDADE ATUAL', 1)}
+            {evolucaoTexto(175, 'OBSERVAÇÕES', 1, 'textarea', 2000, 600)}
+            {evolucaoTexto(206, 'RESUMO DO PLANO TERAPÊUTICO PARA A ESPECIALIDADE:', 1, "textarea", 2000, 600)}
           </div>
         </div>
       </div>
@@ -1002,7 +943,7 @@ function EvolucaoFisio() {
 
   function Print() {
     return (
-      <div id="IMPRESSÃO - EVOLUÇÃO ESTRUTURADA - CREFITO" className="print">
+      <div id="IMPRESSÃO - ANAMNESE - TO" className="print">
         <table style={{ width: '100%' }}>
           <thead style={{ width: 140, width: '100%' }}>
             <tr style={{ width: 140, width: '100%' }}>
@@ -1045,7 +986,7 @@ function EvolucaoFisio() {
       console.log(x.filter(item => item.idevolucao == iddocumento).length);
       setprintdocumento(1);
       setTimeout(() => {
-        let printdocument = document.getElementById("IMPRESSÃO - EVOLUÇÃO ESTRUTURADA - CREFITO").innerHTML;
+        let printdocument = document.getElementById("IMPRESSÃO - ANAMNESE - TO").innerHTML;
         var a = window.open('  ', '  ', 'width=' + '1024px' + ', height=' + '800px');
         a.document.write('<html>');
         a.document.write(printdocument);
@@ -1058,7 +999,7 @@ function EvolucaoFisio() {
   // renderização dos componentes.
   return (
     <div style={{
-      display: tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFITO' && conselho == 'CREFITO' && statusdocumento != null ? 'flex' : 'none',
+      display: tipodocumento == 'ANAMNESE - TO' && conselho == 'TO' && statusdocumento != null ? 'flex' : 'none',
       flexDirection: 'column', justifyContent: 'center',
     }}>
       <Campos></Campos>
@@ -1069,4 +1010,4 @@ function EvolucaoFisio() {
   )
 }
 
-export default EvolucaoFisio;
+export default AnamneseTerapiaOcupacional;

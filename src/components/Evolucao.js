@@ -13,7 +13,7 @@ import novo from '../images/novo.svg';
 
 import Signature from './Signature';
 
-/*
+
 import AnamneseFisio from '../documents/AnamneseFisio';
 import AnamneseFono from '../documents/AnamneseFono';
 import AnamnesePsicologia from '../documents/AnamnesePsicologia';
@@ -23,8 +23,7 @@ import AnamneseTerapiaOcupacional from '../documents/AnamneseTerapiaOcupacional'
 import EvolucaoPsicologia from '../documents/EvolucaoPsicologia';
 import EvolucaoServicoSocial from '../documents/EvolucaoServicoSocial';
 import EvolucaoTerapiaOcupacional from '../documents/EvolucaoTerapiaOcupacional';
-import EvolucaoLivre from '../documents/EvolucaoLivre';
-*/
+// import EvolucaoLivre from '../documents/EvolucaoLivre';
 
 import EvolucaoFono from '../documents/EvolucaoFono';
 import EvolucaoFisio from '../documents/EvolucaoFisio';
@@ -191,6 +190,15 @@ function Evolucao(
               </div>
               <EvolucaoFono></EvolucaoFono>
               <EvolucaoFisio></EvolucaoFisio>
+              <EvolucaoPsicologia></EvolucaoPsicologia>
+              <EvolucaoServicoSocial></EvolucaoServicoSocial>
+              <EvolucaoTerapiaOcupacional></EvolucaoTerapiaOcupacional>
+              <AnamneseFisio></AnamneseFisio>
+              <AnamneseFono></AnamneseFono>
+              <AnamnesePsicologia></AnamnesePsicologia>
+              <AnamneseServicoSocial></AnamneseServicoSocial>
+              <AnamneseTerapiaOcupacional></AnamneseTerapiaOcupacional>
+
             </div>
           </div>
         </div >
@@ -528,7 +536,7 @@ function Evolucao(
             }, 500);
           }, 1000);
         } else {
-          loadCamposValores(item.id);
+          // loadCamposValores(item.id);
         }
       }
     });
