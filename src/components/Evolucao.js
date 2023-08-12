@@ -110,7 +110,6 @@ function Evolucao(
   // carregando todos os valores de seleção de campos registrados no banco de dados.
   var htmlcamposvalores = process.env.REACT_EVOLUCAO_VALORES
   const loadCamposValores = (iddocumento) => {
-    console.log('VALORES: ' + iddocumento);
     axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
       console.log('CARREGANDO VALORES DE CAMPOS');
       var x = [0, 1];
@@ -512,8 +511,8 @@ function Evolucao(
         } else if (item.status == 1) {
           newstatus = 2
         }
-        setiddocumento(item.id);
         loadCamposValores(item.id);
+        setiddocumento(item.id);
         setusuariodocumento(item.idprofissional);
         setstatusdocumento(newstatus);
         setdatadocumento(item.data);
@@ -525,18 +524,16 @@ function Evolucao(
           // selecionando o documento na lista de documentos.         
           console.log('###' + z.map(item => item.id).slice(-1).pop());
           console.log('ATENDIMENTO: ' + idatendimento);
-          setiddocumento(z.map(item => item.id).slice(-1).pop());
-          setdatadocumento(z.map(item => item.data).slice(-1).pop());
-          setstatusdocumento(z.map(item => item.status).slice(-1).pop());
-          gravaResumoPlanoTerapeutico(idpaciente, idatendimento, z.map(item => item.id).slice(-1).pop(), objetivos, metas);
           setTimeout(() => {
+            setiddocumento(z.map(item => item.id).slice(-1).pop());
+            setdatadocumento(z.map(item => item.data).slice(-1).pop());
+            setstatusdocumento(z.map(item => item.status).slice(-1).pop());
+            gravaResumoPlanoTerapeutico(idpaciente, idatendimento, z.map(item => item.id).slice(-1).pop(), objetivos, metas);
             loadCamposValores(z.map(item => item.id).slice(-1).pop());
             setTimeout(() => {
               document.getElementById("tag do profissional" + z.slice(-1).map(item => item.id)).className = "red-button";
             }, 500);
-          }, 1000);
-        } else {
-          // loadCamposValores(item.id);
+          }, 2000);
         }
       }
     });
@@ -585,6 +582,8 @@ function Evolucao(
   const copiarEvolucao = (item) => {
     setstatusdocumento(0);
     setidselecteddocumento(item.id);
+    console.log('COPIAR ID: ' + item.id);
+    setiddocumento(item.id);
     var botoes = document.getElementById('LISTA DE EVOLUÇÕES').getElementsByClassName("red-button");
     for (var i = 0; i < botoes.length; i++) {
       botoes.item(i).className = "blue-button";
@@ -599,10 +598,50 @@ function Evolucao(
       conselho: conselhousuario.toString(),
     };
     axios.post(htmlinsertdocumento, obj).then(() => {
+      const copiaValor = (item, idatual) => {
+        var obj = {
+          idpct: idpaciente,
+          idatendimento: idatendimento,
+          data: moment(),
+          idcampo: item.idcampo,
+          idopcao: item.idopcao,
+          opcao: item.opcao,
+          valor: item.valor,
+          idevolucao: idatual
+        }
+        axios.post('http://192.168.100.6:3333/insert_evolucao_valor', obj).then(() => {
+          console.log('VALOR COPIADO COM SUCESSO.');
+        });
+      };
+
+      var idcopiada = item.id;
+      var idatual = null;
+      var valores = [0, 1];
+
+      // resgatando os campos/valores do documento copiado.
+      axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
+        var x = [0, 1];
+        x = response.data.rows;
+        valores = x.filter(item => item.idevolucao == idcopiada);
+      });
+
+      // resgatando a id do documento recém-criado.
+      axios.get(htmlghapevolucoes + idpaciente).then((response) => {
+        var x = [0, 1];
+        x = response.data.rows;
+        console.log(x.sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).filter(item => item.conselho == conselho && item.evolucao == tipodocumento));
+        idatual = x.sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).filter(item => item.conselho == conselho && item.evolucao == tipodocumento).pop().id;
+
+        console.log('ID DO DOCUMENTO COPIADO: ' + idcopiada);
+        console.log('ID DO DOCUMENTO ATUAL: ' + idatual);
+        valores.map(valor => copiaValor(valor, idatual));
+        // gravaResumoPlanoTerapeutico(idpaciente, idatendimento, idatual, objetivos, metas);
+
+      });
       setTimeout(() => {
         setstatusdocumento(-2);
+        loadEvolucoesGpulse(conselho, tipodocumento, null);
       }, 1000);
-      loadEvolucoesGpulse(conselho, tipodocumento, null);
       if (conselho == 'CREFITO' && tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFITO') {
         setviewdocumento(51);
       } else if (conselho == 'CREFITO' && tipodocumento == 'MODELO DE DOCUMENTO') {
@@ -819,7 +858,6 @@ function Evolucao(
                 <button id="copy-button"
                   className="animated-green-button"
                   onClick={(e) => { setidselecteddocumento(item.id); copiarEvolucao(item); e.stopPropagation() }}
-
                   title="COPIAR EVOLUÇÃO."
                   style={{
                     display: item.conselho == conselhousuario ? 'flex' : 'none',
@@ -1108,11 +1146,9 @@ function Evolucao(
                   loadEvolucoesGpulse(conselho, tipodocumento, null);
                   setTimeout(() => {
                     setstatusdocumento(-1);
-
                     setTimeout(() => {
                       setstatusdocumento(0);
                     }, 2000);
-
                   }, 2000);
                   if (conselho == 'CREFITO' && tipodocumento == 'EVOLUÇÃO ESTRUTURADA - CREFITO') {
                     setviewdocumento(51);

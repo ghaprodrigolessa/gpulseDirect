@@ -365,7 +365,7 @@ function EvolucaoFono() {
                 {camposopcoes.filter(item => item.idcampo == idcampo).map(item => {
                   let valor = registros_atuais.filter(valor => valor.idevolucao == iddocumento && valor.idcampo == item.idcampo && valor.idopcao == item.id).map(item => item.valor).pop();
                   let id = registros_atuais.filter(valor => valor.idevolucao == iddocumento && valor.idcampo == item.idcampo && valor.idopcao == item.id).map(item => item.id).pop();
-                  console.log(valor + ' - ' + id);
+                  // console.log(valor + ' - ' + id);
                   return (
                     <div id={'opcao' + item.id + random}
                       className={registros_atuais.filter(valor => valor.idevolucao == iddocumento && valor.idcampo == item.idcampo && valor.idopcao == item.id).map(valor => valor.valor) == 'SIM' ? 'red-button' : 'blue-button'}
@@ -616,7 +616,7 @@ function EvolucaoFono() {
                             }
                           }, 3000);
                         }}
-                        defaultValue={moment().format('DD/MM/YYYY')}
+                        defaultValue={x}
                         style={{
                           alignSelf: 'center',
                           width: width,
@@ -635,7 +635,7 @@ function EvolucaoFono() {
                         padding: 2.5,
                         margin: 2.5,
                       }}>
-                      <div>{valor_escala}</div>
+                      <div>{x.slice(-1)}</div>
                     </div>
                   )
                 } else {
@@ -776,11 +776,10 @@ function EvolucaoFono() {
     }
   }
 
-
   // ESCALA DE FOIS (showescala = 4).
   function Fois() {
     var htmlghapinsertescala = process.env.REACT_APP_API_CLONE_INSERTESCALA;
-    const [nivel, setnivel] = useState(registros_atuais.filter(item => item.idcampo == 203).map(item => item.valor));
+    const [nivel, setnivel] = useState(registros_atuais.filter(item => item.idcampo == 203).map(item => item.valor).slice(-1));
     const insertFois = () => {
       var significado = '';
       if (nivel == 1) {
@@ -809,7 +808,9 @@ function EvolucaoFono() {
         idprofissional: 0,
         status: 1,
       }
-      axios.post(htmlghapinsertescala, obj);
+      axios.post(htmlghapinsertescala, obj).then(() => {
+        console.log(obj);
+      });
     }
     const updateFoisValor = () => {
       axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
@@ -819,6 +820,7 @@ function EvolucaoFono() {
           .filter(valor => valor.idevolucao == iddocumento && valor.idcampo == 203)
           .sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).slice(-1).map(item => item.id);
         // atualizando registro.  
+        console.log('ID: ' + id);
         var obj = {
           idpct: idpaciente,
           idatendimento: idatendimento,
@@ -830,18 +832,21 @@ function EvolucaoFono() {
           idevolucao: iddocumento
         }
         console.log(obj);
-        axios.post('http://192.168.100.6:3333/update_evolucao_valor/' + id, obj);
+        axios.post('http://192.168.100.6:3333/insert_evolucao_valor/', obj);
       });
     }
     return (
-      <div>
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
         <div className="menucontainer"
           style={{ display: printdocumento == 1 ? 'none' : 'flex', marginTop: 20, marginBottom: 20 }}>
           <div id="cabeçalho" className="cabecalho">
             <div className="title5">{'ESCALA DE FOIS'}</div>
             <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
               <button className="green-button"
-                onClick={() => { insertFois(); updateFoisValor() }}
+                onClick={() => {
+                  insertFois();
+                  updateFoisValor()
+                }}
               >
                 <img
                   alt=""
@@ -857,7 +862,7 @@ function EvolucaoFono() {
           </div>
           <div>
             <div
-              className="corpo">
+              className="corpo" style={{ paddingBottom: 0 }}>
               <div
                 className="scroll"
                 style={{
@@ -910,8 +915,9 @@ function EvolucaoFono() {
               </div>
             </div>
           </div>
+          <div className="title2">RESULTADO</div>
+          <div className='blue-button' style={{ width: 75, marginBottom: 25 }}>{nivel}</div>
         </div>
-
       </div>
     );
   }

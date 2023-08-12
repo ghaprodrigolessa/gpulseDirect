@@ -776,7 +776,7 @@ function AnamneseFono() {
 
   // ESCALA PARD (showescala = 16).
   function Pard() {
-    const [pardscore, setpardscore] = useState(registros_atuais.filter(item => item.idcampo == 204).map(item => item.valor));
+    const [pardscore, setpardscore] = useState(registros_atuais.filter(item => item.idcampo == 204).map(item => item.valor).slice(-1));
     const [escapeoralanterior, setescapeoralanterior] = useState(0);
     const [tempotransitooraladequado, settempotransitooraladequado] = useState(0);
     const [refluxonasal, setrefluxonasal] = useState(0);
@@ -796,11 +796,15 @@ function AnamneseFono() {
     var htmlghapinsertescala = process.env.REACT_APP_API_CLONE_INSERTESCALA;
     const insertPard = () => {
       setpardscore(
-        escapeoralanterior + tempotransitooraladequado + refluxonasal +
-        numerodegluticoes + residuooral + elevacaolaringea + tosse +
-        engasgo + auscultacervicallimpa + qualidadevocaladequada + parseInt(document.getElementById('inputPardSao2').value) +
-        cianose + broncoespasmo + parseInt(document.getElementById('inputPardFc').value) + parseInt(document.getElementById('inputPardFr').value));
+        (parseInt(escapeoralanterior) + parseInt(tempotransitooraladequado) + parseInt(refluxonasal) +
+        parseInt(numerodegluticoes) + parseInt(residuooral) + parseInt(elevacaolaringea) + parseInt(tosse) +
+        parseInt(engasgo) + parseInt(auscultacervicallimpa) + parseInt(qualidadevocaladequada) +
+        parseInt(document.getElementById('inputPardSao2').value) +
+        cianose + broncoespasmo +
+        parseInt(document.getElementById('inputPardFc').value) +
+        parseInt(document.getElementById('inputPardFr').value)));
 
+      console.log(pardscore)
       var significado = '';
       if (pardscore < 5) {
         significado = 'DEGLUTIÇÃO NORMAL';
@@ -836,26 +840,23 @@ function AnamneseFono() {
       axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
         var x = [0, 1];
         x = response.data.rows;
-        var id = x
-          .filter(valor => valor.idevolucao == iddocumento && valor.idcampo == 204)
-          .sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).slice(-1).map(item => item.id);
         // atualizando registro.  
         var obj = {
           idpct: idpaciente,
           idatendimento: idatendimento,
           data: moment(),
           idcampo: 204,
-          idopcao: 675,
+          idopcao: 676,
           opcao: 'ESCALA - PARD',
           valor: pardscore,
           idevolucao: iddocumento
         }
         console.log(obj);
-        axios.post('http://192.168.100.6:3333/update_evolucao_valor/' + id, obj);
+        axios.post('http://192.168.100.6:3333/insert_evolucao_valor/', obj);
       });
     }
     return (
-      <div>
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
         <div className="menucontainer"
           style={{
             display: printdocumento == 1 ? 'none' : 'flex',
@@ -889,9 +890,11 @@ function AnamneseFono() {
                   flexDirection: 'column',
                   justifyContent: 'flex-start',
                   marginBottom: 5,
-                  width: '60vw', height: '50vh'
+                  width: '60vw', height: '50vh',
+                  alignContent: 'center',
+                  alignItems: 'center',
+                  alignSelf: 'center',
                 }}>
-
                 <div className="title2center">ESCAPE ORAL ANTERIOR</div>
                 <div style={{ display: 'flex', flexDirection: 'row', height: 75, width: '100%', justifyContent: 'center' }}>
                   <div
@@ -909,7 +912,6 @@ function AnamneseFono() {
                     PASTOSO/SÓLIDO
                   </div>
                 </div>
-
                 <div className="title2center">TEMPO DE TRÂNSITO ORAL ADEQUADO</div>
                 <div style={{ display: 'flex', flexDirection: 'row', height: 75, width: '100%', justifyContent: 'center' }}>
                   <div
@@ -927,7 +929,6 @@ function AnamneseFono() {
                     PASTOSO/SÓLIDO
                   </div>
                 </div>
-
                 <div className="title2center">REFLUXO NASAL</div>
                 <div style={{ display: 'flex', flexDirection: 'row', height: 75, width: '100%', justifyContent: 'center' }}>
                   <div
@@ -945,7 +946,6 @@ function AnamneseFono() {
                     PASTOSO/SÓLIDO
                   </div>
                 </div>
-
                 <div className="title2center">NÚMERO DE DEGLUTIÇÕES</div>
                 <div style={{ display: 'flex', flexDirection: 'row', height: 75, width: '100%', justifyContent: 'center' }}>
                   <div
@@ -963,7 +963,6 @@ function AnamneseFono() {
                     PASTOSO/SÓLIDO
                   </div>
                 </div>
-
                 <div className="title2center">RESÍDUO ORAL</div>
                 <div style={{ display: 'flex', flexDirection: 'row', height: 75, width: '100%', justifyContent: 'center' }}>
                   <div
@@ -981,7 +980,6 @@ function AnamneseFono() {
                     PASTOSO/SÓLIDO
                   </div>
                 </div>
-
                 <div className="title2center">ELEVAÇÃO LARÍNGEA</div>
                 <div style={{ display: 'flex', flexDirection: 'row', height: 75, width: '100%', justifyContent: 'center' }}>
                   <div
@@ -999,7 +997,6 @@ function AnamneseFono() {
                     PASTOSO/SÓLIDO
                   </div>
                 </div>
-
                 <div className="title2center">TOSSE</div>
                 <div style={{ display: 'flex', flexDirection: 'row', height: 75, width: '100%', justifyContent: 'center' }}>
                   <div
@@ -1017,7 +1014,6 @@ function AnamneseFono() {
                     PASTOSO/SÓLIDO
                   </div>
                 </div>
-
                 <div className="title2center">ENGASGO</div>
                 <div style={{ display: 'flex', flexDirection: 'row', height: 75, width: '100%', justifyContent: 'center' }}>
                   <div
@@ -1035,7 +1031,6 @@ function AnamneseFono() {
                     PASTOSO/SÓLIDO
                   </div>
                 </div>
-
                 <div className="title2center">AUSCULTA CERVICAL LIMPA</div>
                 <div style={{ display: 'flex', flexDirection: 'row', height: 75, width: '100%', justifyContent: 'center' }}>
                   <div
@@ -1053,7 +1048,6 @@ function AnamneseFono() {
                     PASTOSO/SÓLIDO
                   </div>
                 </div>
-
                 <div className="title2center">QUALIDADE VOCAL ADEQUADA</div>
                 <div style={{ display: 'flex', flexDirection: 'row', height: 75, width: '100%', justifyContent: 'center' }}>
                   <div
@@ -1071,7 +1065,6 @@ function AnamneseFono() {
                     PASTOSO/SÓLIDO
                   </div>
                 </div>
-
                 <div className="title2center">SATURAÇÃO DE OXIGÊNIO</div>
                 <input
                   id='inputPardSao2'
@@ -1085,8 +1078,8 @@ function AnamneseFono() {
                   title={"SAO2"}
                   type="number"
                   maxLength={3}
+                  style={{ width: 100 }}
                 ></input>
-
                 <div className="title2center">CIANOSE</div>
                 <div style={{ display: 'flex', flexDirection: 'row', height: 75, width: '100%', justifyContent: 'center' }}>
                   <div
@@ -1104,7 +1097,6 @@ function AnamneseFono() {
                     PASTOSO/SÓLIDO
                   </div>
                 </div>
-
                 <div className="title2center">BRONCOESPASMO</div>
                 <div style={{ display: 'flex', flexDirection: 'row', height: 75, width: '100%', justifyContent: 'center' }}>
                   <div
@@ -1122,13 +1114,12 @@ function AnamneseFono() {
                     PASTOSO/SÓLIDO
                   </div>
                 </div>
-
                 <div className="title2center">FREQUÊNCIA CARDÍACA</div>
                 <input
                   id='inputPardFc'
                   autoComplete="off"
                   className="input"
-                  placeholder="FR"
+                  placeholder="FC"
                   onFocus={(e) => {
                     (e.target.placeholder = '');
                   }}
@@ -1136,6 +1127,7 @@ function AnamneseFono() {
                   title={"FC"}
                   type="number"
                   maxLength={3}
+                  style={{ width: 100 }}
                 ></input>
                 <div className="title2center">FREQUÊNCIA RESPIRATÓRIA</div>
                 <input
@@ -1150,13 +1142,306 @@ function AnamneseFono() {
                   title={"FR"}
                   type="number"
                   maxLength={2}
+                  style={{ width: 100 }}
                 ></input>
-
+                <div className="title2">RESULTADO</div>
+                <div className='blue-button' style={{ width: 100, marginBottom: 25 }}>{pardscore}</div>
               </div>
             </div>
           </div>
         </div>
-        {evolucaoTexto(204, 'ESCALA PARD', 1, 'card', 10, 150, pardscore)}
+
+      </div>
+    );
+  }
+
+  // ESCALA DE FOIS NA ORIGEM (showescala = 4).
+  function FoisOrigem() {
+    var htmlghapinsertescala = process.env.REACT_APP_API_CLONE_INSERTESCALA;
+    const [nivel, setnivel] = useState(registros_atuais.filter(item => item.idcampo == 208).map(item => item.valor).slice(-1));
+    const insertFois = () => {
+      var significado = '';
+      if (nivel == 1) {
+        significado = 'NADA POR VIA ORAL.';
+      } else if (nivel == 2) {
+        significado = 'DEPENDÊNCIA DE VIA ALTERNATIVA, MÍNIMA OFERTA DE VIA ORAL (ESTÍMULO GUSTATIVO).';
+      } else if (nivel == 3) {
+        significado = 'DEPENDÊNCIA DE VIA ALTERNATIVA, OFERTA DE UMA ÚNICA CONSISTÊNCIA POR VIA ORAL.';
+      } else if (nivel == 4) {
+        significado = 'VIA ORAL TOTAL, LIMITADA A UMA ÚNICA CONSISTÊNCIA.';
+      } else if (nivel == 5) {
+        significado = 'VIA ORAL TOTAL, COM MAIS DE UMA CONSISTÊNCIA, NECESSITANDO PREPARO ESPECIAL.';
+      } else if (nivel == 6) {
+        significado = 'VIA ORAL TOTAL, MAIS DE UMA CONSISTÊNCIA, LIMITAÇÕES OU RESTRIÇÕES ESPECÍFICAS.';
+      } else {
+        significado = 'VIA ORAL TOTAL, SEM RESTRIÇÕES';
+      }
+      var obj = {
+        idpct: idpaciente,
+        idatendimento: idatendimento,
+        data: moment(),
+        cd_escala: 4,
+        ds_escala: 'FOIS',
+        valor_resultado: nivel,
+        ds_resultado: significado,
+        idprofissional: 0,
+        status: 1,
+      }
+      axios.post(htmlghapinsertescala, obj).then(() => {
+        console.log(obj);
+      });
+    }
+    const updateFoisValor = () => {
+      axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
+        var x = [0, 1];
+        x = response.data.rows;
+        var id = x
+          .filter(valor => valor.idevolucao == iddocumento && valor.idcampo == 203)
+          .sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).slice(-1).map(item => item.id);
+        // atualizando registro.  
+        console.log('ID: ' + id);
+        var obj = {
+          idpct: idpaciente,
+          idatendimento: idatendimento,
+          data: moment(),
+          idcampo: 208,
+          idopcao: 680,
+          opcao: 'ESCALA - FOIS',
+          valor: nivel,
+          idevolucao: iddocumento
+        }
+        console.log(obj);
+        axios.post('http://192.168.100.6:3333/insert_evolucao_valor/', obj);
+      });
+    }
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <div className="menucontainer"
+          style={{ display: printdocumento == 1 ? 'none' : 'flex', marginTop: 20, marginBottom: 20 }}>
+          <div id="cabeçalho" className="cabecalho">
+            <div className="title5">{'ESCALA DE FOIS (CLASSIFICAÇÃO NA ORIGEM)'}</div>
+            <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+              <button className="green-button"
+                onClick={() => {
+                  insertFois();
+                  updateFoisValor()
+                }}
+              >
+                <img
+                  alt=""
+                  src={salvar}
+                  style={{
+                    margin: 10,
+                    height: 30,
+                    width: 30,
+                  }}
+                ></img>
+              </button>
+            </div>
+          </div>
+          <div>
+            <div
+              className="corpo" style={{ paddingBottom: 0 }}>
+              <div
+                className="scroll"
+                style={{
+                  display: 'flex', flexDirection: 'row', justifyContent: 'center',
+                  marginBottom: 5, flexWrap: 'wrap',
+                  width: '60vw', height: '50vh'
+                }}>
+                <button
+                  onClick={() => { setnivel(1) }}
+                  className={nivel == 1 ? "red-button" : "blue-button"}
+                  style={{ width: 200, height: 200, padding: 10 }}>
+                  NADA POR VIA ORAL
+                </button>
+                <button
+                  onClick={() => { setnivel(2) }}
+                  className={nivel == 2 ? "red-button" : "blue-button"}
+                  style={{ width: 200, height: 200, padding: 10 }}>
+                  DEPENDÊNCIA DE VIA ALTERNATIVA, MÍNIMA OFERTA DE VIA ORAL (ESTÍMULO GUSTATIVO).
+                </button>
+                <button
+                  onClick={() => { setnivel(3) }}
+                  className={nivel == 3 ? "red-button" : "blue-button"}
+                  style={{ width: 200, height: 200, padding: 10 }}>
+                  DEPENDÊNCIA DE VIA ALTERNATIVA, OFERTA DE UMA ÚNICA CONSISTÊNCIA POR VIA ORAL.
+                </button>
+                <button
+                  onClick={() => { setnivel(4) }}
+                  className={nivel == 4 ? "red-button" : "blue-button"}
+                  style={{ width: 200, height: 200, minHeight: 150, padding: 10 }}>
+                  VIA ORAL TOTAL, LIMITADA A UMA ÚNICA CONSISTÊNCIA.
+                </button>
+                <button
+                  onClick={() => { setnivel(5) }}
+                  className={nivel == 5 ? "red-button" : "blue-button"}
+                  style={{ width: 200, height: 200, padding: 10 }}>
+                  VIA ORAL TOTAL, MAIS DE UMA CONSISTÊNCIA, NECESSITANDO PREPARO ESPECIAL.
+                </button>
+                <button
+                  onClick={() => { setnivel(6) }}
+                  className={nivel == 6 ? "red-button" : "blue-button"}
+                  style={{ width: 200, height: 200, padding: 10 }}>
+                  VIA ORAL TOTAL, MAIS DE UMA CONSISTÊNCIA, LIMITAÇÕES OU RESTRIÇÕES ESPECÍFICAS.
+                </button>
+                <button
+                  onClick={() => { setnivel(7) }}
+                  className={nivel == 7 ? "red-button" : "blue-button"}
+                  style={{ width: 200, height: 200, padding: 10 }}>
+                  VIA ORAL TOTAL, SEM RESTRIÇÕES.
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="title2">RESULTADO</div>
+          <div className='blue-button' style={{ width: 75, marginBottom: 25 }}>{nivel}</div>
+        </div>
+      </div>
+    );
+  }
+
+  function FoisAdmissao() {
+    var htmlghapinsertescala = process.env.REACT_APP_API_CLONE_INSERTESCALA;
+    const [nivel, setnivel] = useState(registros_atuais.filter(item => item.idcampo == 203).map(item => item.valor).slice(-1));
+    const insertFois = () => {
+      var significado = '';
+      if (nivel == 1) {
+        significado = 'NADA POR VIA ORAL.';
+      } else if (nivel == 2) {
+        significado = 'DEPENDÊNCIA DE VIA ALTERNATIVA, MÍNIMA OFERTA DE VIA ORAL (ESTÍMULO GUSTATIVO).';
+      } else if (nivel == 3) {
+        significado = 'DEPENDÊNCIA DE VIA ALTERNATIVA, OFERTA DE UMA ÚNICA CONSISTÊNCIA POR VIA ORAL.';
+      } else if (nivel == 4) {
+        significado = 'VIA ORAL TOTAL, LIMITADA A UMA ÚNICA CONSISTÊNCIA.';
+      } else if (nivel == 5) {
+        significado = 'VIA ORAL TOTAL, COM MAIS DE UMA CONSISTÊNCIA, NECESSITANDO PREPARO ESPECIAL.';
+      } else if (nivel == 6) {
+        significado = 'VIA ORAL TOTAL, MAIS DE UMA CONSISTÊNCIA, LIMITAÇÕES OU RESTRIÇÕES ESPECÍFICAS.';
+      } else {
+        significado = 'VIA ORAL TOTAL, SEM RESTRIÇÕES';
+      }
+      var obj = {
+        idpct: idpaciente,
+        idatendimento: idatendimento,
+        data: moment(),
+        cd_escala: 4,
+        ds_escala: 'FOIS',
+        valor_resultado: nivel,
+        ds_resultado: significado,
+        idprofissional: 0,
+        status: 1,
+      }
+      axios.post(htmlghapinsertescala, obj).then(() => {
+        console.log(obj);
+      });
+    }
+    const updateFoisValor = () => {
+      axios.get('http://192.168.100.6:3333/pool_evolucoes_valores/' + idatendimento).then((response) => {
+        var x = [0, 1];
+        x = response.data.rows;
+        var id = x
+          .filter(valor => valor.idevolucao == iddocumento && valor.idcampo == 203)
+          .sort((a, b) => moment(a.data) > moment(b.data) ? 1 : -1).slice(-1).map(item => item.id);
+        // atualizando registro.  
+        console.log('ID: ' + id);
+        var obj = {
+          idpct: idpaciente,
+          idatendimento: idatendimento,
+          data: moment(),
+          idcampo: 203,
+          idopcao: 675,
+          opcao: 'ESCALA - FOIS',
+          valor: nivel,
+          idevolucao: iddocumento
+        }
+        console.log(obj);
+        axios.post('http://192.168.100.6:3333/insert_evolucao_valor/', obj);
+      });
+    }
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <div className="menucontainer"
+          style={{ display: printdocumento == 1 ? 'none' : 'flex', marginTop: 20, marginBottom: 20 }}>
+          <div id="cabeçalho" className="cabecalho">
+            <div className="title5">{'ESCALA DE FOIS (CLASSIFICAÇÃO APÓS AVALIAÇÃO ADMISSIONAL)'}</div>
+            <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+              <button className="green-button"
+                onClick={() => {
+                  insertFois();
+                  updateFoisValor()
+                }}
+              >
+                <img
+                  alt=""
+                  src={salvar}
+                  style={{
+                    margin: 10,
+                    height: 30,
+                    width: 30,
+                  }}
+                ></img>
+              </button>
+            </div>
+          </div>
+          <div>
+            <div
+              className="corpo" style={{ paddingBottom: 0 }}>
+              <div
+                className="scroll"
+                style={{
+                  display: 'flex', flexDirection: 'row', justifyContent: 'center',
+                  marginBottom: 5, flexWrap: 'wrap',
+                  width: '60vw', height: '50vh'
+                }}>
+                <button
+                  onClick={() => { setnivel(1) }}
+                  className={nivel == 1 ? "red-button" : "blue-button"}
+                  style={{ width: 200, height: 200, padding: 10 }}>
+                  NADA POR VIA ORAL
+                </button>
+                <button
+                  onClick={() => { setnivel(2) }}
+                  className={nivel == 2 ? "red-button" : "blue-button"}
+                  style={{ width: 200, height: 200, padding: 10 }}>
+                  DEPENDÊNCIA DE VIA ALTERNATIVA, MÍNIMA OFERTA DE VIA ORAL (ESTÍMULO GUSTATIVO).
+                </button>
+                <button
+                  onClick={() => { setnivel(3) }}
+                  className={nivel == 3 ? "red-button" : "blue-button"}
+                  style={{ width: 200, height: 200, padding: 10 }}>
+                  DEPENDÊNCIA DE VIA ALTERNATIVA, OFERTA DE UMA ÚNICA CONSISTÊNCIA POR VIA ORAL.
+                </button>
+                <button
+                  onClick={() => { setnivel(4) }}
+                  className={nivel == 4 ? "red-button" : "blue-button"}
+                  style={{ width: 200, height: 200, minHeight: 150, padding: 10 }}>
+                  VIA ORAL TOTAL, LIMITADA A UMA ÚNICA CONSISTÊNCIA.
+                </button>
+                <button
+                  onClick={() => { setnivel(5) }}
+                  className={nivel == 5 ? "red-button" : "blue-button"}
+                  style={{ width: 200, height: 200, padding: 10 }}>
+                  VIA ORAL TOTAL, MAIS DE UMA CONSISTÊNCIA, NECESSITANDO PREPARO ESPECIAL.
+                </button>
+                <button
+                  onClick={() => { setnivel(6) }}
+                  className={nivel == 6 ? "red-button" : "blue-button"}
+                  style={{ width: 200, height: 200, padding: 10 }}>
+                  VIA ORAL TOTAL, MAIS DE UMA CONSISTÊNCIA, LIMITAÇÕES OU RESTRIÇÕES ESPECÍFICAS.
+                </button>
+                <button
+                  onClick={() => { setnivel(7) }}
+                  className={nivel == 7 ? "red-button" : "blue-button"}
+                  style={{ width: 200, height: 200, padding: 10 }}>
+                  VIA ORAL TOTAL, SEM RESTRIÇÕES.
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="title2">RESULTADO</div>
+          <div className='blue-button' style={{ width: 75, marginBottom: 25 }}>{nivel}</div>
+        </div>
       </div>
     );
   }
@@ -1249,8 +1534,11 @@ function AnamneseFono() {
             {evolucaoSelecaoSimples(103, 'SALIVA', 1)}
             <div className="title2center" style={{ fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>{'AVALIAÇÃO DE RISCO PARA DISFAGIA (PARD)'}</div>
             <Pard></Pard>
-            {evolucaoSelecaoSimples(104, 'CONCLUSÃO - PARD', 1)}
 
+            <FoisOrigem></FoisOrigem>
+            <FoisAdmissao></FoisAdmissao>
+
+            {evolucaoSelecaoSimples(104, 'CONCLUSÃO - PARD', 1)}
             <div style={{ width: '100%', fontSize: 14, textAlign: 'center', padding: 10, fontWeight: 'bold', alignSelf: 'center' }}>{'CONDUTA'}</div>
             {evolucaoSelecaoSimples(105, 'DIETA', 1)}
             {evolucaoSelecaoSimples(106, 'CONSISTÊNCIA DO ALIMENTO', 1)}

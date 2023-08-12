@@ -10,7 +10,7 @@ export const gravaResumoPlanoTerapeutico = (idpaciente, idatendimento, iddocumen
         var y = [0, 1];
         x = response.data;
         y = x.rows;
-        if (y.filter(item => item.idcampo == 206).length > 0) {
+        if (y.filter(item => item.idcampo == 206 && item.idevolucao == iddocumento).length > 0) {
             console.log('CAMPO DE RESUMO DE PLANO TERAPÊUTICO JÁ EXISTE. NADA A FAZER');
         } else {
             console.log('### REGISTRANDO RESUMO DO PLANO TERAPÊUTICO ###');
@@ -23,7 +23,7 @@ export const gravaResumoPlanoTerapeutico = (idpaciente, idatendimento, iddocumen
                 'METAS ATIVAS:'
                 +
                 metas.filter(item => item.status == 0).map(item => '\n' + item.meta);
-            console.log(resumo);
+            // console.log(resumo);
             var obj = {
                 idpct: idpaciente,
                 idatendimento: idatendimento,
@@ -34,7 +34,7 @@ export const gravaResumoPlanoTerapeutico = (idpaciente, idatendimento, iddocumen
                 valor: resumo,
                 idevolucao: iddocumento
             }
-            console.log(obj);
+            // console.log(obj);
             axios.post('http://192.168.100.6:3333/insert_evolucao_valor', obj);
         }
     })
