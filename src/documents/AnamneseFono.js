@@ -1533,7 +1533,7 @@ function AnamneseFono() {
             {evolucaoSelecaoSimples(102, 'HIGIENE ORAL', 1)}
             {evolucaoSelecaoSimples(103, 'SALIVA', 1)}
             <div className="title2center" style={{ fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>{'AVALIAÇÃO DE RISCO PARA DISFAGIA (PARD)'}</div>
-            <div style={{ display: printdocumento == 0 ? 'flex' : 'none' }}>
+            <div style={{ display: printdocumento == 0 ? 'flex' : 'none', flexDirection: 'column', justifyContent: 'center' }}>
               <Pard></Pard>
               <FoisOrigem></FoisOrigem>
               <FoisAdmissao></FoisAdmissao>
