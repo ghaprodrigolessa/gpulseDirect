@@ -797,12 +797,12 @@ function AnamneseFono() {
     const insertPard = () => {
       setpardscore(
         (parseInt(escapeoralanterior) + parseInt(tempotransitooraladequado) + parseInt(refluxonasal) +
-        parseInt(numerodegluticoes) + parseInt(residuooral) + parseInt(elevacaolaringea) + parseInt(tosse) +
-        parseInt(engasgo) + parseInt(auscultacervicallimpa) + parseInt(qualidadevocaladequada) +
-        parseInt(document.getElementById('inputPardSao2').value) +
-        cianose + broncoespasmo +
-        parseInt(document.getElementById('inputPardFc').value) +
-        parseInt(document.getElementById('inputPardFr').value)));
+          parseInt(numerodegluticoes) + parseInt(residuooral) + parseInt(elevacaolaringea) + parseInt(tosse) +
+          parseInt(engasgo) + parseInt(auscultacervicallimpa) + parseInt(qualidadevocaladequada) +
+          parseInt(document.getElementById('inputPardSao2').value) +
+          cianose + broncoespasmo +
+          parseInt(document.getElementById('inputPardFc').value) +
+          parseInt(document.getElementById('inputPardFr').value)));
 
       console.log(pardscore)
       var significado = '';
@@ -1533,11 +1533,11 @@ function AnamneseFono() {
             {evolucaoSelecaoSimples(102, 'HIGIENE ORAL', 1)}
             {evolucaoSelecaoSimples(103, 'SALIVA', 1)}
             <div className="title2center" style={{ fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>{'AVALIAÇÃO DE RISCO PARA DISFAGIA (PARD)'}</div>
-            <Pard></Pard>
-
-            <FoisOrigem></FoisOrigem>
-            <FoisAdmissao></FoisAdmissao>
-
+            <div style={{ display: printdocumento == 0 ? 'flex' : 'none' }}>
+              <Pard></Pard>
+              <FoisOrigem></FoisOrigem>
+              <FoisAdmissao></FoisAdmissao>
+            </div>
             {evolucaoSelecaoSimples(104, 'CONCLUSÃO - PARD', 1)}
             <div style={{ width: '100%', fontSize: 14, textAlign: 'center', padding: 10, fontWeight: 'bold', alignSelf: 'center' }}>{'CONDUTA'}</div>
             {evolucaoSelecaoSimples(105, 'DIETA', 1)}
@@ -1684,6 +1684,7 @@ function AnamneseFono() {
         a.document.write(printdocument);
         a.document.write('</html>');
         a.print();
+        a.close();
         setprintdocumento(0);
       }, 1000);
     });

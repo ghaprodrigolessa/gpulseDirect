@@ -1161,7 +1161,9 @@ function AnamneseServicoSocial() {
             {evolucaoTexto(143, 'CENTRO DE SAÚDE E EQUIPE DE REFERÊNCIA', 1, 'input', 2000, 600)}
             {evolucaoTexto(144, 'ENDEREÇO PÓS ALTA', 1, 'input', 2000, 600)}
             {evolucaoTexto(145, 'OBSERVAÇÕES - ANAMNESE DO SERVIÇO SOCIAL', 1, 'textarea', 2000, 600)}
-            <Gijon></Gijon>
+            <div style={{display: printdocumento == 0 ? 'flex' : 'none'}}>
+              <Gijon></Gijon>
+            </div>
           </div>
         </div>
       </div>
@@ -1301,6 +1303,7 @@ function AnamneseServicoSocial() {
         a.document.write(printdocument);
         a.document.write('</html>');
         a.print();
+        a.close();
         setprintdocumento(0);
       }, 1000);
     });

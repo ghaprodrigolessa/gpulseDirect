@@ -973,6 +973,7 @@ function EvolucaoPsicologia() {
         a.document.write(printdocument);
         a.document.write('</html>');
         a.print();
+        a.close();
         setprintdocumento(0);
       }, 1000);
     });

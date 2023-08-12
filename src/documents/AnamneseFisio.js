@@ -1216,12 +1216,12 @@ function AnamneseFisio() {
           <div id="CORPO DO DOCUMENTO - ANAMNESE - CREFITO"
             style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
             <div className="title2center" style={{ width: '100%', fontSize: 16, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>ANAMNESE DA FISIOTERAPIA</div>
-            {evolucaoTexto(63, 'QUEIXA PRINCIPAL', 1, 'textarea', 500, '60vw')}
+            {evolucaoTexto(63, 'QUEIXA PRINCIPAL', 1, 'textarea', 500, 600)}
             {evolucaoSelecaoSimples(4, 'DOR', 1)}
             {evolucaoTexto(64, 'EVA', 1, 'input', 2, 125)}
             {evolucaoTexto(65, 'LOCAL DA DOR', 1, 'input', 2, 125)}
             {evolucaoSelecaoSimples(66, 'PREVIAMENTE INDEPENDENTE', 1)}
-            {evolucaoTexto(67, 'HISTÓRIA DA DOENÇA ATUAL', 1, 'textarea', 2000, '60vw')}
+            {evolucaoTexto(67, 'HISTÓRIA DA DOENÇA ATUAL', 1, 'textarea', 2000, 600)}
             {evolucaoSelecaoMultipla(68, 'DOENÇAS ASSOCIADAS', 1)}
             {evolucaoTexto(69, 'GLASGOW', 1, 'input', 2, 125)}
             {evolucaoSelecaoSimples(6, 'COMPREENSÃO', 1)}
@@ -1265,8 +1265,8 @@ function AnamneseFisio() {
             {evolucaoSelecaoSimples(42, 'CONTROLE ESFINCTERIANO FECAL', 1)}
             {evolucaoSelecaoMultipla(74, 'PROGNÓSTICO', 1)}
             {evolucaoSelecaoSimples(75, 'LOCAL DO ATENDIMENTO', 1)}
-            {evolucaoTexto(76, 'OBSERVAÇÕES', 1, "textarea", 2000, '60vw')}
-            {evolucaoTexto(206, 'RESUMO DO PLANO TERAPÊUTICO PARA A ESPECIALIDADE:', 1, "textarea", 10, '60vw')}
+            {evolucaoTexto(76, 'OBSERVAÇÕES', 1, "textarea", 2000, 600)}
+            {evolucaoTexto(206, 'RESUMO DO PLANO TERAPÊUTICO PARA A ESPECIALIDADE:', 1, "textarea", 10, 600)}
           </div>
         </div>
       </div>
@@ -1406,6 +1406,7 @@ function AnamneseFisio() {
         a.document.write(printdocument);
         a.document.write('</html>');
         a.print();
+        a.close();
         setprintdocumento(0);
       }, 1000);
     });

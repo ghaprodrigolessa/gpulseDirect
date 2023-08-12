@@ -911,7 +911,7 @@ function EvolucaoFisio() {
                 {evolucaoTexto(62, 'DATA DE DESMAME VM', 1, "date", 10, 250)}
               </div>
             </div>
-            {evolucaoTexto(206, 'RESUMO DO PLANO TERAPÊUTICO PARA A ESPECIALIDADE:', 1, "textarea", 20000, '60vw')}
+            {evolucaoTexto(206, 'RESUMO DO PLANO TERAPÊUTICO PARA A ESPECIALIDADE:', 1, "textarea", 20000, 600)}
           </div>
         </div>
       </div>
@@ -1051,6 +1051,7 @@ function EvolucaoFisio() {
         a.document.write(printdocument);
         a.document.write('</html>');
         a.print();
+        a.close();
         setprintdocumento(0);
       }, 1000);
     });

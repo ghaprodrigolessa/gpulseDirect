@@ -840,14 +840,14 @@ function AnamneseTerapiaOcupacional() {
             {evolucaoTexto(167, 'BAIRRO', 1, 'input', 200, 500)}
             {evolucaoTexto(137, 'MORA COM QUEM?', 1, 'input', 200, 500)}
             {evolucaoTexto(136, 'PRINCIPAL CUIDADOR', 1, 'input', 200, 500)}
-            {evolucaoTexto(168, 'MOTIVO DA INTERNAÇÃO', 1, 'textarea', 2000, '60vw')}
+            {evolucaoTexto(168, 'MOTIVO DA INTERNAÇÃO', 1, 'textarea', 2000, 600)}
             {evolucaoSelecaoMultipla(169, 'MOBILIDADE PRÉVIA', 1)}
             {evolucaoSelecaoSimples(170, 'ATIVIDADES BÁSICAS DE VIDA DIÁRIA', 1)}
             {evolucaoSelecaoSimples(171, 'ATIVIDADES INSTRUMENTAIS DE VIDA DIÁRIA', 1)}
             {evolucaoSelecaoSimples(152, 'APRESENTAÇÃO', 1)}
             {evolucaoSelecaoMultipla(22, 'ALTERAÇÕES MOTORAS', 1)}
             {evolucaoSelecaoMultipla(92, 'ALTERAÇÕES DA FALA', 1)}
-            {evolucaoTexto(40, 'AMPLITUDE DE MOVIMENTO', 1, 'textarea', 2000, '60vw')}
+            {evolucaoTexto(40, 'AMPLITUDE DE MOVIMENTO', 1, 'textarea', 2000, 600)}
             {evolucaoSelecaoMultipla(172, 'PELE', 1)}
             {evolucaoSelecaoMultipla(173, 'CONDUTA', 1)}
             {evolucaoSelecaoMultipla(174, 'FUNCIONALIDADE ATUAL', 1)}
@@ -992,6 +992,7 @@ function AnamneseTerapiaOcupacional() {
         a.document.write(printdocument);
         a.document.write('</html>');
         a.print();
+        a.close();
         setprintdocumento(0);
       }, 1000);
     });

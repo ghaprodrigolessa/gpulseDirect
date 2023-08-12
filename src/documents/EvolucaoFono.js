@@ -1007,15 +1007,17 @@ function EvolucaoFono() {
             {evolucaoSelecaoMultipla(116, 'MODO DE OFERTA', 1)}
             {evolucaoSelecaoMultipla(117, 'CONDUTA FONOAUDIOLÓGICA', 1)}
             <div className="title2center" style={{ fontSize: 14, textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>ESCALA DE FOIS APÓS ABORDAGEM</div>
-            <Fois></Fois>
+            <div style={{ display: printdocumento == 0 ? 'flex' : 'none' }}>
+              <Fois></Fois>
+            </div>
             {evolucaoSelecaoSimples(118, 'DESMAME DE VIA ALIMENTAR ALTERNATIVA EFETIVADO DURANTE ESTA INTERNAÇÃO', 1)}
             {evolucaoTexto(119, 'DATA DE EFETIVAÇÃO DO DESMAME DA VIA ALIMENTAR ALTERNATIVA', 1, 'date', 10, 150)}
-            {evolucaoTexto(120, 'JUSTIFICATIVA PARA A NÃO EFETIVAÇÃO DO DESMAME DA VIA ALIMENTAR ALTERNATIVA', 1, 'textarea', 2000, '60vw')}
+            {evolucaoTexto(120, 'JUSTIFICATIVA PARA A NÃO EFETIVAÇÃO DO DESMAME DA VIA ALIMENTAR ALTERNATIVA', 1, 'textarea', 2000, 600)}
             {evolucaoSelecaoSimples(121, 'VÍNCULO COM O SETOR', 1)}
             {evolucaoSelecaoSimples(122, 'PROGNÓSTICO', 1)}
-            {evolucaoTexto(47, 'TRANSIÇÃO DE CUIDADOS', 1, "textarea", 2000, '60vw')}
-            {evolucaoTexto(48, 'DISCUSSÃO INTERDISCIPLINAR', 1, "textarea", 2000, '60vw')}
-            {evolucaoTexto(206, 'RESUMO DO PLANO TERAPÊUTICO PARA A ESPECIALIDADE:', 1, "textarea", 20000, '60vw')}
+            {evolucaoTexto(47, 'TRANSIÇÃO DE CUIDADOS', 1, "textarea", 2000, 600)}
+            {evolucaoTexto(48, 'DISCUSSÃO INTERDISCIPLINAR', 1, "textarea", 2000, 600)}
+            {evolucaoTexto(206, 'RESUMO DO PLANO TERAPÊUTICO PARA A ESPECIALIDADE:', 1, "textarea", 20000, 600)}
           </div>
         </div>
       </div>
@@ -1155,6 +1157,7 @@ function EvolucaoFono() {
         a.document.write(printdocument);
         a.document.write('</html>');
         a.print();
+        a.close();
         setprintdocumento(0);
       }, 1000);
     });
