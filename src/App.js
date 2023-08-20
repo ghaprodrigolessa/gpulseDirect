@@ -7,9 +7,9 @@ import Context from './Context'
 import axios from 'axios'
 import {
   BrowserRouter as Router,
-  Switch,
+  Routes,
   Route,
-  useHistory,
+  useNavigate
 } from 'react-router-dom'
 
 // importando componentes.
@@ -29,7 +29,8 @@ function IddleTimeOut() {
   /* eslint eqeqeq: 0 */
   var timer = 0
   var interval = null
-  let history = useHistory()
+  let navigate = useNavigate()
+
   const loadTimeOut = () => {
     interval = setInterval(() => {
       timer = timer + 1
@@ -38,7 +39,7 @@ function IddleTimeOut() {
         timer = 0
         setTimeout(() => {
           toast(1, '#ec7063', 'USUÁRIO DESLOGADO POR INATIVIDADE.', 3000)
-          history.push('/')
+          navigate('/')
         }, 3000)
       }
     }, 1000)
@@ -100,9 +101,11 @@ function IddleTimeOut() {
     });
 
     // alterando o comportamento ao clicar no botão refresh.
+    /*
     window.addEventListener("load", () => {
-      history.push('/');
+      navigate('/:usuariologado');
     });
+    */
     // eslint-disable-next-line
   }, [])
 
@@ -114,19 +117,12 @@ function IddleTimeOut() {
     >
       <DatePicker></DatePicker>
       <Toast valor={valor} cor={cor} mensagem={mensagem} tempo={tempo} />
-      <Switch>
-        <div id="páginas">
-          <Route exact path="/">
-            <Login></Login>
-          </Route>
-          <Route path="/todospacientes">
-            <TodosPacientes></TodosPacientes>
-          </Route>
-          <Route path="/prontuario">
-            <Prontuario></Prontuario>
-          </Route>
-        </div>
-      </Switch>
+      <Routes>
+        <Route exact path="/:usuariologado/:categoriaprofissionallogada/:conselhologado/:atendimentologado/:prontuariologado" element={<Prontuario />}>
+        </Route>
+        <Route path="/todospacientes" element={<TodosPacientes />}>
+        </Route>
+      </Routes>
     </div>
   )
 }

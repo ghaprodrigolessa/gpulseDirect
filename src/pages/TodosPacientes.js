@@ -5,8 +5,8 @@ import axios from 'axios';
 import moment from 'moment';
 import Header from '../components/Header';
 import Context from '../Context';
-import { useHistory } from "react-router-dom";
-import plano_ativo from '../images/plano_ativo.svg';
+import { useNavigate, useParams } from "react-router-dom";
+import plano_ativo from '../images/plano_ativo.svg';    
 
 function TodosPacientes() {
   var htmlfiltrapacientenome = process.env.REACT_APP_API_FILTRAPACIENTESNOME;
@@ -25,7 +25,7 @@ function TodosPacientes() {
     opcoeslinhasdecuidado,
   } = useContext(Context)
   // history (react-router-dom).
-  let history = useHistory()
+  let navigate = useNavigate()
 
   var htmltodaslinhasdecuidados = process.env.REACT_APP_API_CLONE_TODASLINHASDECUIDADO;
   const [todaslinhasdecuidado, settodaslinhasdecuidado] = useState([]);
@@ -448,14 +448,14 @@ function TodosPacientes() {
     setdatainternacao(item.dt_hr_atendimento);
     setconvenio(item.nm_convenio);
     setdadospaciente(todospacientes.filter(value => value.codigo_paciente == item.cd_paciente));
-    history.push('/prontuario');
+    navigate('/prontuario');
   };
 
   const selectAtendimentoAntigo = (item) => {
     console.log('BABAOEY')
     // o que vou pegar...
     // setdadospaciente(arrayPacientesEmAtendimento.filter(value => value.codigo_paciente == item.cd_paciente));
-    history.push('/prontuario');
+    navigate('/prontuario');
   };
 
   // filtro de pacientes...

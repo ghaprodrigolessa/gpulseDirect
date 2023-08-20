@@ -34,27 +34,29 @@ import AptPlanoTerapeutico from '../components/AptPlanoTerapeutico';
 import AptResumoPlanoTerapeutico from '../components/AptResumoPlanoTerapeutico';
 import Evolucao from '../components/Evolucao';
 
+import { useParams } from 'react-router'
+
 function Prontuario() {
   moment.locale('pt-br');
 
   // recuperando estados globais (Context.API).
   const {
-    idunidade,
+    idunidade, setidunidade,
     // idusuario, // id string na tabela MV. Ex.: MASTER.GHAP
     iduser, // id numérica na tabela personas, do GPulse (postgres). Ex.: 1
     personas,
-    nomeusuario,
-    categoriausuario,
+    nomeusuario, setnomeusuario,
+    categoriausuario, setcategoriausuario,
     alias,
-    nomeunidade,
+    nomeunidade, setnomeunidade,
     tipounidade,
     setlistescalas,
     listescalas,
     setarraylistescalas,
     arraylistescalas,
     // todos os leitos e atendimentos.
-    todospacientes,
-    todosatendimentos,
+    todospacientes, settodospacientes,
+    todosatendimentos, settodosatendimentos,
     sethistoricoatendimentos,
     // atendimento.
     setidatendimento,
@@ -68,6 +70,7 @@ function Prontuario() {
     dn, setdn,
     box, setbox,
     setidatendimentoghap,
+    dadospaciente, setdadospaciente,
 
     stateprontuario,
     setstateprontuario,
@@ -93,9 +96,21 @@ function Prontuario() {
     setshowescala, showescala,
   } = useContext(Context)
 
+  let { usuariologado } = useParams();
+  let { categoriaprofissionallogada } = useParams();
+  let { conselhologado } = useParams();
+  let { atendimentologado } = useParams();
+  let { prontuariologado } = useParams();
+
   const [opcoesescalas, setopcoesescalas] = useState([]);
   const [filterescala, setfilterescala] = useState('');
   const [arrayopcoesescalas, setarrayopcoesescalas] = useState([filterescala]);
+
+  setnomeusuario(usuariologado);
+  setcategoriausuario(categoriaprofissionallogada);
+  setconselho(conselhologado);
+  setidatendimento(atendimentologado);
+
   useEffect(() => {
     var listcategoriaprofissional = [
       { id: 8, nome: 'MEDICO(A)', cor: '#AED6F1', conselho: 'CRM' },
@@ -108,19 +123,64 @@ function Prontuario() {
       { id: 11, nome: 'TERAPEUTA OCUPACIONAL', cor: '#AEB6BF', conselho: 'TO' },
       { id: 9, nome: 'NUTRICIONISTA', cor: 'grey', conselho: 'CRN' },
     ]
-    setarraycategoriaprofissional(listcategoriaprofissional);
-    carga();
-    setusers(personas);
-    setTimeout(() => {
-      loadPlanosTerapeuticos();
-      loadObjetivos();
-      loadMetas();
-      loadOpcoesEscalas();
-      loadOpcoesMetas();
-      setstateprontuario(21);
-    }, 3000);
+    // setarraycategoriaprofissional(listcategoriaprofissional);
+    // carga();
+    // setusers(personas);
+
+    // carregando usuário logado (recebido por parâmetros ao carregar o Pulse).
+
+    // montando registros de pacientes.
+    // função para extração dos pacientes em atendimento a partir da lista de atendimentos.
+
+    // captura registros de atendimentos.
+
+    var htmlpacientes = process.env.REACT_APP_API_FILTRAPACIENTES;
+
+    const getProntuarioPaciente = (valor) => {
+      axios.get(htmlpacientes + valor).then((response) => {
+        setdadospaciente(response.data);
+        var x = [0, 1];
+        x = response.data;
+        console.log(x);
+      });
+    }
+
+    // captura registros de atendimentos.
+    var htmlatendimentos = process.env.REACT_APP_API_ATENDIMENTOS;
+    axios.get(htmlatendimentos).then((response) => {
+      var x = [0, 1]
+      x = response.data;
+      settodosatendimentos(x);
+      let pct = [0, 1];
+      pct = x.filter(item => item.cd_atendimento == atendimentologado).pop();
+      console.log(pct);
+
+      setidunidade(pct.Leito.unidade.id);
+      setnomeunidade(pct.Leito.unidade.descricao);
+      setidpaciente(pct.cd_paciente)
+      getProntuarioPaciente(pct.cd_paciente);
+      // setidatendimento(pct.cd_atendimento)
+      setdatainternacao(pct.dt_hr_atendimento);
+      setconvenio(pct.nm_convenio);
+      setdadospaciente(pct);
+      setTimeout(() => {
+        loadPaciente(pct.cd_paciente);
+        loadPlanosTerapeuticos();
+        loadObjetivos();
+        loadMetas();
+        loadOpcoesEscalas();
+        loadOpcoesMetas();
+        setstateprontuario(21);
+        setloadprincipal(0);
+      }, 1000);
+    });
+
+
+
     // eslint-disable-next-line
-  }, [idpaciente]);
+  }, [idatendimento]);
+
+
 
   var htmlplanosterapeuticos = process.env.REACT_APP_API_CLONE_PLANOSTERAPEUTICOS;
   const loadPlanosTerapeuticos = () => {
@@ -173,15 +233,18 @@ function Prontuario() {
   const [endereço, setendereço] = useState('');
 
   const loadPaciente = (valor) => {
-    var paciente = [0, 1]
-    paciente = todospacientes.filter(value => value.codigo_paciente == valor)
-    setnomepaciente(todospacientes.filter(value => value.codigo_paciente == valor).map(item => item.nome_paciente))
-    setnomemae(paciente.map(item => item.nome_mae_paciente))
+    console.log('VALOR: ' + valor);
+    setnomepaciente(dadospaciente.nome_paciente);
+    setnomemae(dadospaciente.nome_mae_paciente);
     // eslint-disable-next-line
-    setcontato("(" + paciente.map(item => item.nr_ddd_celular) + ") " + paciente.map(item => item.nr_celular) + ") / " + "(" + paciente.map(item => item.nr_ddd_fone) + ") " + paciente.map(item => item.nr_fone));
-    setendereço(paciente.map(item => item.ds_endereco) + ', Nº ' + paciente.map(item => item.nr_endereco) + ', ' + paciente.map(item => item.ds_complemento) + ', BAIRRO ' + paciente.map(item => item.nm_bairro) + ', CIDADE: ' + paciente.map(item => item.nm_cidade) + ' - CEP: ' + paciente.map(item => item.nr_cep));
-    setdn(moment(paciente.map(item => item.data_nascimento_paciente), 'YYYY-MM-DD').format('DD/MM/YYYY'));
+
+    setcontato("(" + dadospaciente.nr_ddd_celular + ") " + dadospaciente.nr_celular + " / " + "(" + dadospaciente.nr_ddd_fone + ") " + dadospaciente.nr_fone);
+
+    setendereço(dadospaciente.ds_endereco + ', Nº ' + dadospaciente.nr_endereco + ', ' + dadospaciente.ds_complemento + ', BAIRRO ' + dadospaciente.nm_bairro + ', CIDADE: ' + dadospaciente.nm_cidade +
+      ' - CEP: ' + dadospaciente.nr_cep);
+    setdn(moment(dadospaciente.data_nascimento_paciente, 'YYYY-MM-DD').format('DD/MM/YYYY'));
     setidade(moment().diff(moment(dn), 'DD/MM/YYYY'), 'years');
+
   }
 
   // carregando o histórico de atendimentos do paciente.
@@ -1331,7 +1394,7 @@ function Prontuario() {
     carga();
 
   };
-  
+
   // RENDERIZAÇÃO DO COMPONENTE PRONTUÁRIO.
   return (
     <div

@@ -6,13 +6,17 @@ import Logo from '../components/Logo'
 import ghap from '../images/ghapmarca.png'
 import superlogo from '../images/superlogo.jpg'
 import Toast from '../components/Toast'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router'
 import Context from '../Context'
-
 
 function Login() {
   var htmlogin = process.env.REACT_APP_API_LOGIN;
 
+  // recuperando parâmetros de usuário logado e de paciente acessado.
+  let { usuariologado } = useParams();
+  let { categoriaprofissional } = useParams();
+  
   // recuperando estados globais (Context.API).
   const {
     idhospital, setidhospital,
@@ -33,7 +37,7 @@ function Login() {
     settodospacientes,
   } = useContext(Context)
   // history (react-router-dom).
-  let history = useHistory()
+  let navigate = useNavigate()
 
   var usuario = null
   var senha = null
@@ -183,7 +187,7 @@ function Login() {
           }
           setwelcome(1);
           setTimeout(() => {
-            history.push('/todospacientes');
+            navigate('/todospacientes');
           }, 2000);
           // alert(personas.filter(item => item.idusuario == idusuario).map(item => item.logged));
         })
@@ -262,7 +266,7 @@ function Login() {
               }
             }}
             */
-          onClick={() => history.push('/todospacientes')}
+          onClick={() => navigate('/todospacientes')}
           className="blue-button"
           style={{
             width: 100,
@@ -306,7 +310,7 @@ function Login() {
               setconselhousuario('GESTOR');
               setboss_planoterapeutico_usuario(1);
               setboss_settings_usuario(1);
-              history.push('/todospacientes')
+              navigate('/todospacientes')
             }}
           >
             {'GESTOR'}
@@ -326,7 +330,7 @@ function Login() {
                 setconselhousuario(item.conselho);
                 setboss_planoterapeutico_usuario(0);
                 setboss_settings_usuario(0);
-                history.push('/todospacientes')
+                navigate('/todospacientes')
               }}
             >
               {item.nome}
@@ -620,7 +624,7 @@ function Login() {
               fontSize: 12,
             }}
           >
-            Powered By GHAP Tecnologia
+            Powered By GHAP Tecnologia - {usuariologado + ' - ' + categoriaprofissional}
           </div>
         </div>
         <Welcome></Welcome>
