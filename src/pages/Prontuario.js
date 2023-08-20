@@ -135,13 +135,13 @@ function Prontuario() {
     // captura registros de atendimentos.
 
     var htmlpacientes = process.env.REACT_APP_API_FILTRAPACIENTES;
-
     const getProntuarioPaciente = (valor) => {
       axios.get(htmlpacientes + valor).then((response) => {
         setdadospaciente(response.data);
         var x = [0, 1];
         x = response.data;
         console.log(x);
+        loadPaciente(x);
       });
     }
 
@@ -164,7 +164,6 @@ function Prontuario() {
       setconvenio(pct.nm_convenio);
       setdadospaciente(pct);
       setTimeout(() => {
-        loadPaciente(pct.cd_paciente);
         loadPlanosTerapeuticos();
         loadObjetivos();
         loadMetas();
@@ -232,17 +231,17 @@ function Prontuario() {
   const [contato, setcontato] = useState('');
   const [endereço, setendereço] = useState('');
 
-  const loadPaciente = (valor) => {
-    console.log('VALOR: ' + valor);
-    setnomepaciente(dadospaciente.nome_paciente);
-    setnomemae(dadospaciente.nome_mae_paciente);
+  const loadPaciente = (pcte) => {
+    console.log(pcte);
+    setnomepaciente(pcte.nome_paciente);
+    setnomemae(pcte.nome_mae_paciente);
     // eslint-disable-next-line
 
-    setcontato("(" + dadospaciente.nr_ddd_celular + ") " + dadospaciente.nr_celular + " / " + "(" + dadospaciente.nr_ddd_fone + ") " + dadospaciente.nr_fone);
+    setcontato("(" + pcte.nr_ddd_celular + ") " + pcte.nr_celular + " / " + "(" + pcte.nr_ddd_fone + ") " + pcte.nr_fone);
 
-    setendereço(dadospaciente.ds_endereco + ', Nº ' + dadospaciente.nr_endereco + ', ' + dadospaciente.ds_complemento + ', BAIRRO ' + dadospaciente.nm_bairro + ', CIDADE: ' + dadospaciente.nm_cidade +
-      ' - CEP: ' + dadospaciente.nr_cep);
-    setdn(moment(dadospaciente.data_nascimento_paciente, 'YYYY-MM-DD').format('DD/MM/YYYY'));
+    setendereço(pcte.ds_endereco + ', Nº ' + pcte.nr_endereco + ', ' + pcte.ds_complemento + ', BAIRRO ' + pcte.nm_bairro + ', CIDADE: ' + pcte.nm_cidade +
+      ' - CEP: ' + pcte.nr_cep);
+    setdn(moment(pcte.data_nascimento_paciente, 'YYYY-MM-DD').format('DD/MM/YYYY'));
     setidade(moment().diff(moment(dn), 'DD/MM/YYYY'), 'years');
 
   }
